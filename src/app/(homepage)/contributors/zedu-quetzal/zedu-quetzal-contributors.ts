@@ -10,7 +10,7 @@ export const zeduQuetzalContributors: Contributor[] = [
   { name: "Abel promise", username: "Abel promise" },
   { name: "Isioma Peter", username: "isioma_peter" },
   { name: "Deborah Udochukwu Obiorah", username: "Deborah Obiorah" },
-  { name: "Gift Olukoju", username: "gift_olukoju" },
+  { name: "GIFT OLUKOJU", username: "gift_olukoju" },
   { name: "Denise Moemeke", username: "denise_davida" },
   { name: "Enemuo Vivian Chiagozie", username: "vivian enemuo" },
   { name: "Opeyemi Oyeyipo", username: "YemiOye" },

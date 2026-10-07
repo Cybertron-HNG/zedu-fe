@@ -15,7 +15,7 @@ export const zeduOspreyContributors: Contributor[] = [
   { name: "Avi", username: "Avi" },
   { name: "Bahir Momodu", username: "BAGHIRA" },
   { name: "Ctrlf-codex", username: "CtrlF" },
-  { name: "Daniel Iderima", username: "daniel_iderima" },
+  { name: "Daniel Iderima 😎", username: "daniel_iderima" },
   { name: "Deborah Oyetunde", username: "Senorita" },
   { name: "Eddy Ukpong", username: "Eddy" },
   { name: "Ejiro Francess Ejoh", username: "ejiro frances" },

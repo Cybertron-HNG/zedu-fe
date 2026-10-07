@@ -10,7 +10,7 @@ export const zeduWeaverContributors: Contributor[] = [
   { name: "Peace Ihendi", username: "Pearl" },
   { name: "Abimbola Soneye", username: "The Product Girlie" },
   { name: "Folajomi Bello (Purple Queen)", username: "Magafox" },
-  { name: "Emmanuel Bassey Esoh", username: "Emmanuel Young" },
+  { name: "Esoh Bassey Emmanuel", username: "Emmanuel Young" },
   { name: "Ayodeji Adeniyi Oluwafemi", username: "Dayjigud" },
   { name: "Favour Daniel", username: "MR.FÃVY" },
   { name: "Bamijoko Mercy", username: "Bambam" },

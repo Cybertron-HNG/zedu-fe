@@ -792,7 +792,7 @@ const contributors: Contributor[] = [
     workspaceEmail: "olujinmioluwafemi@gmail.com",
     gitHubEmail: "olujinmioluwafemi@gmail.com",
     role: "member",
-    hobbies: [],
+    hobbies: ["Reading", "Coding", "Traveling"],
   },
   {
     id: "85",

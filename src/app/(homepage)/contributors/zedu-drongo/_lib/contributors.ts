@@ -22,7 +22,7 @@ export const zeduDrongoContributors: Contributor[] = [
   { name: "Collins", username: "Collins Odogwu" },
   { name: "Moses Ogunade", username: "Cosmic Atomic" },
   { name: "Adefemiwa Damilare Quadry", username: "Dreymi" },
-  { name: "Chukwu Sunday Nwabueze", username: "Maxdesigns01" },
+  { name: "Nwabueze Chukwu Sunday", username: "Maxdesigns01" },
   {
     name: "Lasisi Oluwatimilehin Joshua",
     username: "Lasisi Oluwatimilehin Joshua",

@@ -33,7 +33,7 @@ export const contributors: Contributor[] = [
     name: "Elizabeth Oluwatobi David",
     githubUsername: "apptaster123-hash",
   },
-  { name: "EMMANUEL EFFIONG", githubUsername: "Solutionsboxx" },
+  { name: "Emmanuel Effiong", githubUsername: "Solutionsboxx" },
   {
     name: "Emmanuel Matthew Ekanem",
     githubUsername: "AnalytiqDigital",

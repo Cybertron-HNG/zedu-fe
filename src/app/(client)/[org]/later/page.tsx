@@ -8,6 +8,7 @@ import { ACTIONS } from "~/store/Actions";
 import { DeleteSavedMessage, GetRequest } from "~/utils/new-request";
 import { Bookmark, Search } from "lucide-react";
 import { showInfo } from "~/components/toast/sonner";
+import { buildMessageLink } from "~/utils/message-link";
 
 const Later = () => {
   const { state, dispatch } = useContext(DataContext);
@@ -46,18 +47,28 @@ const Later = () => {
   const handleOpenMessage = (item: any) => {
     const channelId =
       item?.channel_id || item?.channels_id || item?.channel?.id;
-    const threadId = item?.thread_id || item?.id;
+    const threadId = item?.thread_id;
+    const messageId = item?.message_id || item?.id;
+
     if (!channelId || !threadId) return;
 
-    router.push(
-      `/${orgSlug}/home/channels/${channelId}?thread=${threadId}&highlight=${threadId}`
-    );
+    const link = buildMessageLink({
+      orgSlug,
+      channelId,
+      threadId,
+      messageId,
+      context: "channel",
+    });
+
+    // Convert absolute URL to relative path for router
+    const path = link.replace(window.location.origin, "");
+    router.push(path);
   };
 
   const handleUnsave = async (e: React.MouseEvent, item: any) => {
     e.stopPropagation();
     const orgId = localStorage.getItem("orgId") || "";
-    const smId = item?.id; // saved record ID
+    const smId = item?.id;
     const threadId = item?.thread_id;
 
     if (!orgId || !smId) return;
@@ -78,7 +89,6 @@ const Later = () => {
       showInfo("Removed from Saved");
     } else {
       showInfo("Failed to remove. Please try again.");
-      // Restore on failure
       setSavedMessages((prev) => [item, ...prev]);
     }
   };

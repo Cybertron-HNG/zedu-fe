@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { DataContext } from "~/store/GlobalState";
 import { ACTIONS } from "~/store/Actions";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { ChevronRight, PlusIcon } from "lucide-react";
+import { ChevronRight, PlusIcon, Bookmark } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -20,8 +20,6 @@ import ChannelInviteModal from "~/app/(client)/[org]/_components/invite-modal/ch
 import OrganisationMenu from "~/app/(client)/[org]/_components/org-dropdown";
 import Tooltips from "~/app/(client)/[org]/_components/tooltip";
 import { formatCount } from "~/utils/utils";
-// import AddColleagueDialog from "~/app/(client)/[org]/_components/colleagues/add-colleagues-modal";
-// import { ColleaguesCard } from "~/app/(client)/[org]/_components/colleagues/card";
 
 export default function ChannelNav({
   resizerRef,
@@ -227,54 +225,8 @@ export default function ChannelNav({
                 </Link>
               </div>
             )}
-
-            {/* <>
-              <Accordion
-                type="multiple"
-                className="w-full mt-4"
-                value={openAccordions}
-                onValueChange={handleAccordionChanges}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <AccordionItem value="workflows" className="border-none">
-                  <AccordionTrigger className="font-normal w-full py-0">
-                    <div className="relative py-3 mx-4 flex items-center gap-1 rounded-lg cursor-pointer w-full">
-                      <DropdownIcon
-                        className={`w-5 h-5 transition-transform duration-300 ${
-                          openAccordions.includes("workflows")
-                            ? "rotate-0"
-                            : "-rotate-90"
-                        }`}
-                      />
-                      <h3 className="text-[15px]  font-medium">AI Coworkers</h3>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent onClick={handleClose}>
-                    <ul className="flex flex-col gap-1">
-                      {state?.agentDm?.map((item: any, index: number) => (
-                        <ColleaguesCard {...item} key={index} />
-                      ))}
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-              <AddColleagueDialog />
-
-              <Link
-                href={`/${orgSlug}/home/colleagues`}
-                className={cn(
-                  "relative px-2 mx-2 py-[6px] mb-10 flex items-center justify-between rounded-lg group hover:border-blue-200 border border-[#4B4BB4] cursor-pointer"
-                )}
-              >
-                <p
-                  className={cn("text-[14px] leading-4 truncate text-blue-50")}
-                >
-                  View all AI Coworkers
-                </p>
-                <ChevronRight size={17} />
-              </Link>
-            </> */}
           </div>
+
           {homeDmsReady && (
             <Accordion
               type="multiple"
@@ -334,7 +286,7 @@ export default function ChannelNav({
             <Link
               href={`/${orgSlug}/home/people`}
               className={cn(
-                "relative px-2 mx-2 py-[6px] mb-10 flex items-center justify-between rounded-lg group hover:border-blue-200 border border-[#4B4BB4] cursor-pointer"
+                "relative px-2 mx-2 py-[6px] flex items-center justify-between rounded-lg group hover:border-blue-200 border border-[#4B4BB4] cursor-pointer"
               )}
             >
               <p className={cn("text-[14px] leading-4 truncate text-blue-50")}>
@@ -343,6 +295,30 @@ export default function ChannelNav({
               <ChevronRight size={17} />
             </Link>
           )}
+
+          {/* Saved — always last */}
+          <Link
+            href={`/${orgSlug}/later`}
+            className={cn(
+              "relative flex items-center gap-[6px] py-[7px] px-2 mx-2 mt-6 mb-2 rounded-lg hover:bg-blue-200 hover:text-white transition-colors",
+              pathname.includes("/later") ? "bg-blue-200" : ""
+            )}
+          >
+            <Bookmark
+              size={16}
+              className={cn(
+                pathname.includes("/later") ? "text-white" : "text-blue-50"
+              )}
+            />
+            <p
+              className={cn(
+                "text-[15px] leading-4 truncate",
+                pathname.includes("/later") ? "font-semibold" : "font-normal"
+              )}
+            >
+              Saved
+            </p>
+          </Link>
         </div>
       </div>
 

@@ -37,13 +37,10 @@ const SideBar: React.FC = () => {
     dispatch({ type: ACTIONS.CLEAR_NOTIFICATION_BADGE });
   }, [pathname, dispatch]);
 
-  // set channel name to empty string
   const searchValue = () => {
     localStorage.setItem("channelName", "");
     dispatch({ type: ACTIONS.OPEN_SIDEBAR, payload: false });
   };
-
-  //
 
   return (
     <>
@@ -133,48 +130,6 @@ const SideBar: React.FC = () => {
                         </span>
                         <span className="text-white  text-[12px]">People</span>
                       </Link>
-
-                      {/* <Link
-                        href={`/${orgSlug}/colleagues`}
-                        className={`flex flex-col group items-center justify-center p-1 ${
-                          pathname === `/${orgSlug}/colleagues`
-                            ? "font-medium scale-[1.05]"
-                            : "hover:font-medium "
-                        } `}
-                      >
-                        <span
-                          className={` rounded-[7px] p-2 ${
-                            pathname?.includes(`/${orgSlug}/colleagues`)
-                              ? "bg-blue-200"
-                              : "group-hover:bg-blue-200"
-                          }`}
-                        >
-                          <AgentsIcon />
-                        </span>
-                        <div className="text-white  text-[12px] text-center">
-                          Agents
-                        </div>
-                      </Link> */}
-
-                      {/* <Link
-                        href={`/${orgSlug}/later`}
-                        className={`flex flex-col group items-center justify-center p-1 ${
-                          pathname === `/${orgSlug}/later`
-                            ? "font-medium scale-[1.05]"
-                            : "hover:font-medium "
-                        } `}
-                      >
-                        <span
-                          className={` rounded-[7px] p-2 ${
-                            pathname?.includes(`/${orgSlug}/later`)
-                              ? "bg-blue-200"
-                              : "group-hover:bg-blue-200"
-                          }`}
-                        >
-                          <Bookmark color="white" size={20} />
-                        </span>
-                        <span className="text-white  text-[12px]">Later</span>
-                      </Link> */}
 
                       <Link
                         href={`/${orgSlug}/files`}

@@ -30,8 +30,8 @@ export const ArticlesSection = () => {
         </h1>
         <p className="max-w-[95%] text-sm text-neutral-600 sm:max-w-[90%] sm:text-base md:max-w-[85%] lg:max-w-[65%] lg:text-lg">
           Whether you are managing a small learning cohort or overseeing an
-          entire vast campus, Zedu is designed to grow and adapt seamlessly
-          with your needs.
+          entire vast campus, Zedu is designed to grow and adapt seamlessly with
+          your needs.
         </p>
       </div>
 

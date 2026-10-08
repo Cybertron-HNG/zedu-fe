@@ -58,5 +58,12 @@ export const TEAM: Team = {
       role: "Member",
       field: "Data Analysis",
     },
+    {
+      fullName: "Nwaohiri Emmanuel Uzodinma",
+      zeduUsername: "99PlusOne",
+      githubUsername: "Emmanuel-Xs",
+      role: "Member",
+      field: "Frontend Developer",
+    },
   ],
 };

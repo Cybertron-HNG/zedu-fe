@@ -60,7 +60,6 @@ const Later = () => {
       context: "channel",
     });
 
-    // Convert absolute URL to relative path for router
     const path = link.replace(window.location.origin, "");
     router.push(path);
   };
@@ -73,7 +72,6 @@ const Later = () => {
 
     if (!orgId || !smId) return;
 
-    // Optimistic removal
     setSavedMessages((prev) => prev.filter((m) => m?.id !== smId));
 
     const updatedBookmarks = (bookmarks || []).filter(
@@ -111,31 +109,29 @@ const Later = () => {
     return html.replace(/<[^>]*>/g, "").trim();
   };
 
-  const formatTime = (dateStr: string) => {
+  const formatRelativeTime = (dateStr: string) => {
     if (!dateStr) return "";
     try {
       const d = new Date(dateStr);
-      const now = new Date();
-      const isToday = d.toDateString() === now.toDateString();
-      const isYesterday =
-        new Date(now.getTime() - 86400000).toDateString() === d.toDateString();
+      if (isNaN(d.getTime()) || d.getFullYear() < 2000) return "";
 
-      if (isToday) {
-        return d.toLocaleTimeString([], {
-          hour: "numeric",
-          minute: "2-digit",
-        });
-      }
-      if (isYesterday) {
-        return `Yesterday, ${d.toLocaleTimeString([], {
-          hour: "numeric",
-          minute: "2-digit",
-        })}`;
-      }
+      const now = new Date();
+      const diffMs = now.getTime() - d.getTime();
+      const diffSec = Math.floor(diffMs / 1000);
+      const diffMin = Math.floor(diffSec / 60);
+      const diffHr = Math.floor(diffMin / 60);
+      const diffDay = Math.floor(diffHr / 24);
+
+      if (diffSec < 60) return "just now";
+      if (diffMin < 60) return `${diffMin}m ago`;
+      if (diffHr < 24) return `${diffHr}h ago`;
+      if (diffDay < 7) return `${diffDay}d ago`;
+      if (diffDay < 30) return `${Math.floor(diffDay / 7)}w ago`;
+
       return d.toLocaleDateString([], {
         month: "short",
         day: "numeric",
-        year: "numeric",
+        year: d.getFullYear() === now.getFullYear() ? undefined : "numeric",
       });
     } catch {
       return "";
@@ -209,7 +205,9 @@ const Later = () => {
               item?.avatar_url || item?.user?.avatar_url || null;
             const preview = stripHtml(item?.message || item?.content || "");
             const channelName = item?.channel_name || item?.channel?.name || "";
-            const timeStr = formatTime(item?.created_at);
+            const timeStr = formatRelativeTime(
+              item?.saved_at || item?.created_at
+            );
             const itemId = item?.id || item?.thread_id || index;
 
             return (
@@ -234,7 +232,7 @@ const Later = () => {
                     </div>
                   )}
 
-                  <div className="flex-1 min-w-0 pr-12">
+                  <div className="flex-1 min-w-0 pr-10">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-semibold text-[15px] text-[#1D2939]">
                         {senderName}
@@ -259,11 +257,12 @@ const Later = () => {
                     )}
                   </div>
 
-                  {/* Unsave bookmark on hover */}
+                  {/* Unsave bookmark — always visible */}
                   <button
                     onClick={(e) => handleUnsave(e, item)}
-                    className="absolute right-3 top-3 p-2 hover:bg-gray-100 rounded opacity-0 group-hover:opacity-100 transition"
+                    className="absolute right-3 top-3 p-2 hover:bg-gray-100 rounded transition"
                     title="Unsave"
+                    aria-label="Unsave message"
                   >
                     <Bookmark
                       size={18}

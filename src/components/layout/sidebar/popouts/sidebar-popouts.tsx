@@ -107,6 +107,38 @@ export default function SidebarPopouts() {
     const focusOut = (event: FocusEvent) =>
       leave(event.target, event.relatedTarget);
     const keyDown = (event: KeyboardEvent) => {
+      const rows = card.current?.querySelectorAll<HTMLElement>(
+        "[data-sidebar-popout-row]"
+      );
+      if (event.key === "Tab" && rows?.length && trigger.current) {
+        if (event.target === trigger.current && !event.shiftKey) {
+          event.preventDefault();
+          rows[0].focus();
+          return;
+        }
+        if (event.target === rows[0] && event.shiftKey) {
+          event.preventDefault();
+          trigger.current.focus();
+          return;
+        }
+        if (event.target === rows[rows.length - 1] && !event.shiftKey) {
+          event.preventDefault();
+          const focusable = Array.from(
+            document.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )
+          ).filter(
+            (element) =>
+              !card.current?.contains(element) &&
+              element.getClientRects().length > 0
+          );
+          const triggerIndex = focusable.indexOf(trigger.current);
+          setActive(null);
+          cancelClose();
+          (focusable[triggerIndex + 1] ?? trigger.current).focus();
+          return;
+        }
+      }
       if (event.key !== "Escape" || !active) return;
       event.preventDefault();
       setActive(null);
@@ -249,6 +281,7 @@ export default function SidebarPopouts() {
             return active === "dms" ? (
               <Link
                 key={key}
+                data-sidebar-popout-row
                 href={
                   item.channel_id || item.channels_id
                     ? `/${state.orgSlug}/dm/${item.channel_id ?? item.channels_id}/dms`
@@ -263,6 +296,7 @@ export default function SidebarPopouts() {
             ) : (
               <button
                 key={key}
+                data-sidebar-popout-row
                 type="button"
                 onClick={() => void openChat(item)}
                 aria-label={`${name}: ${description}`}

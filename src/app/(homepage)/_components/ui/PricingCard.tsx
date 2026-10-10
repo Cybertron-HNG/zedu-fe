@@ -92,7 +92,7 @@ export const PricingCard = ({
             ) : null}
           </div>
           {footnote ? (
-            <p className="text-xs font-medium text-neutral-400">{footnote}</p>
+            <p className="text-xs font-medium text-neutral-600">{footnote}</p>
           ) : (
             <div className="h-4" />
           )}

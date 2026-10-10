@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { stripHtmlTags } from "~/utils/utils";
 import { DataContext } from "~/store/GlobalState";
 import { PostRequest } from "~/utils/new-request";
+import { showError } from "~/components/toast/sonner";
 
 type Preview = "dms" | "people";
 type PreviewItem = {
@@ -28,6 +29,7 @@ type PreviewItem = {
   email?: string;
   role?: string;
   job_title?: string;
+  thread_count?: number;
   online?: boolean;
   entity_type?: string;
   participants?: { full_name?: string; username?: string }[];
@@ -140,16 +142,26 @@ export default function SidebarPopouts() {
     setActive(null);
   };
   const openChat = async (person: PreviewItem) => {
-    close();
     const orgId = localStorage.getItem("orgId") || "";
-    const response = await PostRequest(`/organisations/${orgId}/dms`, {
-      chat_type: person.entity_type,
-      participant_id: person.id ?? person.user_id ?? person.participant_id,
-    });
-    if (response?.status === 200 || response?.status === 201) {
-      router.push(
-        `/${state.orgSlug}/people/${response.data.data.channel_id}/${response.data.data.participant_id}`
-      );
+    try {
+      const response = await PostRequest(`/organisations/${orgId}/dms`, {
+        chat_type: person.entity_type,
+        participant_id: person.id ?? person.user_id ?? person.participant_id,
+      });
+      const channelId = response?.data?.data?.channel_id;
+      const participantId = response?.data?.data?.participant_id;
+      if (
+        (response?.status === 200 || response?.status === 201) &&
+        channelId &&
+        participantId
+      ) {
+        router.push(`/${state.orgSlug}/people/${channelId}/${participantId}`);
+        close();
+      } else {
+        showError("Couldn't open chat. Please try again.");
+      }
+    } catch {
+      showError("Couldn't open chat. Please try again.");
     }
   };
 
@@ -158,19 +170,23 @@ export default function SidebarPopouts() {
   const people: PreviewItem[] = Array.isArray(state.orgMembers)
     ? state.orgMembers
     : [];
-  const items = (active === "dms" ? dms : people).slice(0, 4);
+  const items = (
+    active === "dms"
+      ? dms.filter((item) => (item.thread_count ?? 0) > 0)
+      : people.filter((item) => item.online)
+  ).slice(0, 4);
   return createPortal(
     <div
       ref={card}
       data-sidebar-popout
-      className="fixed left-[110px] z-[60] w-[358px] max-w-[calc(100vw-120px)] overflow-y-auto rounded-xl bg-white p-5 text-[#182230] shadow-[0_12px_32px_rgba(0,0,0,0.22)]"
+      className="fixed left-[110px] z-[60] w-[358px] max-w-[calc(100vw-120px)] overflow-y-auto rounded-xl bg-white p-5 text-[#182230] shadow-[0_12px_32px_rgba(0,0,0,0.22)] dark:border dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
       style={{ top, maxHeight: "calc(100dvh - 32px)" }}
     >
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-[15px] font-semibold">
           {active === "dms" ? "Direct messages" : "People"}
         </h2>
-        <span className="text-xs text-[#5959A8]">
+        <span className="text-xs text-[#5959A8] dark:text-zinc-400">
           {active === "dms" ? "Unreads" : "Online"}
         </span>
       </div>
@@ -187,7 +203,7 @@ export default function SidebarPopouts() {
                   item.full_name ||
                   item.username ||
                   item.email ||
-                  "Organization member";
+                  "Organisation member";
             const description =
               active === "dms"
                 ? stripHtmlTags(
@@ -197,7 +213,7 @@ export default function SidebarPopouts() {
                         "No recent message"
                     )
                   )
-                : item.role || item.job_title || "Organization member";
+                : item.role || item.job_title || "Organisation member";
             const contents = (
               <>
                 <span
@@ -209,12 +225,12 @@ export default function SidebarPopouts() {
                   <span className="block truncate text-[13px] font-semibold">
                     {name}
                   </span>
-                  <span className="block truncate text-xs text-[#5959A8]">
+                  <span className="block truncate text-xs text-[#5959A8] dark:text-zinc-400">
                     {description}
                   </span>
                 </span>
                 {active === "people" && (
-                  <span className="shrink-0 text-xs text-[#5959A8]">
+                  <span className="shrink-0 text-xs text-[#5959A8] dark:text-zinc-400">
                     {item.online ? "Active" : "Away"}
                   </span>
                 )}
@@ -236,7 +252,7 @@ export default function SidebarPopouts() {
                 }
                 onClick={close}
                 aria-label={`${name}: ${description}`}
-                className="flex min-w-0 items-center gap-3"
+                className="flex min-w-0 items-center gap-3 dark:hover:bg-zinc-800"
               >
                 {contents}
               </Link>
@@ -246,15 +262,15 @@ export default function SidebarPopouts() {
                 type="button"
                 onClick={() => void openChat(item)}
                 aria-label={`${name}: ${description}`}
-                className="flex min-w-0 cursor-pointer items-center gap-3 text-left"
+                className="flex min-w-0 cursor-pointer items-center gap-3 text-left dark:hover:bg-zinc-800"
               >
                 {contents}
               </button>
             );
           })
         ) : (
-          <p className="text-sm text-[#667085]">
-            {active === "dms" ? "No recent messages" : "No people to show"}
+          <p className="text-sm text-[#667085] dark:text-zinc-400">
+            {active === "dms" ? "No unread messages" : "No people online"}
           </p>
         )}
       </div>

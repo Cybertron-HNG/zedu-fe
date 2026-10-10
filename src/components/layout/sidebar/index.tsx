@@ -17,7 +17,7 @@ import {
 } from "~/svgs";
 import ProfileDropdown from "~/app/(client)/[org]/_components/profile-dropdown";
 import UseHomeChannel from "~/app/(client)/[org]/home/channels/hooks/home-channels";
-import SidebarPopouts from "./popouts/dm-popout";
+import SidebarPopouts from "./popouts/sidebar-popouts";
 import {
   clearNotificationBadgeRegistry,
   isHomeRoute,

@@ -447,8 +447,8 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       const [sortValue] = sortOrder;
 
       processedFiles.sort((a, b) => {
-        const dateA = new Date(a.updated_at).getTime();
-        const dateB = new Date(b.updated_at).getTime();
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
 
         return sortValue === "newest-to-oldest" ? dateB - dateA : dateA - dateB;
       });
@@ -542,12 +542,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       selectedFileIds.has(f.id)
     );
     if (allPinnedSelected && pinnedFiles.length > 0) {
-      // Deselect all pinned files only
       const newSet = new Set(selectedFileIds);
       pinnedFiles.forEach((f) => newSet.delete(f.id));
       setSelectedFileIds(newSet);
     } else {
-      // Select all pinned files
       const newSet = new Set(selectedFileIds);
       pinnedFiles.forEach((f) => newSet.add(f.id));
       setSelectedFileIds(newSet);
@@ -559,12 +557,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       selectedFileIds.has(f.id)
     );
     if (allRegularSelected && regularFiles.length > 0) {
-      // Deselect all regular files only
       const newSet = new Set(selectedFileIds);
       regularFiles.forEach((f) => newSet.delete(f.id));
       setSelectedFileIds(newSet);
     } else {
-      // Select all regular files
       const newSet = new Set(selectedFileIds);
       regularFiles.forEach((f) => newSet.add(f.id));
       setSelectedFileIds(newSet);
@@ -602,7 +598,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ctrl+A or Cmd+A to select all
       if ((e.ctrlKey || e.metaKey) && e.key === "a" && isBulkMode) {
         e.preventDefault();
         setSelectedFileIds((prevSet) => {
@@ -616,7 +611,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
           }
         });
       }
-      // Delete key to trigger bulk delete
       if (e.key === "Delete" && selectedFileIds.size > 0 && isBulkMode) {
         e.preventDefault();
         handleBulkDeleteClick();
@@ -627,13 +621,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isBulkMode, selectedFileIds, clientSortedFiles, handleBulkDeleteClick]);
 
-  // Clear selections when view type changes
   useEffect(() => {
     setSelectedFileIds(new Set());
     setIsBulkMode(false);
   }, [viewType]);
 
-  // Clear selections when tab changes
   useEffect(() => {
     setSelectedFileIds(new Set());
     setIsBulkMode(false);
@@ -715,7 +707,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     }
   };
   const handlePinClick = (fileId: string) => {
-    // TODO: API call to pin/unpin file
     setFiles((prevFiles) =>
       prevFiles.map((file) =>
         file.id === fileId ? { ...file, pinned: !file.pinned } : file

@@ -142,7 +142,11 @@ export default function SidebarPopouts() {
     setActive(null);
   };
   const openChat = async (person: PreviewItem) => {
-    const orgId = localStorage.getItem("orgId") || "";
+    const orgId = localStorage.getItem("orgId");
+    if (!orgId) {
+      showError("Couldn't open chat. Please try again.");
+      return;
+    }
     try {
       const response = await PostRequest(`/organisations/${orgId}/dms`, {
         chat_type: person.entity_type,

@@ -23,7 +23,11 @@ import {
 } from "./channel-polls-context";
 
 interface CreatePollDialogProps {
-  onSubmit: (question: string, options: string[]) => Promise<PollResult | null>;
+  onSubmit: (
+    question: string,
+    options: string[],
+    existingThreadId?: string
+  ) => Promise<{ poll: PollResult | null; threadId: string } | null>;
 }
 
 const CreatePollDialog = ({ onSubmit }: CreatePollDialogProps) => {
@@ -31,12 +35,16 @@ const CreatePollDialog = ({ onSubmit }: CreatePollDialogProps) => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState<string[]>(["", ""]);
   const [submitting, setSubmitting] = useState(false);
+  const [pendingThreadId, setPendingThreadId] = useState<string | null>(null);
+  const [createError, setCreateError] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     setQuestion("");
     setOptions(["", ""]);
     setSubmitting(false);
+    setPendingThreadId(null);
+    setCreateError(false);
   }, [open]);
 
   const filledOptions = options
@@ -64,10 +72,19 @@ const CreatePollDialog = ({ onSubmit }: CreatePollDialogProps) => {
     if (!canSubmit) return;
 
     setSubmitting(true);
-    const poll = await onSubmit(question.trim(), filledOptions);
+    const result = await onSubmit(
+      question.trim(),
+      filledOptions,
+      pendingThreadId ?? undefined
+    );
     setSubmitting(false);
 
-    if (poll) setOpen(false);
+    if (result?.poll) {
+      setOpen(false);
+    } else if (result) {
+      setPendingThreadId(result.threadId);
+      setCreateError(true);
+    }
   };
 
   if (!POLLS_FEATURE_ENABLED) return null;
@@ -138,6 +155,13 @@ const CreatePollDialog = ({ onSubmit }: CreatePollDialogProps) => {
                 <Plus size={16} />
                 Add option
               </button>
+            )}
+
+            {createError && (
+              <p className="mt-3 text-sm text-red-500">
+                The poll could not be created. Your question was already posted
+                — click Create again to retry without reposting it.
+              </p>
             )}
           </div>
 

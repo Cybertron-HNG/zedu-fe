@@ -36,6 +36,9 @@ type PollsByThread = Record<string, PollResult>;
 const EMPTY: PollsByThread = {};
 const pollsStore = new Map<string, PollsByThread>();
 const listeners = new Set<() => void>();
+const fetchedChannels = new Set<string>();
+const inflightFetches = new Map<string, Promise<void>>();
+const channelVersions = new Map<string, number>();
 
 const setChannelPolls = (channelId: string, polls: PollsByThread) => {
   pollsStore.set(channelId, polls);
@@ -45,6 +48,7 @@ const setChannelPolls = (channelId: string, polls: PollsByThread) => {
 const applyPoll = (channelId: string, poll: PollResult | null) => {
   if (!poll?.thread_id) return null;
 
+  channelVersions.set(channelId, (channelVersions.get(channelId) ?? 0) + 1);
   setChannelPolls(channelId, {
     ...pollsStore.get(channelId),
     [poll.thread_id]: poll,
@@ -63,6 +67,29 @@ const subscribe = (listener: () => void) => {
 const readPoll = (res: any, status: number) =>
   res?.status === status ? (res?.data?.data?.poll as PollResult | null) : null;
 
+const fetchChannelPolls = (channelId: string) => {
+  const versionAtStart = channelVersions.get(channelId) ?? 0;
+
+  return GetRequest(`/polls/channels/${channelId}`).then((res) => {
+    if (res?.status !== 200) return;
+    // A createPoll/votePoll landed while the GET was in flight; this
+    // response is an older snapshot and must not overwrite it.
+    if ((channelVersions.get(channelId) ?? 0) !== versionAtStart) return;
+
+    const polls = res?.data?.data?.polls;
+    setChannelPolls(
+      channelId,
+      Array.isArray(polls)
+        ? polls.reduce<PollsByThread>((acc, poll) => {
+            if (poll?.thread_id) acc[poll.thread_id] = poll;
+            return acc;
+          }, {})
+        : {}
+    );
+    fetchedChannels.add(channelId);
+  });
+};
+
 export const useChannelPolls = () => {
   const channelId = String(useParams()?.id || "");
   const pollsByThread = useSyncExternalStore(
@@ -73,19 +100,15 @@ export const useChannelPolls = () => {
 
   useEffect(() => {
     if (!POLLS_FEATURE_ENABLED || !channelId) return;
+    if (fetchedChannels.has(channelId) || inflightFetches.has(channelId))
+      return;
 
-    GetRequest(`/polls/channels/${channelId}`).then((res) => {
-      if (res?.status !== 200) return;
-      const polls = res?.data?.data?.polls;
-      setChannelPolls(
-        channelId,
-        Array.isArray(polls)
-          ? polls.reduce<PollsByThread>((acc, poll) => {
-              if (poll?.thread_id) acc[poll.thread_id] = poll;
-              return acc;
-            }, {})
-          : {}
-      );
+    const request = fetchChannelPolls(channelId).catch(() => {});
+    inflightFetches.set(channelId, request);
+    request.finally(() => {
+      if (inflightFetches.get(channelId) === request) {
+        inflightFetches.delete(channelId);
+      }
     });
   }, [channelId]);
 

@@ -341,14 +341,20 @@ const MessageBox = ({
     }
   };
 
-  const handleCreatePoll = async (question: string, options: string[]) => {
+  const handleCreatePoll = async (
+    question: string,
+    options: string[],
+    existingThreadId?: string
+  ) => {
     if (channelLoading || !subscription) return null;
 
-    const threadId = uuidv7();
+    const threadId = existingThreadId ?? uuidv7();
 
-    sendMessage(id, threadId, question, []);
+    if (!existingThreadId) sendMessage(id, threadId, question, []);
 
-    return createPoll({ threadId, question, options });
+    const poll = await createPoll({ threadId, question, options });
+
+    return { poll, threadId };
   };
 
   const handleKeyDown = (event: any) => {

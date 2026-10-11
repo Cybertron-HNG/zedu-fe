@@ -16,7 +16,7 @@ export const whyCardsData = [
 export const otherReasons = [
   {
     title: "Role-Based Access Control",
-    desc: "Define who can post, announce, moderate, or host sessions. Keep teacher spaces private and student channels organized with structured permissions.",
+    desc: "Define who can post, announce, moderate, or host sessions. Keep educator spaces private and student channels organized with structured permissions.",
   },
   {
     title: "Private Cohorts & Controlled Spaces",

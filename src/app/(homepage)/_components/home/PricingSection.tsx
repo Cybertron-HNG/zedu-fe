@@ -84,7 +84,10 @@ export const PricingSection = ({
           </div>
         ))}
       </div>
-
+      <p className="max-w-2xl text-xs text-neutral-600 sm:text-sm">
+        Prices are in Nigerian naira (₦) and billed monthly for each workspace.
+        US dollar amounts are approximate and change with the exchange rate.
+      </p>
       <p className="mt-4 text-xs sm:text-sm font-medium text-neutral-600">
         Launching a bootcamp? Let&apos;s build a custom model that fits your
         cohort size.

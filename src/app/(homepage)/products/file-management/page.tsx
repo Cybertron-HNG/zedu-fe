@@ -21,9 +21,6 @@ export const metadata: Metadata = {
     "school file workspace",
     "university course files",
   ],
-  icons: {
-    icon: "/TelexIcon.svg",
-  },
   openGraph: {
     title: "Zedu File Management - Organize and Share Learning Materials",
     description:

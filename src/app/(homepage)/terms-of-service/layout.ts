@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import type { ReactNode } from "react";
 import { ogImageUrl, siteUrl } from "~/lib/env-urls";
 
 // The page is a client component, so its metadata lives here. Without it the
@@ -35,6 +36,6 @@ export const metadata: Metadata = {
 
 export default function TermsOfServiceLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{ children: ReactNode }>) {
   return children;
 }

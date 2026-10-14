@@ -89,16 +89,18 @@ const monthlyCards: PricingCardData[] = [
 const yearlyCards: PricingCardData[] = [
   {
     ...monthlyCards[0],
-    footnote: "Free forever, no card needed",
+    features: [...monthlyCards[0].features],
   },
   {
     ...monthlyCards[1],
-    amount: "₦16K",
-    periodLabel: "/month",
-    footnote: "Billed annually (₦192,000/yr)",
+    amount: "Contact Sales",
+    periodLabel: "",
+    footnote: "Annual billing available on request",
+    features: [...monthlyCards[1].features],
   },
   {
     ...monthlyCards[2],
+    features: [...monthlyCards[2].features],
   },
 ];
 

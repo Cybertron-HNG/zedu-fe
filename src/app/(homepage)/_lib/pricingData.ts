@@ -96,6 +96,9 @@ const yearlyCards: PricingCardData[] = [
     amount: "Contact Sales",
     periodLabel: "",
     footnote: "Annual billing available on request",
+    ctaText: "Contact Sales",
+    ctaHref: "/contact-sales",
+    ctaVariant: "outline",
     features: [...monthlyCards[1].features],
   },
   {

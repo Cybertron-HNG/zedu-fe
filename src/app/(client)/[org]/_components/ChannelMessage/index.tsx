@@ -1,5 +1,12 @@
 "use client";
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+} from "react";
 
 import UseChannel from "../../home/channels/hooks/channel-message";
 import { DataContext } from "~/store/GlobalState";
@@ -32,7 +39,7 @@ const ChannelsMessage = () => {
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const hasDispatchedRef = useRef(false);
 
-  const clearChannelUnread = () => {
+  const clearChannelUnread = useCallback(() => {
     dispatch({
       type: ACTIONS.UPDATE_THREAD_COUNT,
       payload: {
@@ -42,19 +49,19 @@ const ChannelsMessage = () => {
       },
     });
     dispatch({ type: ACTIONS.THREAD_COUNT, payload: 0 });
-  };
+  }, [dispatch, id]);
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     if (!id) return;
     await GetRequest(`/threads/channels/${id}?page=1&limit=1`);
     clearChannelUnread();
-  };
+  }, [id, clearChannelUnread]);
 
   // Mark as read and clear Nav highlight whenever this channel is opened
   useEffect(() => {
     if (!id) return;
     getData();
-  }, [id]);
+  }, [id, getData]);
 
   useEffect(() => {
     const container = scrollableContainerRef.current;
@@ -80,12 +87,17 @@ const ChannelsMessage = () => {
     return () => {
       container.removeEventListener("scroll", handleScroll);
     };
-  }, [id]);
+  }, [getData]);
 
-  useEffect(() => {
+  // Runs when new messages arrive; reads the latest badge and user without re-running on them.
+  const markReadOnNewMessage = useEffectEvent(() => {
     if (!showBadge && notify?.user_id !== user?.user_id) {
       getData();
     }
+  });
+
+  useEffect(() => {
+    markReadOnNewMessage();
   }, [messages]);
 
   const handleEditMessage = async (content: any) => {

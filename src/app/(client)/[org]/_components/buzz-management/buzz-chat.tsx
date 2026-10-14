@@ -1,5 +1,12 @@
 "use client";
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+} from "react";
 
 import UseChannel from "../../home/channels/hooks/channel-message";
 import { DataContext } from "~/store/GlobalState";
@@ -34,9 +41,9 @@ const BuzzChat = () => {
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const hasDispatchedRef = useRef(false);
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     await GetRequest(`/threads/channels/${id}?page=1&limit=1`);
-  };
+  }, [id]);
 
   useEffect(() => {
     const container = scrollableContainerRef.current;
@@ -62,12 +69,17 @@ const BuzzChat = () => {
     return () => {
       container.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [getData]);
 
-  useEffect(() => {
+  // Runs when new messages arrive; reads the latest badge and user without re-running on them.
+  const markReadOnNewMessage = useEffectEvent(() => {
     if (!showBadge && notify?.user_id !== user?.user_id) {
       getData();
     }
+  });
+
+  useEffect(() => {
+    markReadOnNewMessage();
   }, [messages]);
 
   const handleSendMessage = async (
@@ -112,7 +124,7 @@ const BuzzChat = () => {
         el.classList.remove("bg-yellow-100");
       }, 1500);
     }
-  }, [dataId, loading]);
+  }, [dataId, loading, pathname]);
 
   if (loading) return null;
 

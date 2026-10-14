@@ -53,16 +53,13 @@ export const PricingSection = ({
             type="button"
             onClick={() => setBillingCycle("yearly")}
             aria-pressed={billingCycle === "yearly"}
-            className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+            className={`flex items-center rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
               billingCycle === "yearly"
                 ? "bg-white text-neutral-900 shadow-sm"
                 : "text-neutral-500 hover:text-neutral-800"
             }`}
           >
             <span>Yearly</span>
-            <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700">
-              Save 20%
-            </span>
           </button>
         </div>
       </div>

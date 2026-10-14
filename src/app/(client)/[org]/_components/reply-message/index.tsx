@@ -86,7 +86,7 @@ const ReplyMessage = ({ fetchMoreData, hasMore }: any) => {
     };
 
     loadSavedChats();
-  }, []);
+  }, [dispatch]);
 
   //
 

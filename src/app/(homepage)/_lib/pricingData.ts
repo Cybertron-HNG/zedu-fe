@@ -70,7 +70,7 @@ const monthlyCards: PricingCardData[] = [
     description: "Flexible pricing for universities and institutions.",
     amount: "Let's Talk",
     periodLabel: "",
-    footnote: "Custom billing & SLA",
+    footnote: "Custom billing",
     features: [
       { text: "Everything in Pro, and", enabled: true },
       { text: "Advanced AI agents and automation", enabled: true },

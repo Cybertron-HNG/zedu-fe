@@ -1,5 +1,12 @@
 "use client";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+} from "react";
 import { DataContext } from "~/store/GlobalState";
 import { groupMessagesByDate } from "~/utils/group-messages";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -30,7 +37,7 @@ const GroupMessage = ({ participants }: any) => {
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
   const hasDispatchedRef = useRef(false);
 
-  const clearDmUnread = () => {
+  const clearDmUnread = useCallback(() => {
     dispatch({
       type: ACTIONS.UPDATE_DM_COUNT,
       payload: {
@@ -39,19 +46,19 @@ const GroupMessage = ({ participants }: any) => {
       },
     });
     dispatch({ type: ACTIONS.DM_COUNT, payload: 0 });
-  };
+  }, [dispatch, id]);
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     if (!id) return;
     await GetRequest(`/group-dms/channels/${id}/threads?page=1&limit=1`);
     clearDmUnread();
-  };
+  }, [id, clearDmUnread]);
 
   // Mark as read and clear Nav highlight whenever this group DM is opened
   useEffect(() => {
     if (!id) return;
     getData();
-  }, [id]);
+  }, [id, getData]);
 
   useEffect(() => {
     const container = scrollableContainerRef.current;
@@ -77,12 +84,17 @@ const GroupMessage = ({ participants }: any) => {
     return () => {
       container.removeEventListener("scroll", handleScroll);
     };
-  }, [id]);
+  }, [getData]);
 
-  useEffect(() => {
+  // Runs when new messages arrive; reads the latest badge and user without re-running on them.
+  const markReadOnNewMessage = useEffectEvent(() => {
     if (!showBadge && notify?.user_id !== user?.user_id) {
       getData();
     }
+  });
+
+  useEffect(() => {
+    markReadOnNewMessage();
   }, [chats]);
 
   const handleEditMessage = async (content: any) => {

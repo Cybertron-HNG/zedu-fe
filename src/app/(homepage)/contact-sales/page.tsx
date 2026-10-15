@@ -4,7 +4,7 @@ import { ContactSalesBenefits } from "./_components/ContactSalesBenefits";
 import { ContactSalesForm } from "./_components/ContactSalesForm";
 
 export const metadata: Metadata = {
-  title: "Contact Sales",
+  title: "Contact Sales for Schools and Cohorts",
   description:
     "Contact the Zedu sales team to find the right plan for your school, bootcamp, or learning organisation. Get tailored pricing, onboarding guidance, and enterprise support.",
   keywords: [

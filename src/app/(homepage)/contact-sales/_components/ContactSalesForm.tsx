@@ -75,7 +75,7 @@ const getFormErrors = (data: ContactSalesFormData): FormErrors => {
 };
 
 const fieldClassName =
-  "h-[52px] rounded-[14px] border border-[#6f4ef6]/25 bg-white px-3.5 text-[#222] placeholder:text-[#8a8a93] focus:border-[#6f4ef6] focus:ring-2 focus:ring-[#6f4ef6]/30";
+  "h-[52px] rounded-[14px] border border-[#6f4ef6]/25 bg-white px-3.5 text-[#222] focus:border-[#6f4ef6] focus:ring-2 focus:ring-[#6f4ef6]/30";
 
 export const ContactSalesForm = () => {
   const [formData, setFormData] =
@@ -230,7 +230,7 @@ export const ContactSalesForm = () => {
           rows={8}
           aria-invalid={Boolean(errors.message)}
           className={cn(
-            "min-h-[140px] resize-y rounded-[14px] border border-[#6f4ef6]/25 bg-white px-3.5 py-2 text-[#222] placeholder:text-[#8a8a93] focus:border-[#6f4ef6] focus:ring-2 focus:ring-[#6f4ef6]/30 lg:max-h-[420px]",
+            "min-h-[140px] resize-y rounded-[14px] border border-[#6f4ef6]/25 bg-white px-3.5 py-2 text-[#222] focus:border-[#6f4ef6] focus:ring-2 focus:ring-[#6f4ef6]/30 lg:max-h-[420px]",
             errors.message && "border-red-500"
           )}
         />

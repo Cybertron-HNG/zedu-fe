@@ -7,7 +7,7 @@ import { searchMessages, searchUsers } from "~/lib/search/api";
 import { openSearchMessageResult } from "~/lib/search/navigate";
 import type { MessageSearchResult, UserSearchResult } from "~/lib/search/types";
 import { formatSearchTimestamp, stripHtmlAndDecode } from "~/lib/search/format";
-import { PostRequest } from "~/utils/new-request";
+import { GetRequest, PostRequest } from "~/utils/new-request";
 import UserAvatar from "~/components/layout/user-avatar";
 import { DeactivationBadge } from "~/components/layout/deactivation-badge";
 
@@ -191,10 +191,14 @@ export const SearchInput = ({ name, orgId }: SearchInputProps) => {
   );
 
   const openMessageResult = useCallback(
-    (result: MessageSearchResult) => {
-      openSearchMessageResult({
+    async (result: MessageSearchResult) => {
+      await openSearchMessageResult({
         result,
         orgSlug,
+        orgId: resolvedOrgId,
+        dms: state.dms,
+        channels: state.channels,
+        getDmParticipants: GetRequest,
         router,
         dispatch,
       });
@@ -202,7 +206,16 @@ export const SearchInput = ({ name, orgId }: SearchInputProps) => {
       setIsOpen(false);
       setSearchQuery("");
     },
-    [dispatch, orgSlug, router, saveRecentSearch, searchQuery]
+    [
+      dispatch,
+      orgSlug,
+      resolvedOrgId,
+      router,
+      saveRecentSearch,
+      searchQuery,
+      state.channels,
+      state.dms,
+    ]
   );
 
   const openPersonResult = useCallback(
@@ -234,7 +247,7 @@ export const SearchInput = ({ name, orgId }: SearchInputProps) => {
   const handlePreviewSelect = useCallback(
     async (item: PreviewItem) => {
       if (item.type === "message") {
-        openMessageResult(item.data);
+        await openMessageResult(item.data);
         return;
       }
 

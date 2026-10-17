@@ -8,7 +8,7 @@ import type { HomeFAQ } from "../../_lib/faqData";
 import { DynamicFooter } from "../../_components/footer/dynamic-footer";
 
 export const metadata: Metadata = {
-  title: "Buzz",
+  title: "Buzz: Instant Voice Calls for Learning Teams",
   description:
     "Use Zedu Buzz to start instant voice conversations inside learning channels. Collaborate in real time, clarify lessons faster, and review AI-generated session summaries.",
   keywords: [
@@ -22,9 +22,6 @@ export const metadata: Metadata = {
     "university class discussions",
     "interactive communication for students",
   ],
-  icons: {
-    icon: "/TelexIcon.svg",
-  },
   openGraph: {
     title: "Zedu Buzz - Instant Voice Conversations for Learning Teams",
     description:

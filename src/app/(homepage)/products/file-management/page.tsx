@@ -159,7 +159,7 @@ const FileManagementProductsPage = () => {
         </p>
         <div className="flex w-full max-w-md flex-row items-center justify-center gap-2 sm:gap-3">
           <ArrowBtn
-            text="Start Organising Files"
+            text="Start Organizing Files"
             linkToHome
             className="justify-center"
           />

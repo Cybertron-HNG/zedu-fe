@@ -164,6 +164,7 @@ export const ContactSalesForm = () => {
           </Label>
           <Input
             id="name"
+            autoComplete="name"
             name="name"
             value={formData.name}
             onChange={(event) => updateField("name", event.target.value)}
@@ -183,6 +184,7 @@ export const ContactSalesForm = () => {
           </Label>
           <Input
             id="email"
+            autoComplete="email"
             name="email"
             type="email"
             value={formData.email}
@@ -203,6 +205,7 @@ export const ContactSalesForm = () => {
           </Label>
           <Input
             id="phone"
+            autoComplete="tel"
             name="phone"
             value={formData.phone}
             onChange={(event) => updateField("phone", event.target.value)}

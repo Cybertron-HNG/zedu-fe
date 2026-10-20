@@ -35,6 +35,7 @@ import {
 } from "~/utils/org-switch";
 import { useOrganisationUsers } from "~/hooks/useOrganisationUsers";
 import { isReservedPathSegment } from "~/lib/reserved-paths";
+import usePageTitle from "~/hooks/use-page-title";
 
 const ClientLayout = ({
   children,
@@ -44,6 +45,7 @@ const ClientLayout = ({
   const [isInitialized, setIsInitialized] = useState(false);
   const { state, dispatch } = useContext(DataContext);
   const pathname = usePathname();
+  usePageTitle(pathname);
   const prevPathnameRef = useRef<string | null>(null);
   const segments = pathname.split("/");
   const slug = segments[1];

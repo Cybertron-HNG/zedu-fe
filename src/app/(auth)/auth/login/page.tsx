@@ -375,7 +375,8 @@ function Login() {
                 <div className="w-full flex flex-col gap-[2px]">
                   <input
                     id="email"
-                    type="text"
+                    type="email"
+                    autoComplete="email"
                     value={email}
                     onChange={handleEmailChange}
                     onBlur={handleEmailBlur}
@@ -403,6 +404,7 @@ function Login() {
                     <input
                       id="password"
                       type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
                       value={password}
                       onChange={handlePasswordChange}
                       placeholder="Password"

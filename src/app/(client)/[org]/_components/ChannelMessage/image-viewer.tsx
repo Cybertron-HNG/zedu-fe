@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import images from "~/assets/images";
+import { useDisplayableImageSrc } from "~/hooks/use-displayable-image-src";
 
 const IMAGE_VIEWER_Z_INDEX = 99999;
 
@@ -32,6 +33,11 @@ const ImageViewer = ({ onClose, item, image, images }: any) => {
   });
 
   const currentImage = gallery[currentIndex] || image;
+  const {
+    src: currentImageSrc,
+    isConverting,
+    failed,
+  } = useDisplayableImageSrc(currentImage);
 
   const resetView = () => {
     setZoomLevel(1);
@@ -142,15 +148,23 @@ const ImageViewer = ({ onClose, item, image, images }: any) => {
           </button>
         )}
 
-        <img
-          src={currentImage?.file_link}
-          alt={currentImage?.file_name || "full image"}
-          style={{
-            transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
-            transition: "transform 0.1s ease-out", // Smooth transition for visual effect
-          }}
-          className="max-h-[90vh] max-w-full object-contain"
-        />
+        {isConverting ? (
+          <p className="text-sm text-white/80">Loading preview…</p>
+        ) : failed ? (
+          <p className="px-6 text-center text-sm text-white/80">
+            This image can&apos;t be previewed. Download it to view it.
+          </p>
+        ) : (
+          <img
+            src={currentImageSrc}
+            alt={currentImage?.file_name || "full image"}
+            style={{
+              transform: `scale(${zoomLevel}) rotate(${rotation}deg)`,
+              transition: "transform 0.1s ease-out", // Smooth transition for visual effect
+            }}
+            className="max-h-[90vh] max-w-full object-contain"
+          />
+        )}
 
         {canNavigate && (
           <button

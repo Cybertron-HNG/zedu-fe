@@ -693,10 +693,9 @@ const ImageWithDownload: React.FC<{
         onError={() => setImageError(true)}
       />
       {isHovered && (
-        <a
-          href="#"
+        <div
           className="flex items-center gap-1 absolute top-2 right-2 bg-white py-1 px-2 rounded-lg z-10"
-          title="Download Image"
+          title="Media actions"
         >
           <MediaActionMenu
             onDownload={handleDownload}
@@ -704,7 +703,7 @@ const ImageWithDownload: React.FC<{
             onShare={() => setShareOpen(true)}
             onDelete={handleDelete}
           />
-        </a>
+        </div>
       )}
 
       <ShareFileModal

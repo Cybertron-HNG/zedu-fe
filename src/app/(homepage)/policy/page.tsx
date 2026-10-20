@@ -142,7 +142,7 @@ function Policy() {
               <Link
                 href={siteUrl()}
                 target="_blank"
-                rel=""
+                rel="noopener noreferrer"
                 className="text-blue-500"
               >
                 www.zedu.chat
@@ -298,12 +298,7 @@ function Policy() {
               If you have questions or comments about this Privacy Policy, you
               may contact us at{" "}
               <span className="p-1">
-                <Link
-                  href="mailto:support@zedu.chat"
-                  target="_blank"
-                  rel=""
-                  className="text-blue-500"
-                >
+                <Link href="mailto:support@zedu.chat" className="text-blue-500">
                   support@zedu.chat
                 </Link>
               </span>

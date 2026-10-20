@@ -93,6 +93,7 @@ const UpdatePassword = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -119,6 +120,9 @@ const UpdatePassword = () => {
                 <button
                   type="button"
                   onClick={() => setShowNewPassword((prev) => !prev)}
+                  aria-label={
+                    showNewPassword ? "Hide password" : "Show password"
+                  }
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
                 >
                   {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -145,6 +149,9 @@ const UpdatePassword = () => {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  aria-label={
+                    showConfirmPassword ? "Hide password" : "Show password"
+                  }
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
                 >
                   {showConfirmPassword ? (

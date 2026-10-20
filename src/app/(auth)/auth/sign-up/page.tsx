@@ -312,6 +312,7 @@ function SignUp() {
                 <input
                   id="email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={handleEmailChange}
                   onBlur={handleEmailBlur}
@@ -339,6 +340,7 @@ function SignUp() {
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
                     value={password}
                     onChange={handlePasswordChange}
                     placeholder="Password"

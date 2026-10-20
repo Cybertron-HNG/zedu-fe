@@ -365,7 +365,8 @@ function Login() {
                 </label>
                 <div className="w-full flex flex-col gap-[2px]">
                   <input
-                    type="text"
+                    type="email"
+                    autoComplete="email"
                     value={email}
                     onChange={handleEmailChange}
                     onBlur={handleEmailBlur}
@@ -392,6 +393,7 @@ function Login() {
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
                       value={password}
                       onChange={handlePasswordChange}
                       placeholder="Password"

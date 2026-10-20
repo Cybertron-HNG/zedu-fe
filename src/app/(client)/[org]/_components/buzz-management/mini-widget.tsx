@@ -97,12 +97,16 @@ const MiniWidget = () => {
           <button
             className="w-8 h-8 border border-[#E4E7EC] rounded-lg flex items-center justify-center text-[#344054] hover:bg-[#4a4e6b25] transition-colors"
             onClick={handleMaximize}
+            aria-label="Maximize call"
+            title="Maximize"
           >
             <Maximize2 size={15} />
           </button>
           <button
             className="w-8 h-8 border border-[#E4E7EC] rounded-lg flex items-center justify-center text-[#344054] hover:bg-[#4a4e6b25] transition-colors"
             onClick={handleMinimize}
+            aria-label="Minimize call"
+            title="Minimize"
           >
             <Minus size={17} />
           </button>
@@ -142,6 +146,8 @@ const MiniWidget = () => {
       )}
       <div className="flex items-center justify-evenly gap-2 py-4 px-3 border-t border-t-gray-200">
         <button
+          aria-label="Toggle microphone"
+          aria-pressed={isAudioPublishing}
           title={`${isAudioPublishing ? "Mute" : "Unmute"} mic`}
           className={`size-full rounded-lg flex items-center justify-center transition-colors ${
             !isAudioPublishing
@@ -153,6 +159,8 @@ const MiniWidget = () => {
           {!isAudioPublishing ? <MicOff size={20} /> : <Mic size={20} />}
         </button>
         <button
+          aria-label="Toggle camera"
+          aria-pressed={isVideoPublishing}
           title={`${isVideoPublishing ? "Turn off" : "Turn on"} video`}
           className={`size-full rounded-lg flex items-center justify-center transition-colors ${
             !isVideoPublishing
@@ -164,6 +172,8 @@ const MiniWidget = () => {
           {!isVideoPublishing ? <VideoOff size={20} /> : <Video size={20} />}
         </button>
         <button
+          aria-label="Toggle reactions"
+          aria-expanded={isEmojiPickerOpen}
           title={`${isEmojiPickerOpen ? "Hide" : "Add"} reactions`}
           className={`size-full border border-[#E4E7EC] rounded-lg flex items-center justify-center text-[#344054] hover:bg-[#00000012] transition-colors ${
             isEmojiPickerOpen ? "bg-blue-100 border-blue-400" : ""
@@ -174,6 +184,8 @@ const MiniWidget = () => {
         </button>
         <div className="relative size-full">
           <button
+            aria-label="Toggle raise hand"
+            aria-pressed={isHandRaised}
             title={`${isHandRaised ? "Lower" : "Raise"} hand`}
             onClick={toggleHandRaise}
             className={`size-full border border-[#E4E7EC] rounded-lg flex items-center justify-center transition-colors ${
@@ -197,6 +209,8 @@ const MiniWidget = () => {
           </div>
         </div>
         <button
+          aria-label="Leave call"
+          title={buzzParticipants?.length === 1 ? "End call" : "Leave call"}
           className="bg-red-500 text-white rounded-lg p-2.5 hover:bg-red-600 transition-colors size-full font-medium flex items-center justify-center"
           onClick={
             buzzParticipants?.length === 1 ? handleEndCall : handleLeaveCall

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import { Pencil, Rocket, Smile } from "lucide-react";
+import { Keyboard, Pencil, Rocket, Smile } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,7 @@ import images from "~/assets/images";
 import { DataContext } from "~/store/GlobalState";
 import { ACTIONS } from "~/store/Actions";
 import StatusModal from "../status";
+import KeyboardShortcutsModal from "../keyboard-shortcuts";
 import { PostRequest } from "~/utils/new-request";
 import Link from "next/link";
 
@@ -97,6 +98,21 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
     dispatch({ type: ACTIONS.STATUS, payload: true });
     setShowDropdown(false);
   };
+
+  const [showShortcuts, setShowShortcuts] = useState(false);
+
+  // Ctrl/Cmd + / opens the shortcuts list from anywhere in the app. It only
+  // opens (never toggles) so holding the keys down does not flicker it.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "/") {
+        event.preventDefault();
+        setShowShortcuts(true);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   const toggleStatus = userData?.online === false ? "active" : "away";
 
@@ -259,6 +275,16 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
           </Link>
 
           <DropdownMenuItem
+            onClick={() => setShowShortcuts(true)}
+            className="px-5 py-2 cursor-pointer hover:bg-blue-500 hover:text-white"
+          >
+            <div className="flex items-center gap-2">
+              <Keyboard size={18} />
+              <span>Keyboard shortcuts</span>
+            </div>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
             onClick={handleLogout}
             className="px-5 py-2 cursor-pointer hover:bg-blue-500 hover:text-white"
           >
@@ -268,6 +294,10 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
       </DropdownMenu>
 
       <StatusModal />
+      <KeyboardShortcutsModal
+        open={showShortcuts}
+        onOpenChange={setShowShortcuts}
+      />
     </div>
   );
 };

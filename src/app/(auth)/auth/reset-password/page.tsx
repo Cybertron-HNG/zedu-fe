@@ -126,7 +126,7 @@ function ResetPassword() {
             <Image src="/Zedu.png" alt="" width={86} height={31} />
           </Link>
           <div>
-            Go back to Login?{" "}
+            Remember your password?{" "}
             <Link href={"/auth/login"} className="text-[#7141F8]">
               Sign In
             </Link>

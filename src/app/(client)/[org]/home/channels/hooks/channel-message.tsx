@@ -1,5 +1,5 @@
 import { useParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ACTIONS } from "~/store/Actions";
 import { DataContext } from "~/store/GlobalState";
 import { GetRequest } from "~/utils/new-request";
@@ -14,11 +14,21 @@ const UseChannel = () => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState(true);
 
+  const requestIdRef = useRef(0);
+  const inFlightRef = useRef(false);
+
   const fetchThreads = async (newPage: number = 1) => {
+    const requestId = ++requestIdRef.current;
+    inFlightRef.current = true;
+
     try {
       const res = await GetRequest(
         `/threads/channels/${id}?page=${newPage}&limit=40`
       );
+
+      if (requestId !== requestIdRef.current) {
+        return;
+      }
 
       if (res?.status === 200 || res?.status === 201) {
         const newThreads = Array.isArray(res.data?.data) ? res.data?.data : [];
@@ -39,10 +49,16 @@ const UseChannel = () => {
       }
       setLoading(false);
     } catch (error) {
+      if (requestId !== requestIdRef.current) {
+        return;
+      }
       console.error("Error fetching threads:", error);
       setHasMore(false);
     } finally {
-      setPage(newPage);
+      if (requestId === requestIdRef.current) {
+        inFlightRef.current = false;
+        setPage(newPage);
+      }
     }
   };
 
@@ -62,7 +78,7 @@ const UseChannel = () => {
   }, [id, token, state?.countCallback]);
 
   const fetchMoreData = () => {
-    if (hasMore) {
+    if (hasMore && !inFlightRef.current) {
       const nextPage = page + 1;
       fetchThreads(nextPage);
     }

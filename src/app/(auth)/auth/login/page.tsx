@@ -363,7 +363,7 @@ function Login() {
               <Separator />
             </div>
           </div>
-          <form onSubmit={handleSubmit} className="w-full">
+          <form onSubmit={handleSubmit} noValidate className="w-full">
             <div className="flex flex-col gap-[16px]">
               <div className="w-full flex flex-col gap-[8px] relative">
                 <label

@@ -5,6 +5,7 @@ import { ArrowBtn, OutlineBtn } from "../_components/ui/Button";
 import { WhyCard } from "../_components/ui/WhyCard";
 import { BoardIcon, BookIcon, SchoolIcon } from "../_components/svgs";
 import { DynamicFooter } from "../_components/footer/dynamic-footer";
+import { careerRoles, careersContactEmail } from "../_lib/careers";
 import { Building2, ShieldCheck, UserRoundCog } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -311,6 +312,63 @@ const AboutPage = () => {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section
+        id="careers"
+        className="w-full scroll-mt-24 px-4 sm:px-8 lg:px-12"
+      >
+        <div className="mx-auto w-full max-w-4xl">
+          <h2 className="text-center text-2xl font-semibold leading-tight text-neutral-900 sm:text-3xl md:text-4xl">
+            Careers at Zedu
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-neutral-600 sm:text-base">
+            Zedu helps educators and learning teams run organized,
+            distraction-free communication. If that sounds like work you want to
+            do, this is how to join us.
+          </p>
+
+          {careerRoles.length === 0 ? (
+            <div className="mt-6 rounded-xl border border-neutral-200 p-6 text-left">
+              <p className="text-sm text-neutral-700 sm:text-base">
+                We have no open roles right now. If you would like to work with
+                us, send your details and what you would like to do to{" "}
+                <a
+                  className="font-semibold text-primary-500 underline"
+                  href={`mailto:${careersContactEmail}?subject=${encodeURIComponent(
+                    "Careers at Zedu"
+                  )}`}
+                >
+                  {careersContactEmail}
+                </a>
+                .
+              </p>
+            </div>
+          ) : (
+            <ul className="mt-6 space-y-3">
+              {careerRoles.map((role) => (
+                <li
+                  key={role.title}
+                  className="flex flex-col gap-3 rounded-xl border border-neutral-200 p-5 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="text-left">
+                    <p className="text-base font-semibold text-neutral-900">
+                      {role.title}
+                    </p>
+                    <p className="text-sm text-neutral-600">
+                      {role.team} · {role.location}
+                    </p>
+                  </div>
+                  <ArrowBtn
+                    text="Apply"
+                    href={role.applyUrl}
+                    className="w-full justify-center sm:w-auto"
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 

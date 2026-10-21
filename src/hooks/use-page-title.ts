@@ -22,7 +22,17 @@ const SECTION_TITLES: Record<string, string> = {
 const getPageTitle = (pathname: string): string | null => {
   // pathname looks like /<org>/<section>/<subsection>/...
   const [, , section, subsection] = pathname.split("/");
-  if (!section) return null;
+  // The org root (/<org>) is the Home screen.
+  if (!section) return `${SECTION_TITLES.home} | Zedu`;
+
+  // Chats opened from People live under /home/people/.../dm and .../dms.
+  if (
+    section === "home" &&
+    subsection === "people" &&
+    (pathname.endsWith("/dm") || pathname.endsWith("/dms"))
+  ) {
+    return `${SECTION_TITLES.dms} | Zedu`;
+  }
 
   if (section === "home" && subsection && SECTION_TITLES[subsection]) {
     return `${SECTION_TITLES[subsection]} | Zedu`;

@@ -100,10 +100,7 @@ const FirstMessageBox = ({ sendMessage }: any) => {
         id: Date.now() + Math.random(),
         file,
         type: fileType,
-        preview:
-          fileType === "image" || fileType === "video"
-            ? URL.createObjectURL(file)
-            : null,
+        preview: URL.createObjectURL(file),
       };
     });
 
@@ -404,7 +401,7 @@ const FirstMessageBox = ({ sendMessage }: any) => {
                 ) : file.type === "application" ? (
                   <div className="w-[70px] h-[70px] flex items-center justify-center border border-primary-500 rounded-md bg-gray-100">
                     <a
-                      href={URL.createObjectURL(file.file)}
+                      href={file.preview}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex flex-col items-center"

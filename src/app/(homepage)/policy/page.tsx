@@ -149,9 +149,9 @@ function Policy() {
               </Link>
             </span>
             including any other media form, media channel, mobile website, or
-            mobile application related or connected thereto Zedu. Please read
-            this privacy policy carefully. If you do not agree with the terms of
-            this privacy policy, please do not access the site.
+            mobile application related or connected to it. Please read this
+            privacy policy carefully. If you do not agree with the terms of this
+            privacy policy, please do not access the site.
           </p>
           <br />
           <br />

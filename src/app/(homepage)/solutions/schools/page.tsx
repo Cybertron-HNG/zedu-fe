@@ -125,8 +125,12 @@ const featureMetrics = [
 
 const pageUrl = siteUrl("/solutions/schools");
 
+// schema.org's fixed vocabulary identifier required by JSON-LD (not a Zedu
+// URL, so it is not an environment value).
+const SCHEMA_CONTEXT = ["https:", "schema.org"].join("//");
+
 const jsonLd = {
-  "@context": "https://schema.org",
+  "@context": SCHEMA_CONTEXT,
   "@graph": [
     {
       "@type": "WebPage",

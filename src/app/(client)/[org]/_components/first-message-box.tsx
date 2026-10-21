@@ -154,6 +154,7 @@ const FirstMessageBox = ({ sendMessage }: any) => {
 
     editor?.commands?.clearContent();
     setMedia([]);
+    setMedias([]);
 
     sendMessage(id, uuid, content, medias);
   };

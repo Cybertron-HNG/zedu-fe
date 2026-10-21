@@ -220,6 +220,8 @@ export default function MembersTable({
                   <Button
                     variant="outline"
                     className="text-gray-700 h-fit p-1"
+                    aria-label={`Change role for ${row.original.email}`}
+                    title="Change role"
                     onClick={() => {
                       setIsOpenEditMemberModal(true);
                       setSelectedMember(row.original);
@@ -237,6 +239,16 @@ export default function MembersTable({
                         ? "text-green-700"
                         : "text-gray-700"
                     )}
+                    aria-label={
+                      row.original.status === "inactive"
+                        ? `Activate ${row.original.email}`
+                        : `Restrict access for ${row.original.email}`
+                    }
+                    title={
+                      row.original.status === "inactive"
+                        ? "Activate"
+                        : "Restrict access"
+                    }
                     onClick={() => {
                       setIsOpenRestrictMemberModal(true);
                       setSelectedMember(row.original);

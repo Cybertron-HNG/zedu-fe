@@ -185,7 +185,7 @@ function Policy() {
               How We Use Your Information
             </li>
 
-            <p>We may use the information we collect in the following way:</p>
+            <p>We may use the information we collect in the following ways:</p>
             <ul className="list-disc">
               <li>To personalize user experience</li>
               <li>To improve our site To send periodic emails</li>

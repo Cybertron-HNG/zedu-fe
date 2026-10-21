@@ -488,8 +488,10 @@ const Topbar = () => {
           </div>
         )}
 
-        <div
-          className="flex lg:hidden"
+        <button
+          type="button"
+          className="flex lg:hidden cursor-pointer"
+          aria-label={state?.openSidebar ? "Close sidebar" : "Open sidebar"}
           onClick={() =>
             dispatch({
               type: ACTIONS.OPEN_SIDEBAR,
@@ -498,16 +500,15 @@ const Topbar = () => {
           }
         >
           {!state?.openSidebar ? (
-            <Menu />
+            <span className="flex" aria-hidden="true">
+              <Menu />
+            </span>
           ) : (
-            <XIcon
-              className="text-white cursor-pointer"
-              onClick={() =>
-                dispatch({ type: ACTIONS.OPEN_SIDEBAR, payload: false })
-              }
-            />
+            <span className="flex" aria-hidden="true">
+              <XIcon className="text-white cursor-pointer" />
+            </span>
           )}
-        </div>
+        </button>
       </div>
 
       {!pathname.includes(`/${orgSlug}/welcome`) && (

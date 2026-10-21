@@ -64,12 +64,29 @@ const FirstMessageBox = ({ sendMessage }: any) => {
   const [medias, setMedias] = useState<string[]>([]);
   const [uploadingImages, setUploadingImages] = useState<number[]>([]);
 
-  // Cleanup object URLs
+  // Revoke only the blob URLs for attachments that were removed, and release
+  // anything still held when the composer unmounts.
+  const prevMediaRef = useRef<any[]>([]);
+
+  useEffect(() => {
+    const currentPreviews = new Set(media.map((image: any) => image?.preview));
+    prevMediaRef.current.forEach((image: any) => {
+      if (image?.preview && !currentPreviews.has(image.preview)) {
+        URL.revokeObjectURL(image.preview);
+      }
+    });
+    prevMediaRef.current = media;
+  }, [media]);
+
   useEffect(() => {
     return () => {
-      media.forEach((image: any) => URL.revokeObjectURL(image.preview));
+      prevMediaRef.current.forEach((image: any) => {
+        if (image?.preview) {
+          URL.revokeObjectURL(image.preview);
+        }
+      });
     };
-  }, [media]);
+  }, []);
 
   const handleSave = () => {
     if (!text || !url) return;
@@ -392,7 +409,10 @@ const FirstMessageBox = ({ sendMessage }: any) => {
 
           <div className={`flex gap-3 ${media?.length > 0 ? "mt-3" : ""}`}>
             {media?.map((file: any, index: number) => (
-              <div key={index} className="relative w-[70px] h-[70px]">
+              <div
+                key={file?.id ?? index}
+                className="relative w-[70px] h-[70px]"
+              >
                 {file.type === "image" ? (
                   <Image
                     src={file.preview}

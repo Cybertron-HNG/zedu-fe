@@ -42,25 +42,22 @@ export default function OrganisationMenu({ name }: Props) {
     <div className="">
       <Popover>
         <PopoverTrigger asChild>
-          <div className="flex items-center gap-1 cursor-pointer">
-            <h6 className="text-lg leading-[26px] font-semibold text-white">
+          <button
+            type="button"
+            className="flex items-center gap-1 cursor-pointer"
+          >
+            <span className="text-lg leading-[26px] font-semibold text-white">
               {orgData?.name}
-            </h6>
+            </span>
             {!shouldHideChevron && (
               <ChevronDownIcon className="text-white mt-1" />
             )}
-          </div>
+          </button>
         </PopoverTrigger>
 
         <PopoverContent
           align="start"
           className="w-[270px] p-0 rounded-md shadow-xl"
-          onClick={() =>
-            dispatch({
-              type: ACTIONS.CHANNEL_BAR,
-              payload: !state?.channelBar,
-            })
-          }
         >
           <div className="">
             <div className="flex items-center gap-2 p-3 border-b font-medium text-sm">
@@ -112,6 +109,9 @@ export default function OrganisationMenu({ name }: Props) {
               className="relative hover:bg-blue-500 hover:text-white cursor-pointer px-4 py-2 flex justify-between text-[15px]"
               onMouseEnter={() => setSubMenu(true)}
               onMouseLeave={() => setSubMenu(false)}
+              onFocus={() => setSubMenu(true)}
+              onBlur={() => setSubMenu(false)}
+              tabIndex={0}
             >
               Apps <ChevronRight className="h-4 w-4" />
               {subMenu && (

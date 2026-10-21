@@ -1097,7 +1097,9 @@ const reducers = (state: any, action: any) => {
       const updatedChannelId = action.payload.channel_id;
 
       const updateDmThreadCount = (dm: any) => {
-        if (dm.channel_id === updatedChannelId) {
+        if (
+          String(dm.channel_id || dm.channels_id) === String(updatedChannelId)
+        ) {
           return {
             ...dm,
             thread_count: action.payload.thread_count,

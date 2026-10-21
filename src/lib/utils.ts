@@ -36,3 +36,21 @@ export function getPathValue(pathname: string, level: number): string | null {
 
   return decodeURIComponent(pathSegments[level]); // Return the decoded path segment
 }
+
+/**
+ * True for an address with a name, one "@" and a domain made of at least two
+ * dot-separated labels. A label must not be empty or start or end with a dash,
+ * so "a@b..c", "a@..b" and "a@-.-" are rejected. Shared by the invite forms
+ * and the footer newsletter box.
+ */
+export const isValidEmail = (email: string): boolean => {
+  if (!/^[^\s@]+@[^\s@]+$/.test(email)) return false;
+  const labels = email.slice(email.indexOf("@") + 1).split(".");
+  return (
+    labels.length >= 2 &&
+    labels.every(
+      (label) =>
+        label.length > 0 && !label.startsWith("-") && !label.endsWith("-")
+    )
+  );
+};

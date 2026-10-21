@@ -64,13 +64,19 @@ export default function ChannelNav({
   };
 
   const [openAccordions, setOpenAccordions] = useState<string[]>(() => {
+    const defaults = ["starred", "channels", "workflows", "agents", "people"];
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("openAccordions");
-      return saved
-        ? JSON.parse(saved)
-        : ["starred", "channels", "workflows", "agents", "people"];
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          return Array.isArray(parsed) ? parsed : defaults;
+        } catch {
+          return defaults;
+        }
+      }
     }
-    return ["starred", "channels", "workflows", "agents", "people"];
+    return defaults;
   });
 
   const handleAccordionChanges = (values: string[]) => {

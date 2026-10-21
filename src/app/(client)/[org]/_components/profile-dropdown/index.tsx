@@ -12,6 +12,7 @@ import images from "~/assets/images";
 import { DataContext } from "~/store/GlobalState";
 import { ACTIONS } from "~/store/Actions";
 import StatusModal from "../status";
+import SignOutModal from "~/components/modals/SignOutModal";
 import { PostRequest } from "~/utils/new-request";
 import Link from "next/link";
 
@@ -26,6 +27,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
   const [hovered, setHovered] = useState(false);
   const [statusText, setStatusText] = useState("");
   const [emoji, setEmoji] = useState("");
+  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
 
   useEffect(() => {
     setStatusText(userData?.text || "");
@@ -37,7 +39,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
     dispatch({ type: ACTIONS.SHOW_USER_PROFILE, payload: true });
   };
 
-  // logout user
+  // logout user, only after the sign-out confirmation is accepted
   const handleLogout = async () => {
     localStorage.clear();
     window.location.href = "/auth/login";
@@ -259,7 +261,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
           </Link>
 
           <DropdownMenuItem
-            onClick={handleLogout}
+            onClick={() => setShowSignOutConfirm(true)}
             className="px-5 py-2 cursor-pointer hover:bg-blue-500 hover:text-white"
           >
             <span>Sign out</span>
@@ -268,6 +270,11 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
       </DropdownMenu>
 
       <StatusModal />
+      <SignOutModal
+        open={showSignOutConfirm}
+        onOpenChange={setShowSignOutConfirm}
+        onConfirm={handleLogout}
+      />
     </div>
   );
 };

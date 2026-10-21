@@ -505,6 +505,24 @@ const useMediaActions = (mediaItem: MediaItem, item: any) => {
   };
 };
 
+// Shows the media actions while keyboard focus is inside the block, not only
+// on mouse hover. Focus moving into the "more" menu (rendered in a portal)
+// keeps them shown.
+const revealOnFocus = (setIsHovered: (shown: boolean) => void) => ({
+  onFocus: () => setIsHovered(true),
+  onBlur: (e: React.FocusEvent<HTMLElement>) => {
+    const next = e.relatedTarget as HTMLElement | null;
+    if (
+      next &&
+      (e.currentTarget.contains(next) ||
+        next.closest("[data-radix-popper-content-wrapper]"))
+    ) {
+      return;
+    }
+    setIsHovered(false);
+  },
+});
+
 const MediaActionMenu: React.FC<{
   onDownload: (e: React.MouseEvent) => void;
   onCopyLink: () => void;
@@ -512,9 +530,17 @@ const MediaActionMenu: React.FC<{
   onDelete: () => void;
 }> = ({ onDownload, onCopyLink, onShare, onDelete }) => (
   <>
-    <div className="hover:bg-gray-200 rounded-md p-1" onClick={onDownload}>
+    <Button
+      type="button"
+      size="icon"
+      variant="ghost"
+      aria-label="Download"
+      title="Download"
+      className="h-7 w-7 hover:bg-gray-200"
+      onClick={onDownload}
+    >
       <DownloadIcon size={18} />
-    </div>
+    </Button>
 
     <Popover>
       <PopoverTrigger asChild>
@@ -592,6 +618,7 @@ const ImageWithDownload: React.FC<{
       className="relative min-w-0 w-fit max-w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      {...revealOnFocus(setIsHovered)}
     >
       <img
         src={mediaItem.file_link}
@@ -658,6 +685,7 @@ const FileWithDownload: React.FC<{
       className="relative border rounded-lg shadow-sm bg-white min-h-[200px] w-[200px] overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      {...revealOnFocus(setIsHovered)}
     >
       <a
         href={mediaItem.file_link}
@@ -793,6 +821,7 @@ const VideoWithDownload: React.FC<{
       className="relative min-w-0 w-fit max-w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      {...revealOnFocus(setIsHovered)}
     >
       <div
         className={

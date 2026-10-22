@@ -43,9 +43,11 @@ const UserSidebar = () => {
     >
       <div className="flex flex-col h-full">
         <nav className="flex items-center justify-between p-5 py-[23px] border-b border-[#E6EAEF]">
-          <h2 className="text-[#1D2939] text-lg font-bold">Profile now</h2>
+          <h2 className="text-[#1D2939] text-lg font-bold">Profile</h2>
 
           <button
+            aria-label="Close profile"
+            title="Close profile"
             onClick={onClose}
             className="text-[#344054] p-1 border border-input rounded-[0.3125rem]"
           >
@@ -89,9 +91,9 @@ const UserSidebar = () => {
                   Edit
                 </button>
               </div>
-              <p className="text-[#344054] text-lg">
-                {user?.title || "Product Manager"}
-              </p>
+              {user?.title && (
+                <p className="text-[#344054] text-lg">{user.title}</p>
+              )}
 
               <ProfileStatus user={user} />
 

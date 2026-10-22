@@ -175,6 +175,7 @@ export default function ConversationSearchSidebar({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search"
+              aria-label="Search messages in this conversation"
               className="h-10 w-full rounded-full border border-[#E6EAEF] bg-[#F9FAFB] pl-9 pr-9 text-sm text-[#101828] outline-none focus:border-[#5757CD] dark:border-white/15 dark:bg-[#222529] dark:text-zinc-100"
             />
             {query ? (

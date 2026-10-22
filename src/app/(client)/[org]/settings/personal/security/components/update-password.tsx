@@ -1,5 +1,6 @@
 "use client";
 import React, { FormEvent, useState } from "react";
+import { isAxiosError } from "axios";
 import { X, Eye, EyeOff } from "lucide-react";
 import {
   Dialog,
@@ -46,7 +47,7 @@ const UpdatePassword = () => {
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    } else {
+    } else if (!isAxiosError(res)) {
       showError("Could not update your password. Please try again.");
     }
     setButtonLoading(false);

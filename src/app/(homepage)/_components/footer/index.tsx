@@ -116,7 +116,7 @@ const appStoreLinks = [
     id: 0,
     href: appStoreUrl(),
     icon: "/images/app-download/app-store-badge-2.png",
-    label: "App store",
+    label: "App Store",
     rating: "4.9",
     starKey: "app",
   },
@@ -124,7 +124,7 @@ const appStoreLinks = [
     id: 1,
     href: playStoreUrl(),
     icon: "/images/app-download/google-play-badge-2.png",
-    label: "Play store",
+    label: "Play Store",
     rating: "4.7",
     starKey: "play",
   },
@@ -176,7 +176,11 @@ const Footer = () => {
         <div className="flex flex-col gap-12 xl:flex-row xl:items-start xl:justify-between xl:gap-16">
           <div className="w-full max-w-[420px] space-y-8">
             <div className="flex items-center gap-3">
-              <Link href="/" className="[&>svg]:h-[39px] [&>svg]:w-[39px]">
+              <Link
+                href="/"
+                aria-label="Zedu home"
+                className="[&>svg]:h-[39px] [&>svg]:w-[39px]"
+              >
                 <ZeduRoundedWhiteLogo />
               </Link>
               <h3 className="text-2xl font-semibold leading-none text-white">
@@ -295,15 +299,25 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center gap-6">
-            {socialLinks.map((item) => (
-              <Link
-                key={item.id}
-                href={item.href}
-                className="transition-all hover:underline"
-              >
-                <Image src={item.icon} width={24} height={24} alt={item.alt} />
-              </Link>
-            ))}
+            {socialLinks
+              .filter((item) => Boolean(item.href))
+              .map((item) => (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.alt}
+                  className="inline-flex transition-all hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#303073]"
+                >
+                  <Image
+                    src={item.icon}
+                    width={24}
+                    height={24}
+                    alt={item.alt}
+                  />
+                </a>
+              ))}
           </div>
         </div>
       </div>

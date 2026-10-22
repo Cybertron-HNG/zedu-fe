@@ -29,6 +29,7 @@ const ReplyMessage = ({ fetchMoreData, hasMore }: any) => {
   const channelId = (thread?.channels_id || params.id) as string;
   const [popupId, setPopupId] = useState<any>(null);
   const replyMessageId = searchParams.get("message_id");
+  const urlThreadId = searchParams.get("thread_id");
   const requestedReplyPageRef = useRef<string | null>(null);
   const fetchMoreDataRef = useRef(fetchMoreData);
 
@@ -71,6 +72,10 @@ const ReplyMessage = ({ fetchMoreData, hasMore }: any) => {
           !reply.thread_id || reply.thread_id === thread?.thread_id
       );
 
+      // The link points at a reply in one thread. Opening another thread must
+      // not page through that thread looking for it.
+      if (thread?.thread_id !== urlThreadId) return;
+
       if (
         shouldFetchSearchReply(replyMessageId, currentThreadReplies, hasMore)
       ) {
@@ -83,7 +88,7 @@ const ReplyMessage = ({ fetchMoreData, hasMore }: any) => {
     });
 
     return () => cancelAnimationFrame(animationFrame);
-  }, [replyMessageId, replies, hasMore, thread?.thread_id]);
+  }, [replyMessageId, urlThreadId, replies, hasMore, thread?.thread_id]);
 
   // edit message
   const handleEditMessage = async (content: any) => {

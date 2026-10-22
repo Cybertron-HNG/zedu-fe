@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import { ArrowBtn, DownloadAppBtn } from "../_components/ui/Button";
+import { DownloadAppBtn } from "../_components/ui/Button";
 import FeatureCard from "../_components/FeatureCard";
 import { DynamicFooter } from "../_components/footer/dynamic-footer";
 import { appStoreUrl, playStoreUrl } from "~/lib/env-urls";
@@ -10,9 +10,9 @@ const APP_STORE_URL = appStoreUrl();
 const PLAY_STORE_URL = playStoreUrl();
 
 export const metadata: Metadata = {
-  title: "Download Zedu App | Mobile and Desktop Learning Workspace",
+  title: "Download Zedu App | Mobile Learning Workspace",
   description:
-    "Download Zedu on iOS, Android, and desktop. Join classes, chat with peers, manage files, and stay updated in one connected learning workspace.",
+    "Download Zedu on iOS and Android. Join classes, chat with peers, manage files, and stay updated in one connected learning workspace.",
   keywords: [
     "Zedu app download",
     "download Zedu",
@@ -21,15 +21,14 @@ export const metadata: Metadata = {
     "class communication app",
     "iOS learning app",
     "Android learning app",
-    "desktop learning app",
   ],
   alternates: {
     canonical: "/download",
   },
   openGraph: {
-    title: "Download Zedu App | Mobile and Desktop Learning Workspace",
+    title: "Download Zedu App | Mobile Learning Workspace",
     description:
-      "Get Zedu for mobile and desktop. Learn anywhere with classes, chat, files, and real-time updates in one place.",
+      "Get Zedu for mobile. Learn anywhere with classes, chat, files, and real-time updates in one place.",
     url: "/download",
     type: "website",
     images: [
@@ -43,9 +42,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Download Zedu App | Mobile and Desktop Learning Workspace",
+    title: "Download Zedu App | Mobile Learning Workspace",
     description:
-      "Download Zedu for iOS, Android, and desktop to learn, collaborate, and stay updated from anywhere.",
+      "Download Zedu for iOS and Android to learn, collaborate, and stay updated from anywhere.",
     images: ["/images/homepage/download/download-hero.png"],
   },
   robots: {
@@ -215,14 +214,6 @@ const DownLoadPage = () => {
           <h2 className="text-center text-3xl font-semibold leading-tight text-neutral-900 sm:text-4xl">
             Download Zedu for Desktop
           </h2>
-          <p className="text-center text-xs text-neutral-500 sm:text-sm">
-            Stay focused with a full learning workspace on your computer
-          </p>
-          <ArrowBtn
-            text="Download for Desktop"
-            hideArrow={false}
-            className="!px-6 !py-2.5"
-          />
 
           <div className="w-full">
             <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/8]">

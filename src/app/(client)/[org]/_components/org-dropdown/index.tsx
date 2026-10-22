@@ -106,14 +106,25 @@ export default function OrganisationMenu({ name }: Props) {
               </Link>
             </li>
             <li
-              className="relative hover:bg-blue-500 hover:text-white cursor-pointer px-4 py-2 flex justify-between text-[15px]"
+              className="relative hover:bg-blue-500 hover:text-white text-[15px]"
               onMouseEnter={() => setSubMenu(true)}
               onMouseLeave={() => setSubMenu(false)}
               onFocus={() => setSubMenu(true)}
-              onBlur={() => setSubMenu(false)}
-              tabIndex={0}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setSubMenu(false);
+                }
+              }}
             >
-              Apps <ChevronRight className="h-4 w-4" />
+              <button
+                type="button"
+                className="w-full cursor-pointer px-4 py-2 flex items-center justify-between"
+                aria-expanded={subMenu}
+                aria-haspopup="true"
+                onClick={() => setSubMenu(true)}
+              >
+                Apps <ChevronRight className="h-4 w-4" />
+              </button>
               {subMenu && (
                 <ul className="absolute left-full top-0 w-[200px] bg-white text-black rounded-[7px] shadow-lg border border-[#E6EAEF] overflow-hidden">
                   <li className="hover:bg-blue-500 hover:text-white cursor-pointer px-4 py-2 flex justify-between text-[15px]">

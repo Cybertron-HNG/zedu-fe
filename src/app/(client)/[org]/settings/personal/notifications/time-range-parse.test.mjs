@@ -10,6 +10,10 @@ assert.deepEqual(parseStoredTimeRange("12:00 AM - 12:00 PM"), {
   to: "12:00",
 });
 assert.equal(parseStoredTimeRange(undefined), null);
+assert.equal(parseStoredTimeRange(null), null);
+assert.equal(parseStoredTimeRange(42), null);
+assert.equal(parseStoredTimeRange({ from: "08:00" }), null);
+assert.equal(parseStoredTimeRange(["08:00 AM - 09:30 PM"]), null);
 assert.equal(parseStoredTimeRange(""), null);
 assert.equal(parseStoredTimeRange("08:00 AM"), null);
 assert.equal(parseStoredTimeRange("8 AM - 9 PM"), null);

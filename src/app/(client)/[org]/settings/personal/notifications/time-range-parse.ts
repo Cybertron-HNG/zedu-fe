@@ -11,9 +11,9 @@ const to24Hour = (time: string): string | null => {
 };
 
 export const parseStoredTimeRange = (
-  timeRange: string | undefined
+  timeRange: unknown
 ): { from: string; to: string } | null => {
-  if (!timeRange) return null;
+  if (typeof timeRange !== "string" || !timeRange) return null;
   const parts = timeRange.split(" - ");
   if (parts.length !== 2) return null;
   const from = to24Hour(parts[0]);

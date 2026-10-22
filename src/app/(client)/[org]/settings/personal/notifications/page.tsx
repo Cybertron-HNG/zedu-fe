@@ -38,7 +38,7 @@ const NotificationPage = () => {
         `/organisations/${orgId}/notification-preference?device_type=web`
       );
       if (res.status === 200 || res.status === 201) {
-        const data = res.data.data;
+        const data = res.data.data ?? {};
         const range = parseStoredTimeRange(data.time_range);
         const from = range?.from ?? defaultPreferences.timeFrom;
         const to = range?.to ?? defaultPreferences.timeTo;

@@ -5,8 +5,12 @@ import {
   buildOrganisationUsersUrl,
 } from "./search-urls.ts";
 
+function searchParamsOf(url) {
+  return new URLSearchParams(url.split("?")[1] ?? "");
+}
+
 function searchParam(url) {
-  return new URL(url, "http://localhost").searchParams.get("search");
+  return searchParamsOf(url).get("search");
 }
 
 test("encodes plus-addressed emails without losing the plus", () => {
@@ -60,10 +64,7 @@ test("omits role when not provided and includes it when provided", () => {
     limit: 20,
     search: "",
   });
-  assert.equal(
-    new URL(withoutRole, "http://localhost").searchParams.get("role"),
-    null
-  );
+  assert.equal(searchParamsOf(withoutRole).get("role"), null);
 
   const withRole = buildOrganisationInvitesUrl("org-1", {
     page: 1,
@@ -71,7 +72,7 @@ test("omits role when not provided and includes it when provided", () => {
     search: "",
     role: "admin",
   });
-  const parsed = new URL(withRole, "http://localhost");
-  assert.equal(parsed.searchParams.get("role"), "admin");
-  assert.equal(parsed.pathname, "/organisations/org-1/invites");
+  const parsed = searchParamsOf(withRole);
+  assert.equal(parsed.get("role"), "admin");
+  assert.equal(withRole.split("?")[0], "/organisations/org-1/invites");
 });

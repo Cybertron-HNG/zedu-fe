@@ -127,6 +127,8 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
         <DropdownMenuTrigger asChild>
           <div
             id={PROFILE_MENU_TRIGGER_ID}
+            role="button"
+            aria-label="Open profile menu"
             tabIndex={0}
             className={`flex items-center justify-center flex-col rounded-md cursor-pointer bg-blue-300 ${emoji || statusText ? "pt-2" : ""}`}
           >

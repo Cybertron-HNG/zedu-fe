@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import { Bug, Pencil, Rocket, Smile } from "lucide-react";
+import { Bug, Keyboard, Pencil, Rocket, Smile } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -282,6 +282,10 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
             <div className="flex items-center gap-2">
               <Keyboard size={18} />
               <span>Keyboard shortcuts</span>
+            </div>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
             onClick={() => {
               window.open(buildReportProblemHref(), "_self");
             }}

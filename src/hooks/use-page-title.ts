@@ -43,10 +43,23 @@ const getPageTitle = (pathname: string): string | null => {
 
 const usePageTitle = (pathname: string) => {
   const defaultTitle = useRef<string | null>(null);
+  const ownTitle = useRef<string | null>(null);
 
   useEffect(() => {
     if (defaultTitle.current === null) defaultTitle.current = document.title;
-    const title = getPageTitle(pathname) ?? defaultTitle.current;
+    const title = getPageTitle(pathname);
+
+    // Paths without a section title (e.g. /<org>/buzz-record/<id>) keep the
+    // title from their own route metadata. Only undo our title if it is still
+    // showing, so we never overwrite what Next.js set.
+    if (title === null) {
+      if (ownTitle.current !== null && document.title === ownTitle.current) {
+        document.title = defaultTitle.current;
+      }
+      ownTitle.current = null;
+      return;
+    }
+    ownTitle.current = title;
 
     // Next.js can add its metadata <title> after this effect runs, so keep
     // every <title> in sync while this page is open.

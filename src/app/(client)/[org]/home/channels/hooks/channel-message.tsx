@@ -10,14 +10,14 @@ const UseChannel = () => {
   const id = params.id as string;
   const { state, dispatch } = useContext(DataContext);
   const token = localStorage.getItem("token") || "";
-  const [page, setPage] = useState<number>(1);
+  const pageRef = useRef(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState(true);
 
   const requestIdRef = useRef(0);
   const inFlightRef = useRef(false);
 
-  const fetchThreads = async (newPage: number = 1) => {
+  const fetchThreads = async (newPage: number = 1, isInitialLoad = false) => {
     const requestId = ++requestIdRef.current;
     inFlightRef.current = true;
 
@@ -46,6 +46,8 @@ const UseChannel = () => {
         } else {
           setHasMore(newThreads.length >= 40);
         }
+        // Keep pagination current even before React commits state updates.
+        pageRef.current = newPage;
       }
       setLoading(false);
     } catch (error) {
@@ -53,11 +55,12 @@ const UseChannel = () => {
         return;
       }
       console.error("Error fetching threads:", error);
-      setHasMore(false);
     } finally {
       if (requestId === requestIdRef.current) {
         inFlightRef.current = false;
-        setPage(newPage);
+        if (isInitialLoad) {
+          dispatch({ type: ACTIONS.MESSAGE_LOADING, payload: false });
+        }
       }
     }
   };
@@ -70,16 +73,14 @@ const UseChannel = () => {
         setLoading(true);
       }
       setHasMore(true);
-      setPage(1);
-      fetchThreads(1).finally(() =>
-        dispatch({ type: ACTIONS.MESSAGE_LOADING, payload: false })
-      );
+      pageRef.current = 1;
+      fetchThreads(1, true);
     }
   }, [id, token, state?.countCallback]);
 
   const fetchMoreData = () => {
     if (hasMore && !inFlightRef.current) {
-      const nextPage = page + 1;
+      const nextPage = pageRef.current + 1;
       fetchThreads(nextPage);
     }
   };

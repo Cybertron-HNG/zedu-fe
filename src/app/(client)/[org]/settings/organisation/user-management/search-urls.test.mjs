@@ -6,7 +6,8 @@ import {
 } from "./search-urls.ts";
 
 function searchParamsOf(url) {
-  return new URL(url, "http://localhost/").searchParams;
+  // Drop the fragment first, like a real client parse would, then read the query.
+  return new URLSearchParams(url.split("#")[0].split("?")[1] ?? "");
 }
 
 function searchParam(url) {

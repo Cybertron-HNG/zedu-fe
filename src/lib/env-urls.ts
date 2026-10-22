@@ -10,11 +10,8 @@ export function siteUrl(path = ""): string {
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-const DEFAULT_MEDIA_URL = "https://media.zedu.chat";
-
 export function ogImageUrl(fileName: string): string {
-  const mediaUrl = readEnv("NEXT_PUBLIC_MEDIA_URL") || DEFAULT_MEDIA_URL;
-  return `${mediaUrl}/telexprodbucket/public/og-images/${fileName}`;
+  return `${readEnv("NEXT_PUBLIC_MEDIA_URL")}/telexprodbucket/public/og-images/${fileName}`;
 }
 
 export function contactSalesUrl(): string {

@@ -139,7 +139,6 @@ export const FeatureSection = () => {
                     alt=""
                     height={40}
                     width={40}
-                    preload
                     className="h-7 w-7 object-contain sm:h-8 sm:w-8"
                   />
                 </span>

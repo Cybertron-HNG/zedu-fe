@@ -216,7 +216,6 @@ export const ContactSalesForm = () => {
           </Label>
           <Input
             id="phone"
-            autoComplete="tel"
             name="phone"
             type="tel"
             inputMode="tel"

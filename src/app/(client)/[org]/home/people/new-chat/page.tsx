@@ -25,7 +25,7 @@ const NewChat = () => {
     uuid: string,
     content: string,
     medias: any
-  ) => {
+  ): Promise<boolean> => {
     const orgId = localStorage.getItem("orgId") || "";
 
     // if the selected users is more than one, that means its a group chat
@@ -41,6 +41,19 @@ const NewChat = () => {
       );
 
       if (res?.status === 200 || res?.status === 201) {
+        const secondPayload = {
+          content: content,
+          thread_id: uuid,
+          media: medias,
+        };
+        const threadRes = await PostRequest(
+          `/dms/channels/${res?.data?.data?.channel_id}/threads`,
+          secondPayload
+        );
+        if (threadRes?.status !== 200 && threadRes?.status !== 201) {
+          return false;
+        }
+
         dispatch({
           type: ACTIONS.GROUP_CALLBACK,
           payload: !state?.groupCallback,
@@ -49,16 +62,7 @@ const NewChat = () => {
         router.push(
           `/${orgSlug}/home/people/${res?.data?.data?.channel_id}/${res?.data?.data?.participant_id}/dm`
         );
-
-        const secondPayload = {
-          content: content,
-          thread_id: uuid,
-          media: medias,
-        };
-        await PostRequest(
-          `/dms/channels/${res?.data?.data?.channel_id}/threads`,
-          secondPayload
-        );
+        return true;
       }
     } else {
       const payload = {
@@ -72,6 +76,18 @@ const NewChat = () => {
       );
 
       if (res?.status === 200 || res?.status === 201) {
+        const secondPayload = {
+          content: content,
+          media: medias,
+        };
+        const threadRes = await PostRequest(
+          `/group-dms/channels/${res?.data?.data?.channel_id}/threads`,
+          secondPayload
+        );
+        if (threadRes?.status !== 200 && threadRes?.status !== 201) {
+          return false;
+        }
+
         dispatch({
           type: ACTIONS.GROUP_CALLBACK,
           payload: !state?.groupCallback,
@@ -79,17 +95,10 @@ const NewChat = () => {
         router.push(
           `/${orgSlug}/home/people/${res?.data?.data?.channel_id}/dms`
         );
-
-        const secondPayload = {
-          content: content,
-          media: medias,
-        };
-        await PostRequest(
-          `/group-dms/channels/${res?.data?.data?.channel_id}/threads`,
-          secondPayload
-        );
+        return true;
       }
     }
+    return false;
   };
 
   //

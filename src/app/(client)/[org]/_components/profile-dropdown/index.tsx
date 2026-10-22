@@ -12,7 +12,9 @@ import images from "~/assets/images";
 import { DataContext } from "~/store/GlobalState";
 import { ACTIONS } from "~/store/Actions";
 import StatusModal from "../status";
-import KeyboardShortcutsModal from "../keyboard-shortcuts";
+import KeyboardShortcutsModal, {
+  PROFILE_MENU_TRIGGER_ID,
+} from "../keyboard-shortcuts";
 import { PostRequest } from "~/utils/new-request";
 import Link from "next/link";
 import { buildReportProblemHref } from "~/lib/report-problem";
@@ -124,6 +126,8 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user }) => {
       <DropdownMenu open={showDropdown} onOpenChange={setShowDropdown}>
         <DropdownMenuTrigger asChild>
           <div
+            id={PROFILE_MENU_TRIGGER_ID}
+            tabIndex={0}
             className={`flex items-center justify-center flex-col rounded-md cursor-pointer bg-blue-300 ${emoji || statusText ? "pt-2" : ""}`}
           >
             <span className="text-sm">{emoji}</span>

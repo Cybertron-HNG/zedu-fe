@@ -9,6 +9,10 @@ import {
 } from "~/components/ui/dialog";
 import { shortcutGroups, shortcutKeys } from "./shortcuts";
 
+// The profile menu button, used when the element that opened the window (a menu
+// item) is gone from the page once the menu closes.
+export const PROFILE_MENU_TRIGGER_ID = "profile-trigger";
+
 type KeyboardShortcutsModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -39,7 +43,12 @@ const KeyboardShortcutsModal = ({
         className="max-h-[80vh] overflow-y-auto sm:max-w-[520px]"
         onCloseAutoFocus={(event) => {
           event.preventDefault();
-          openerRef.current?.focus();
+          const opener = openerRef.current;
+          const target =
+            opener && opener.isConnected
+              ? opener
+              : document.getElementById(PROFILE_MENU_TRIGGER_ID);
+          target?.focus();
           openerRef.current = null;
         }}
       >

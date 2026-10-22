@@ -151,9 +151,20 @@ const ImageViewer = ({ onClose, item, image, images }: any) => {
         {isConverting ? (
           <p className="text-sm text-white/80">Loading preview…</p>
         ) : failed ? (
-          <p className="px-6 text-center text-sm text-white/80">
-            This image can&apos;t be previewed. Download it to view it.
-          </p>
+          <div className="flex flex-col items-center gap-3 px-6 text-center">
+            <p className="text-sm text-white/80">
+              This image can&apos;t be previewed. Download it to view it.
+            </p>
+            <a
+              href={currentImage?.file_link}
+              download={currentImage?.file_name}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-white/60 px-3 py-1 text-sm text-white hover:bg-white/10"
+            >
+              Download
+            </a>
+          </div>
         ) : (
           <img
             src={currentImageSrc}

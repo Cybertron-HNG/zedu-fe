@@ -235,17 +235,17 @@ export default function MembersTable({
                     variant="outline"
                     className={cn(
                       "h-fit p-1",
-                      row.original.status === "inactive"
+                      row.original.status !== "active"
                         ? "text-green-700"
                         : "text-gray-700"
                     )}
                     aria-label={
-                      row.original.status === "inactive"
+                      row.original.status !== "active"
                         ? `Activate ${row.original.email}`
                         : `Restrict access for ${row.original.email}`
                     }
                     title={
-                      row.original.status === "inactive"
+                      row.original.status !== "active"
                         ? "Activate"
                         : "Restrict access"
                     }
@@ -254,7 +254,7 @@ export default function MembersTable({
                       setSelectedMember(row.original);
                     }}
                   >
-                    {row.original.status === "inactive" ? (
+                    {row.original.status !== "active" ? (
                       <UserCheck size={20} />
                     ) : (
                       <Trash2 size={20} />

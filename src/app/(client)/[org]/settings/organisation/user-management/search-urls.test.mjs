@@ -6,7 +6,7 @@ import {
 } from "./search-urls.ts";
 
 function searchParamsOf(url) {
-  return new URLSearchParams(url.split("?")[1] ?? "");
+  return new URL(url, "http://localhost/").searchParams;
 }
 
 function searchParam(url) {

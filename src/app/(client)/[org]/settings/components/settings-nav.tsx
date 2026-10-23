@@ -43,12 +43,21 @@ const ORG_NAV_ICONS: Record<string, React.ReactNode> = {
 export default function SettingsNav() {
   const { state, dispatch } = useContext(DataContext);
   const [openAccordions, setOpenAccordions] = useState<string[]>(() => {
+    const defaults = ["personal", "organisation"];
     const saved =
       typeof window !== "undefined"
         ? localStorage.getItem("Accordions2")
         : null;
 
-    return saved ? JSON.parse(saved) : ["personal", "organisation"];
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return Array.isArray(parsed) ? parsed : defaults;
+      } catch {
+        return defaults;
+      }
+    }
+    return defaults;
   });
 
   const pathname = usePathname();

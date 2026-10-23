@@ -363,7 +363,7 @@ function Login() {
               <Separator />
             </div>
           </div>
-          <form onSubmit={handleSubmit} className="w-full">
+          <form onSubmit={handleSubmit} noValidate className="w-full">
             <div className="flex flex-col gap-[16px]">
               <div className="w-full flex flex-col gap-[8px] relative">
                 <label
@@ -375,7 +375,8 @@ function Login() {
                 <div className="w-full flex flex-col gap-[2px]">
                   <input
                     id="email"
-                    type="text"
+                    type="email"
+                    autoComplete="email"
                     value={email}
                     onChange={handleEmailChange}
                     onBlur={handleEmailBlur}
@@ -403,6 +404,7 @@ function Login() {
                     <input
                       id="password"
                       type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
                       value={password}
                       onChange={handlePasswordChange}
                       placeholder="Password"

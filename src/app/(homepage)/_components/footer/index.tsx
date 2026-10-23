@@ -1,4 +1,5 @@
 "use client";
+import { isValidEmail } from "~/lib/utils";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -143,7 +144,7 @@ const Footer = () => {
     setLoading(true);
     const token = localStorage.getItem("token") || "";
 
-    if (!validateEmail(email)) {
+    if (!isValidEmail(email)) {
       setError("Please enter a valid email address.");
       setLoading(false);
       return;
@@ -161,11 +162,6 @@ const Footer = () => {
       setError(req?.data?.message);
       return;
     }
-  };
-
-  const validateEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
   };
 
   //

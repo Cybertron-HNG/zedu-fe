@@ -63,7 +63,14 @@ export default function AgentNav({
   const [openAccordions, setOpenAccordions] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("openAccordions3");
-      return saved ? JSON.parse(saved) : ["activated"];
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          return Array.isArray(parsed) ? parsed : ["activated"];
+        } catch {
+          return ["activated"];
+        }
+      }
     }
     return ["activated"];
   });
@@ -73,7 +80,14 @@ export default function AgentNav({
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("openAccordions3");
-      setOpenAccordions(JSON.parse(stored || '["activated", "suggestions"]'));
+      try {
+        const parsed = JSON.parse(stored || '["activated", "suggestions"]');
+        setOpenAccordions(
+          Array.isArray(parsed) ? parsed : ["activated", "suggestions"]
+        );
+      } catch {
+        setOpenAccordions(["activated", "suggestions"]);
+      }
       setIsHydrated(true);
     }
   }, []);

@@ -155,7 +155,8 @@ const ShareFileModal = ({
         thread_id: item?.thread_id,
         forwarded_to_channel_id: targetChannelId,
         // The backend stores the content it is sent, so send the original.
-        content: item?.content ?? "",
+        // Channel threads keep their text in `message`; DM items use `content`.
+        content: item?.content ?? item?.message ?? "",
         media: item?.media ?? [],
         mentions: item?.mentions ?? [],
       }
@@ -320,7 +321,7 @@ const ShareFileModal = ({
               }`}
             >
               {isMessageMode
-                ? htmlToText(item?.content) ||
+                ? htmlToText(item?.content ?? item?.message) ||
                   item?.media?.[0]?.file_name ||
                   "Message"
                 : mediaItem.file_name}

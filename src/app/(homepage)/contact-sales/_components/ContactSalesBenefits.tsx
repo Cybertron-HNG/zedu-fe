@@ -28,7 +28,7 @@ export const ContactSalesBenefits = () => {
       <p className="mt-5 border-t border-[#e6e3f5] pt-5 text-sm text-[#3f3f46] sm:pt-6 sm:text-base lg:pt-8">
         Looking for product or customer support? Visit our{" "}
         <Link
-          href="mailto:support@zedu.chat"
+          href="/pricing#help-center"
           className="text-[#6f4ef6] underline underline-offset-4"
         >
           Help Center.

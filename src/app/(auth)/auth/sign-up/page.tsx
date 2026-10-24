@@ -14,6 +14,11 @@ import { Separator } from "~/components/ui/separator";
 import AppleSignin from "react-apple-signin-auth";
 import { Eye, EyeOff } from "lucide-react";
 
+// The backend auto-creates a workspace at signup, so `is_onboarded` being
+// true does not mean the user ever chose one. A missing type is never default.
+const isAutoCreatedOrg = (type?: string) =>
+  (type ?? "").trim().toLowerCase() === "user default org";
+
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +58,10 @@ function SignUp() {
         if (redirectUrl) {
           router.push(redirectUrl);
         } else {
-          if (user?.is_onboarded) {
+          if (
+            user?.is_onboarded &&
+            !isAutoCreatedOrg(user?.organisation?.type)
+          ) {
             router.push(`/${orgSlug}`);
           } else {
             router.push(`/${orgSlug}/welcome`);
@@ -189,7 +197,10 @@ function SignUp() {
           }, 100);
         } else {
           setTimeout(() => {
-            if (res?.data?.data?.user?.is_onboarded) {
+            if (
+              res?.data?.data?.user?.is_onboarded &&
+              !isAutoCreatedOrg(res?.data?.data?.user?.organisation?.type)
+            ) {
               router.push(`/${orgSlug}`);
             } else {
               router.push(`/${orgSlug}/welcome`);
@@ -244,10 +255,13 @@ function SignUp() {
           if (redirectUrl) {
             router.push(redirectUrl);
           } else {
-            if (user?.is_onboarded) {
+            if (
+              user?.is_onboarded &&
+              !isAutoCreatedOrg(user?.organisation?.type)
+            ) {
               router.push(`/${orgSlug}`);
             } else {
-              router.push(`${orgSlug}/welcome`);
+              router.push(`/${orgSlug}/welcome`);
             }
           }
 
@@ -280,7 +294,7 @@ function SignUp() {
     <main className="w-full min-h-screen flex flex-col items-center">
       <div className="flex items-center justify-between w-full py-6 max-w-7xl px-4 sm:px-6 lg:px-8">
         <Link href="/">
-          <Image src="/Zedu.png" alt="" width={86} height={31} />
+          <Image src="/Zedu.png" alt="Zedu home" width={86} height={31} />
         </Link>
         <div>
           Already have an account?{" "}
@@ -312,6 +326,7 @@ function SignUp() {
                 <input
                   id="email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={handleEmailChange}
                   onBlur={handleEmailBlur}
@@ -339,6 +354,7 @@ function SignUp() {
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
                     value={password}
                     onChange={handlePasswordChange}
                     placeholder="Password"
@@ -378,10 +394,13 @@ function SignUp() {
           </div>
           <div className="flex flex-col gap-[12px] mb-3">
             <div className="flex flex-row gap-[6px] items-center">
-              <Checkbox className="mt-[2px]" />
-              <p className="text-[14px] font-[400] leading-[17.64px]">
+              <Checkbox id="stay-signed-in" className="mt-[2px]" />
+              <label
+                htmlFor="stay-signed-in"
+                className="text-[14px] font-[400] leading-[17.64px]"
+              >
                 Stay Signed In
-              </p>
+              </label>
             </div>
           </div>
           <div className="flex flex-col gap-[24px]">
@@ -410,73 +429,82 @@ function SignUp() {
             </div>
 
             {/* Google Login */}
-            <div className="border border-[#D0D0FD] rounded-md mb-2">
-              <div
-                onClick={() => login()}
-                className="cursor-pointer flex flex-row gap-[10px] border border-[#D0D0FD] rounded-md justify-center py-[11px]"
-              >
-                <Image
-                  src="/dashboard/google.svg"
-                  width={24}
-                  height={24}
-                  alt="google"
-                />
-                <div className="text-[16px] font-[600] leading-[20.16px]">
-                  {googleloading ? (
-                    <span className="flex items-center gap-x-2">
-                      <span className="animate-pulse">Logging in...</span>
-                      <Loading width="20" height="20" color="#7141F8" />
-                    </span>
-                  ) : (
-                    "Sign up with Google"
-                  )}
-                </div>
-              </div>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => login()}
+              disabled={googleloading || appleLoading}
+              aria-label="Sign up with Google"
+              aria-busy={googleloading}
+              className="w-full h-auto py-[11px] border border-[#D0D0FD] rounded-md justify-center gap-[10px] bg-white text-[#101828] hover:bg-[#F9FAFB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7141F8] focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed mb-2 font-[600] text-[16px] leading-[20.16px]"
+            >
+              <Image
+                src="/dashboard/google.svg"
+                width={24}
+                height={24}
+                alt=""
+                aria-hidden="true"
+              />
+              {googleloading ? (
+                <span className="flex items-center gap-x-2">
+                  <span className="animate-pulse">Signing up...</span>
+                  <Loading width="20" height="20" color="#7141F8" />
+                </span>
+              ) : (
+                "Sign up with Google"
+              )}
+            </Button>
+            <div role="status" aria-live="polite" className="sr-only">
+              {googleloading ? "Signing up with Google..." : ""}
             </div>
             {/* Apple Login */}
-            <div className="border border-[#D0D0FD] py-[11px] rounded-md">
-              <AppleSignin
-                authOptions={{
-                  clientId: process.env.NEXT_PUBLIC_APPLE_CLIENT_ID || "",
-                  scope: "email name",
-                  redirectURI:
-                    typeof window !== "undefined"
-                      ? window.location.origin + "/auth/sign-up"
-                      : "",
-                  usePopup: true,
-                }}
-                uiType="dark"
-                className="cursor-pointer flex flex-row gap-[10px] border border-[#D0D0FD] rounded-md justify-center py-[11px] w-full"
-                noDefaultStyle={true}
-                render={(props: any) => (
-                  <div
-                    onClick={props.onClick}
-                    className="flex flex-row gap-[10px] items-center justify-center w-full"
-                  >
-                    <Image
-                      src="/dashboard/apple.png"
-                      width={24}
-                      height={24}
-                      alt="apple"
-                    />
-                    <div className="text-[16px] font-[600] leading-[20.16px]">
-                      {appleLoading ? (
-                        <span className="flex items-center gap-x-2">
-                          <span className="animate-pulse">Logging in...</span>
-                          <Loading width="20" height="20" color="#000" />
-                        </span>
-                      ) : (
-                        "Sign up with Apple"
-                      )}
-                    </div>
-                  </div>
-                )}
-                onSuccess={handleAppleSuccess}
-                onError={(err: any) => {
-                  setAppleLoading(false);
-                  console.error("Apple Signup Error:", err);
-                }}
-              />
+            <AppleSignin
+              authOptions={{
+                clientId: process.env.NEXT_PUBLIC_APPLE_CLIENT_ID || "",
+                scope: "email name",
+                redirectURI:
+                  typeof window !== "undefined"
+                    ? window.location.origin + "/auth/sign-up"
+                    : "",
+                usePopup: true,
+              }}
+              uiType="dark"
+              noDefaultStyle={true}
+              render={(props: { onClick: (e?: React.MouseEvent) => void }) => (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={props.onClick}
+                  disabled={appleLoading || googleloading}
+                  aria-label="Sign up with Apple"
+                  aria-busy={appleLoading}
+                  className="w-full h-auto py-[11px] border border-[#D0D0FD] rounded-md justify-center gap-[10px] bg-white text-[#101828] hover:bg-[#F9FAFB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7141F8] focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-[600] text-[16px] leading-[20.16px]"
+                >
+                  <Image
+                    src="/dashboard/apple.png"
+                    width={24}
+                    height={24}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  {appleLoading ? (
+                    <span className="flex items-center gap-x-2">
+                      <span className="animate-pulse">Signing up...</span>
+                      <Loading width="20" height="20" color="#000" />
+                    </span>
+                  ) : (
+                    "Sign up with Apple"
+                  )}
+                </Button>
+              )}
+              onSuccess={handleAppleSuccess}
+              onError={(err: any) => {
+                setAppleLoading(false);
+                console.error("Apple Signup Error:", err);
+              }}
+            />
+            <div role="status" aria-live="polite" className="sr-only">
+              {appleLoading ? "Signing up with Apple..." : ""}
             </div>
           </div>
 
@@ -485,6 +513,7 @@ function SignUp() {
             <Link
               href="/terms-of-service"
               target="_blank"
+              rel="noopener noreferrer"
               className="px-1 font-[500] leading-[21px] text-[#7141F8] hover:text-[#9678e8]"
             >
               terms of service
@@ -493,6 +522,7 @@ function SignUp() {
             <Link
               href="/policy"
               target="_blank"
+              rel="noopener noreferrer"
               className="px-1 font-[500] leading-[21px] text-[#7141F8] hover:text-[#9678e8]"
             >
               privacy policy

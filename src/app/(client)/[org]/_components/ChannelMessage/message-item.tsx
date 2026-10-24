@@ -610,6 +610,7 @@ const MediaActionMenu: React.FC<{
         <Button
           size="icon"
           variant="ghost"
+          aria-label="Media actions"
           className="h-7 w-7 text-muted-foreground hover:text-foreground"
         >
           <MoreVertical className="h-4 w-4" />

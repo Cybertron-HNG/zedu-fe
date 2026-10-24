@@ -241,6 +241,7 @@ const Header = ({
                     >
                       <PopoverTrigger asChild>
                         <Button
+                          aria-label="Open upload menu"
                           className={`px-3 py-2 border border-[#BABAFB] flex items-center gap-2 hover:bg-[#F6F7F9] ${isMobileMenuOpen ? "bg-[#F6F7F9]" : "active:bg-[#F6F7F9]"}`}
                         >
                           <Plus className="text-[#8686F9] size-4" />

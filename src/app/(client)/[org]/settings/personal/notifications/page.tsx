@@ -114,6 +114,7 @@ const NotificationPage = () => {
 
   const handleRevert = () => {
     setPrefs(initialPrefs);
+    setTimeError(null);
   };
 
   if (loading) {

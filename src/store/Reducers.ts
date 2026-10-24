@@ -956,20 +956,29 @@ const reducers = (state: any, action: any) => {
     case ACTIONS.UPDATE_REPLY_PIN: {
       const { threadId, is_pin, details } = action.payload;
 
-      const updatedMessages = (state.replies || []).map((msg: any) => {
-        if (msg.id === threadId) {
-          return {
-            ...msg,
-            is_pinned: is_pin,
-            pinned_details: details,
-          };
-        }
-        return msg;
-      });
+      const updateReplies = (replies: any) =>
+        Array.isArray(replies)
+          ? replies.map((reply: any) =>
+              reply.id === threadId
+                ? { ...reply, is_pinned: is_pin, pinned_details: details }
+                : reply
+            )
+          : replies;
+
+      const updateThreads = (threads: any) =>
+        Array.isArray(threads)
+          ? threads.map((thread: any) =>
+              Array.isArray(thread.messages)
+                ? { ...thread, messages: updateReplies(thread.messages) }
+                : thread
+            )
+          : threads;
 
       return {
         ...state,
-        replies: updatedMessages,
+        replies: updateReplies(state.replies),
+        messages: updateThreads(state.messages),
+        chats: updateThreads(state.chats),
       };
     }
 

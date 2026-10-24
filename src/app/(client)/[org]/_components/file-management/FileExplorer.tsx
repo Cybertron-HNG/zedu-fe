@@ -1568,6 +1568,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
           folderName={modalState.data.name}
           folderId={modalState.data.id}
           onDeleteSuccess={() => {
+            const deletedFolderId = modalState.data.id;
+            // Drop the folder first, so it is gone even if the refetch fails.
+            setFolders((prevFolders) =>
+              prevFolders.filter((folder) => folder.id !== deletedFolderId)
+            );
             fetchFolders();
             setModalState({ type: null });
           }}

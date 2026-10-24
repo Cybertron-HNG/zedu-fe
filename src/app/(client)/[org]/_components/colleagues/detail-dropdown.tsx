@@ -1,12 +1,22 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { ACTIONS } from "~/store/Actions";
+import { DataContext } from "~/store/GlobalState";
+import { showError, showSuccess } from "~/components/toast/sonner";
+import {
+  buildProfileLink,
+  copyToClipboard,
+  getDisplayName,
+  getMemberId,
+} from "~/utils/clipboard";
 
 interface MenuDropdownProps {
   isOpen: boolean;
   onClose: () => void;
   deleteModal: () => void;
+  user?: any;
 }
 
 interface SubMenuState {
@@ -17,14 +27,13 @@ const DetailDropdown = ({
   isOpen,
   onClose,
   deleteModal,
+  user,
 }: MenuDropdownProps) => {
   const [subMenus, setSubMenus] = useState<SubMenuState>({
     copy: false,
   });
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // const params = useParams();
-  // const id = params.id as string;
+  const { dispatch } = useContext(DataContext);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -48,6 +57,26 @@ const DetailDropdown = ({
 
   if (!isOpen) return null;
 
+  const handleCopy = async (value: string, label: string) => {
+    const copied = await copyToClipboard(value);
+    if (copied) {
+      showSuccess(`${label} copied to clipboard`);
+    } else {
+      showError(`Failed to copy ${label.toLowerCase()}`);
+    }
+    onClose();
+  };
+
+  const handleSearch = () => {
+    dispatch({ type: ACTIONS.CONVERSATION_SEARCH_OPEN, payload: true });
+    onClose();
+  };
+
+  const handleOpenInNewWindow = () => {
+    window.open(window.location.href, "_blank", "noopener,noreferrer");
+    onClose();
+  };
+
   const menuItemClass =
     "px-4 py-2 text-[15px] text-[#101828] hover:bg-[#F1F1FE] flex items-center justify-between cursor-pointer";
   const dividerClass = "h-px bg-[#E6EAEF]";
@@ -61,15 +90,6 @@ const DetailDropdown = ({
         <div className={dividerClass} />
 
         <div
-          className={menuItemClass}
-          onClick={() => console.log("Star conversation")}
-        >
-          Star conversation
-        </div>
-
-        <div className={dividerClass} />
-
-        <div
           className={`${menuItemClass} relative`}
           onMouseEnter={() => setSubMenus({ copy: true })}
           onMouseLeave={() => setSubMenus({ copy: false })}
@@ -78,23 +98,34 @@ const DetailDropdown = ({
           <ChevronRight className="w-4 h-4" color="#343330" />
           {subMenus.copy && (
             <div className="absolute right-full top-0 w-[200px] bg-white rounded-[7px] shadow-lg border border-[#E6EAEF]">
-              <div className={menuItemClass}>Copy display name</div>
-              <div className={menuItemClass}>Copy member ID</div>
-              <div className={menuItemClass}>Copy link to profile</div>
+              <div
+                className={menuItemClass}
+                onClick={() => handleCopy(getDisplayName(user), "Display name")}
+              >
+                Copy display name
+              </div>
+              <div
+                className={menuItemClass}
+                onClick={() => handleCopy(getMemberId(user), "Member ID")}
+              >
+                Copy member ID
+              </div>
+              <div
+                className={menuItemClass}
+                onClick={() =>
+                  handleCopy(buildProfileLink(user), "Profile link")
+                }
+              >
+                Copy link to profile
+              </div>
             </div>
           )}
         </div>
-        <div
-          className={menuItemClass}
-          onClick={() => console.log("Search in conversation")}
-        >
+        <div className={menuItemClass} onClick={handleSearch}>
           Search in conversation
         </div>
 
-        <div
-          className={menuItemClass}
-          onClick={() => console.log("Open in new window")}
-        >
+        <div className={menuItemClass} onClick={handleOpenInNewWindow}>
           Open in new window
         </div>
 

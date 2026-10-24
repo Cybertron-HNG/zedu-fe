@@ -2,50 +2,58 @@ export const otherFeatures = [
   {
     title: "Messaging System",
     description:
-      "Secure, encrypted-in-transit messaging for academic collaboration, where students and educators connect and learn together.",
+      "Secure, encrypted-in-transit messaging where students and educators connect, collaborate, and learn together.",
     icon: "/images/homepage/icons/messaging-system.png",
+    chipClassName: "bg-green-50",
   },
   {
     title: "Live Teaching",
     description:
-      "Your digital classroom for meetings and empowering structured discussions, real-time collaboration, and smarter academic engagement",
+      "Your digital classroom for live lessons, structured discussions, and real-time collaboration with every learner.",
     icon: "/images/homepage/icons/live-teaching.png",
+    chipClassName: "bg-sky-50",
   },
   {
     title: "Storyboard",
     description:
-      "Transforming learning into visual journeys, making complex concepts simple, engaging, and memorable for students.",
+      "Turn lessons into visual journeys that make complex concepts simple, engaging, and memorable.",
     icon: "/images/homepage/icons/storyboard.png",
+    chipClassName: "bg-amber-50",
   },
   {
     title: "Class Recordings",
     description:
-      "Revisit, review, and reinforce your learning anytime. Access lessons, clarify concepts, and strengthen understanding anytime.",
+      "Revisit any lesson on demand to review it, clarify concepts, and strengthen understanding at your own pace.",
     icon: "/images/homepage/icons/class-recordings.png",
+    chipClassName: "bg-orange-50",
   },
   {
     title: "Conversation Mesh",
     description:
-      "An interconnected learning space where dialogue builds shared knowledge and continuous growth.",
+      "An interconnected learning space where every conversation builds shared knowledge and continuous growth.",
     icon: "/images/homepage/icons/conversation-mesh.png",
+    chipClassName: "bg-amber-50",
   },
   {
     title: "File Management",
     description:
-      "Organize, share, and instantly access all your learning resources in one secure, centralized hub reduces clutter, and keeps every class connected.",
+      "Organize, share, and find every learning resource in one secure hub, so each class stays connected and clutter-free.",
     icon: "/images/homepage/icons/file-management.png",
+    chipClassName: "bg-cyan-50",
   },
   {
     title: "Whiteboard",
     description:
-      "Interactive visual canvas for real-time sketching, brainstorming, and collaborative ideation.",
+      "An interactive canvas for sketching, brainstorming, and diagramming ideas together in real time.",
     icon: "/images/homepage/icons/whiteboard.png",
+    chipClassName: "bg-teal-50",
   },
   {
-    title: "AI class notes",
+    title: "AI Class Notes",
     description:
-      "Simplifying complex concepts, empowering students to learn, explore, and master artificial intelligence with practical understanding.",
+      "AI-powered notes that turn each class into clear summaries and key points, so learners can review faster.",
     icon: "/images/homepage/icons/AI-class-note.png",
+    chipClassName: "bg-fuchsia-50",
   },
 ];
 

@@ -16,6 +16,7 @@ import MessageItem from "../ChannelMessage/message-item";
 import moment from "moment";
 import { useParams } from "next/navigation";
 import { DeleteSavedMessage } from "~/utils/new-request";
+import { showError } from "~/components/toast/sonner";
 import Loading from "~/components/ui/loading";
 
 const PinMessageDialog = ({ open, setOpen }: any) => {
@@ -28,9 +29,20 @@ const PinMessageDialog = ({ open, setOpen }: any) => {
   const handleDelete = async () => {
     setDeleteloading(true);
 
-    await DeleteSavedMessage(`/channels/pin/${id}/thread/${thread?.thread_id}`);
-    setOpen(false);
-    setDeleteloading(false);
+    try {
+      const res = await DeleteSavedMessage(
+        `/channels/pin/${id}/thread/${thread?.thread_id}`
+      );
+
+      if (!(res?.status === 200 || res?.status === 201)) {
+        showError("Could not unpin this message");
+        return;
+      }
+
+      setOpen(false);
+    } finally {
+      setDeleteloading(false);
+    }
   };
 
   //

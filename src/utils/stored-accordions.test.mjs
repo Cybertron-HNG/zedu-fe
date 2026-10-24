@@ -1,6 +1,22 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseStoredAccordions } from "./stored-accordions.ts";
+import { readFileSync } from "node:fs";
+import ts from "typescript";
+
+// Node 20 cannot import a .ts file directly, so compile the helper first.
+const source = readFileSync(
+  new URL("./stored-accordions.ts", import.meta.url),
+  "utf8"
+);
+const { outputText } = ts.transpileModule(source, {
+  compilerOptions: {
+    module: ts.ModuleKind.ESNext,
+    target: ts.ScriptTarget.ES2020,
+  },
+});
+const encoded = Buffer.from(outputText).toString("base64");
+const moduleUrl = `data:text/javascript;base64,${encoded}`;
+const { parseStoredAccordions } = await import(moduleUrl);
 
 const defaults = ["starred", "channels"];
 

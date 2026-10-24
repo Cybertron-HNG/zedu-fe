@@ -12,7 +12,7 @@ import { useParams } from "next/navigation";
 import InfiniteScroll from "react-infinite-scroll-component";
 import moment from "moment";
 import Image from "next/image";
-import { File as FileIcon, Film, Music, Play } from "lucide-react";
+import { File as FileIcon, Film, ImageIcon, Music, Play } from "lucide-react";
 import { DataContext } from "~/store/GlobalState";
 import { GetRequest } from "~/utils/new-request";
 import Loading from "~/components/ui/loading";
@@ -27,6 +27,7 @@ import {
 } from "~/utils/document-files";
 import { getFileIconClass } from "../file-management/FileList";
 import ChannelFileMediaPreview from "./channel-file-media-preview";
+import { useDisplayableImageSrc } from "~/hooks/use-displayable-image-src";
 
 export type ChannelFileFilter =
   | "all"
@@ -100,6 +101,28 @@ export const getChannelFileCategory = (media: Media): MediaCategory => {
   if (isPreviewableDocument(getDocumentCategory(media))) return "document";
 
   return "file";
+};
+
+const ImageThumbnail = ({ file }: { file: ChannelFileEntry }) => {
+  const { src, isConverting, failed } = useDisplayableImageSrc(file);
+
+  if (isConverting) {
+    return <span className="block h-full w-full animate-pulse bg-[#EEF0F3]" />;
+  }
+  if (failed) {
+    return (
+      <span className="flex h-full w-full items-center justify-center text-[#98A2B3]">
+        <ImageIcon size={28} aria-label={file.file_name} />
+      </span>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt={file.file_name}
+      className="h-full w-full object-cover transition group-hover:scale-[1.02]"
+    />
+  );
 };
 
 const decodeFileName = (name: string) => {
@@ -453,11 +476,7 @@ export function FilesTabContainer() {
                             className="group relative aspect-square overflow-hidden rounded-lg border border-[#E6EAEF] bg-[#F6F7F9]"
                           >
                             {category === "image" ? (
-                              <img
-                                src={file.file_link}
-                                alt={file.file_name}
-                                className="h-full w-full object-cover transition group-hover:scale-[1.02]"
-                              />
+                              <ImageThumbnail file={file} />
                             ) : (
                               <>
                                 <video

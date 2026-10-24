@@ -1,0 +1,32 @@
+# Zedu
+
+> Zedu is an AI-powered education platform built for schools, universities, bootcamps and learning communities. It gives teachers, mentors and students one workspace to organise cohorts, run classes and manage communication, with structured channels, instant voice calls (Buzz) and file management. Zedu is available on the web, iOS, Android and desktop.
+
+## Product
+
+- [Home](https://zedu.chat/): Overview of Zedu and what it offers learning teams.
+- [Channels](https://zedu.chat/products/channels): Structured classroom and cohort communication, with discussions organised by subject.
+- [Buzz](https://zedu.chat/products/buzz): Instant voice conversations inside learning channels, with AI-generated session summaries.
+- [File Management](https://zedu.chat/products/file-management): Organise, share and collaborate on course files across classes, cohorts and departments.
+- [Download](https://zedu.chat/download): Get Zedu for iOS, Android and desktop.
+
+## Solutions
+
+- [Schools](https://zedu.chat/solutions/schools): Channels for lessons, assignments, discussions and school-wide updates.
+- [Universities](https://zedu.chat/solutions/universities): Connect departments, professors and students with searchable discussions and AI-assisted learning workflows.
+- [Bootcamps](https://zedu.chat/solutions/bootcamps): One cohort management platform for instructors, mentors and students.
+
+## Plans and contact
+
+- [Pricing](https://zedu.chat/pricing): Compare the Starter, Pro and Enterprise plans.
+- [Contact Sales](https://zedu.chat/contact-sales): Talk to the Zedu sales team about pricing, onboarding and enterprise support.
+
+## Company and help
+
+- [About](https://zedu.chat/about): How Zedu helps schools, universities and bootcamps run structured, AI-assisted learning communication.
+- [Resources](https://zedu.chat/resources): Guides and help articles for using Zedu.
+
+## Legal
+
+- [Privacy Policy](https://zedu.chat/policy)
+- [Terms of Service](https://zedu.chat/terms-of-service)

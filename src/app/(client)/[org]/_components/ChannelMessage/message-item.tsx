@@ -38,6 +38,7 @@ import {
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
 import { ACTIONS } from "~/store/Actions";
+import { useDisplayableImageSrc } from "~/hooks/use-displayable-image-src";
 import { DataContext } from "~/store/GlobalState";
 import DeleteFileDialog from "../delete-message-modal/delete-file";
 import { showInfo } from "~/components/toast/sonner";
@@ -582,9 +583,19 @@ const ImageWithDownload: React.FC<{
     handleCopyLink,
     handleDelete,
   } = useMediaActions(mediaItem, item);
+  const { src, isConverting, failed } = useDisplayableImageSrc(mediaItem);
 
-  if (imageError) {
+  if (imageError || failed) {
     return <FileWithDownload mediaItem={mediaItem} item={item} />;
+  }
+
+  if (isConverting) {
+    return (
+      <div
+        className="h-40 w-40 max-w-full animate-pulse rounded-md bg-gray-100"
+        aria-label={`Loading ${mediaItem.file_name}`}
+      />
+    );
   }
 
   return (
@@ -594,7 +605,7 @@ const ImageWithDownload: React.FC<{
       onMouseLeave={() => setIsHovered(false)}
     >
       <img
-        src={mediaItem.file_link}
+        src={src}
         alt={mediaItem.file_name}
         className="max-h-60 max-w-full w-auto h-auto cursor-pointer object-contain object-left"
         onClick={() => {

@@ -377,6 +377,8 @@ function Login() {
                     id="email"
                     type="email"
                     autoComplete="email"
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? "email-error" : undefined}
                     value={email}
                     onChange={handleEmailChange}
                     onBlur={handleEmailBlur}
@@ -386,7 +388,11 @@ function Login() {
                     } outline-none rounded-md py-[13px] pl-[13px]`}
                   />
                   {errors.email && (
-                    <small className="text-[12px] text-[#F81404]">
+                    <small
+                      id="email-error"
+                      role="alert"
+                      className="text-[12px] text-[#F81404]"
+                    >
                       {errors.email}
                     </small>
                   )}
@@ -405,6 +411,10 @@ function Login() {
                       id="password"
                       type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
+                      aria-invalid={Boolean(errors.password)}
+                      aria-describedby={
+                        errors.password ? "password-error" : undefined
+                      }
                       value={password}
                       onChange={handlePasswordChange}
                       placeholder="Password"
@@ -426,7 +436,11 @@ function Login() {
                     </button>
                   </div>
                   {errors.password && (
-                    <small className="text-[12px] text-[#F81404]">
+                    <small
+                      id="password-error"
+                      role="alert"
+                      className="text-[12px] text-[#F81404]"
+                    >
                       {errors.password}
                     </small>
                   )}

@@ -27,10 +27,10 @@ const InviteFew = ({
   onUsersChange,
 }: {
   users: User[];
-  // eslint-disable-next-line
+
   setUsers: (users: User[]) => void;
   roles: Role[];
-  // eslint-disable-next-line
+
   onUsersChange: (users: InviteUser[]) => void;
 }) => {
   const addRow = () => {

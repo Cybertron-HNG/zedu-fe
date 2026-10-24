@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         url: ogImageUrl("og-image-5.png"),
         width: 1200,
         height: 630,
-        alt: "Zedu learning platform for educators and cohorts",
+        alt: "Zedu - Learning Platform for Bootcamps, Schools, and Cohorts",
       },
     ],
     type: "website",

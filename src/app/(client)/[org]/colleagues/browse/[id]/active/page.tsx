@@ -114,7 +114,7 @@ export default function ColleageProfile() {
   }, [dispatch]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(agent?.descriptions?.app_url);
+    const url = agent?.descriptions?.app_url || agent?.profile_url || agent?.app_url || agent?.website_url || window.location.href;\n    navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };

@@ -120,8 +120,7 @@ async function fetchSafeHtml(
         method: "GET",
         redirect: "manual",
         headers: {
-          "User-Agent":
-            "Mozilla/5.0 (compatible; ZeduLinkPreviewBot/1.0; +https://zedu.com)",
+          "User-Agent": "ZeduLinkPreviewBot/1.0",
           Accept:
             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         },

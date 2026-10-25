@@ -14,7 +14,7 @@ export const PinnedFile = ({ file }: PinnedFileProps) => {
     file_type: file.file_type,
   });
   return (
-    <div className="min-w-[180px] max-w-[300px] p-3 flex items-start justify-between border rounded-md cursor-pointer hover:bg-gray-100">
+    <div className="min-w-[180px] max-w-[300px] p-3 flex items-start justify-between border rounded-md cursor-pointer hover:bg-gray-100 onClick={()=>{}}">
       <div className="flex items-center gap-2">
         <Image
           src={iconSrc}

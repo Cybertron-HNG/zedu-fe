@@ -98,18 +98,29 @@ const GroupMessage = ({ participants }: any) => {
   }, [chats]);
 
   const handleEditMessage = async (content: any) => {
-    const payload = {
-      content,
-    };
+    try {
+      const payload = {
+        content,
+      };
 
-    await PutRequest(
-      `/group-dms/thread/${thread?.thread_id}/channels/${id}`,
-      payload
-    );
-    dispatch({
-      type: ACTIONS.IS_EDIT,
-      payload: false,
-    });
+      const res = await PutRequest(
+        `/group-dms/thread/${thread?.thread_id}/channels/${id}`,
+        payload
+      );
+      const updated = res?.data?.data || res?.data;
+      if (updated && thread?.thread_id) {
+        dispatch({
+          type: ACTIONS.UPDATE_CHAT,
+          payload: { threadId: thread.thread_id, message: updated },
+        });
+      }
+      dispatch({
+        type: ACTIONS.IS_EDIT,
+        payload: false,
+      });
+    } catch (error) {
+      console.error("Failed to edit message", error);
+    }
   };
 
   useMessageDeepLink({

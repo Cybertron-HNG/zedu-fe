@@ -28,8 +28,16 @@ export const Client = () => {
         `/subscriptions/complete?session_id=${sessionId}`
       );
       if (res?.status === 200 || res?.status === 201) {
+        toast.success("Payment successful");
         // router.push(`/${orgSlug}/settings/organisation/billing`)
       }
+      try {
+        if (typeof window !== "undefined") {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("session_id");
+          window.history.replaceState({}, "", url.toString());
+        }
+      } catch (e) {}
     };
 
     if (sessionId) {

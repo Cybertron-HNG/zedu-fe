@@ -16,12 +16,13 @@ const GeneralTimeout = ({ handleLeave }: { handleLeave: any }) => {
   const CALL_DURATION_MS = 60 * 60 * 1000; // 1 hour
   const WARNING_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
 
-  const handleTerminateMeeting = async () => {
+    const handleTerminateMeeting = async () => {
     try {
-      if (handleLeave) await handleLeave();
+      if (handleLeave) {
+        await handleLeave();
+      }
     } catch (err) {
-      // handleLeave && handleLeave();
-      // window.location.href = `/${orgSlug}/buzz`;
+      // ignore errors
     }
   };
 

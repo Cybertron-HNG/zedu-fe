@@ -46,19 +46,22 @@ export const useDeleteFile = () => {
       let successCount = 0;
       let failCount = 0;
 
-      for (const fileId of fileIds) {
-        const url = permanently
-          ? `/files/file/${fileId}?permanent=true`
-          : `/files/file/${fileId}`;
-        const response = await DeleteRequest(url);
+            for (const fileId of fileIds) {
+        try {
+          const url = permanently
+            ? /files/file/?permanent=true
+            : /files/file/;
+          const response = await DeleteRequest(url);
 
-        if (response?.status === 200 || response?.status === 201) {
-          successCount++;
-        } else {
+          if (response?.status === 200 || response?.status === 201) {
+            successCount++;
+          } else {
+            failCount++;
+          }
+        } catch (error) {
           failCount++;
         }
       }
-
       if (successCount > 0) {
         showSuccess(
           `${successCount} file${successCount > 1 ? "s" : ""} deleted successfully`

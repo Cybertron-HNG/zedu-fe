@@ -12,21 +12,13 @@ import {
   Users,
   Video,
   VideoOff,
-  X,
 } from "lucide-react";
-import React, {
-  useEffect,
-  useState,
-  useContext,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import Image from "next/image";
 import { RaiseHandAnimation } from "~/components/raise-hand/raise-hand-animation";
 import HuddleEmojiReactions from "./HuddleEmojiReactions";
 import CallParticipantList from "./CallParticipantList";
 import { BuzzMenu } from "./buzz-menu";
-import { useParams } from "next/navigation";
 import { DataContext } from "~/store/GlobalState";
 import { ACTIONS } from "~/store/Actions";
 import { showInfo } from "~/components/toast/sonner";
@@ -59,7 +51,6 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
   const noop = useCallback(() => undefined, []);
 
   const [showQuickEmojis, setShowQuickEmojis] = useState(false);
-  const { id } = useParams() as { id: string };
 
   // Use the useBuzz hook for all media and state management
   const {
@@ -95,7 +86,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
   const handleLeave = useCallback(async () => {
     await handleLeaveBuzz();
     dispatch({ type: ACTIONS.HAS_JOINED, payload: false });
-  }, [handleLeaveBuzz]);
+  }, [handleLeaveBuzz, dispatch]);
 
   // Auto-start audio/video if enabled after joining
   useEffect(() => {
@@ -229,6 +220,9 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
           <button
             disabled={!joined}
             onClick={isRecorderView ? noop : toggleAudio}
+            aria-label="Toggle microphone"
+            aria-pressed={isAudioPublishing}
+            title={isAudioPublishing ? "Mute microphone" : "Unmute microphone"}
             className={cn(
               "flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full transition-all border",
               !isAudioPublishing
@@ -247,6 +241,9 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
           <button
             disabled={!joined}
             onClick={isRecorderView ? noop : toggleVideo}
+            aria-label="Toggle camera"
+            aria-pressed={isVideoPublishing}
+            title={isVideoPublishing ? "Turn off camera" : "Turn on camera"}
             className={cn(
               "flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full transition-all border",
               !isVideoPublishing
@@ -265,6 +262,9 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
           <button
             disabled={!joined}
             onClick={isRecorderView ? noop : toggleScreenShare}
+            aria-label="Toggle screen share"
+            aria-pressed={isScreenSharing}
+            title={isScreenSharing ? "Stop screen share" : "Start screen share"}
             className={cn(
               "flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#3c4043] border border-zinc-600 hover:bg-[#434649] transition-all",
               isScreenSharing ? "text-white" : "text-white"
@@ -289,7 +289,12 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
               isOpen={showQuickEmojis}
               setIsOpen={setShowQuickEmojis}
             >
-              <button className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#3c4043] border border-zinc-600 hover:bg-[#434649] text-white">
+              <button
+                aria-label="Toggle reactions"
+                aria-expanded={showQuickEmojis}
+                title={showQuickEmojis ? "Hide reactions" : "Add reactions"}
+                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#3c4043] border border-zinc-600 hover:bg-[#434649] text-white"
+              >
                 <Smile size={20} />
               </button>
             </HuddleEmojiReactions>
@@ -300,6 +305,9 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
             <button
               disabled={!joined}
               onClick={isRecorderView ? noop : toggleHandRaise}
+              aria-label="Toggle raise hand"
+              aria-pressed={isHandRaised}
+              title={isHandRaised ? "Lower hand" : "Raise hand"}
               className={cn(
                 "flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border transition-all",
                 isHandRaised
@@ -329,6 +337,8 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
           <button
             disabled={!joined}
             onClick={isRecorderView ? noop : handleLeave}
+            aria-label="Leave call"
+            title="Leave call"
             className="flex items-center justify-center w-12 h-10 md:w-16 md:h-12 rounded-full bg-[#ea4335] hover:bg-[#d93025] transition-all"
           >
             <Image
@@ -345,6 +355,9 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
         <div className="hidden md:flex items-center gap-1 absolute right-4">
           <button
             onClick={toggleChatSidebar}
+            aria-label="Toggle chat"
+            aria-pressed={showBuzzchat}
+            title={showBuzzchat ? "Close chat" : "Open chat"}
             className={cn(
               "p-3 rounded-full transition-colors",
               showBuzzchat
@@ -356,6 +369,9 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({
           </button>
           <button
             onClick={toggleParticipantSidebar}
+            aria-label="Toggle participants"
+            aria-pressed={showParticipant}
+            title={showParticipant ? "Hide participants" : "Show participants"}
             className={cn(
               "flex items-center gap-1 p-3 rounded-full transition-colors",
               showParticipant

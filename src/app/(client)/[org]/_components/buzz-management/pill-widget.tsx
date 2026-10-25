@@ -96,6 +96,8 @@ const PillWidget = () => {
               : "bg-[#0000001A] text-white hover:bg-[#2a2b67]"
           }`}
           onClick={toggleAudio}
+          aria-label="Toggle microphone"
+          aria-pressed={isAudioPublishing}
           title={`${isAudioPublishing ? "Mute" : "Unmute"} mic`}
         >
           {!isAudioPublishing ? (
@@ -109,7 +111,8 @@ const PillWidget = () => {
           onClick={
             buzzParticipants?.length === 1 ? handleEndCall : handleLeaveCall
           }
-          title="End call"
+          aria-label="Leave call"
+          title={buzzParticipants?.length === 1 ? "End call" : "Leave call"}
         >
           <PhoneOff className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-white" />
         </button>

@@ -4,12 +4,10 @@ import React, { useContext, useState } from "react";
 import {
   Link2,
   MessageCircleMore,
-  Mic,
   Mic2Icon,
   MicOff,
   MoreVertical,
   Plus,
-  Settings,
   Users,
 } from "lucide-react";
 import {
@@ -251,6 +249,8 @@ export function BuzzMenu({
         <PopoverTrigger asChild>
           <button
             disabled={buzzLoading}
+            aria-label="More options"
+            title="More options"
             className={cn(
               "p-1.5 sm:p-2 rounded-md w-8 h-8 sm:w-9 sm:h-9 border border-[#E4E7EC] flex items-center justify-center transition-colors flex-shrink-0",
               buzzLoading && "opacity-50 cursor-not-allowed pointer-events-none"

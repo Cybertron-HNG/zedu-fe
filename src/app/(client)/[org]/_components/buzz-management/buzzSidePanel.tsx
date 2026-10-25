@@ -25,7 +25,6 @@ import { DataContext } from "~/store/GlobalState";
 import CallParticipantList from "./CallParticipantList";
 import GeneralTimeout from "../buzz-management/general-timeout";
 import BuzzTimeout from "../buzz-management/buzz-timeout";
-import { skip } from "node:test";
 import { useChannelBuzzContext } from "~/hooks/buzz/ChannelBuzzContext";
 
 interface buzzSidePanelProps {
@@ -59,7 +58,6 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
     toggleAudio,
     toggleVideo,
     toggleScreenShare,
-    toggleChatSidebar,
     toggleHandRaise,
     handleLeave,
     handleEndBuzz,
@@ -151,6 +149,7 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
             <button
               onClick={handleMinimize}
               className="flex items-center justify-center w-8 h-8 hover:bg-gray-100 rounded-md transition-colors"
+              aria-label="Minimize call"
               title="Minimize"
             >
               <Minimize2 size={18} className="text-gray-700" />
@@ -195,6 +194,8 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
         <div className="flex items-center justify-evenly sm:justify-center gap-2 sm:gap-3 w-full">
           {/* Mic Icon */}
           <button
+            aria-label="Toggle microphone"
+            aria-pressed={isAudioPublishing}
             title={`${isAudioPublishing ? "Mute" : "Unmute"} mic`}
             onClick={toggleAudio}
             className={`${!isAudioPublishing ? "bg-red-600" : ""} p-1.5 sm:p-2 rounded-md w-8 h-8 sm:w-9 sm:h-9 border border-[#E4E7EC] flex items-center justify-center cursor-pointer transition-colors flex-shrink-0`}
@@ -208,6 +209,7 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
 
           {/* Video Icon */}
           <button
+            aria-label="Toggle camera"
             title={`${isVideoPublishing ? "Turn off" : "Turn on"} video`}
             onClick={toggleVideo}
             aria-pressed={isVideoPublishing}
@@ -226,6 +228,7 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
               e.stopPropagation();
               toggleScreenShare();
             }}
+            aria-label="Toggle screen share"
             title={`${isScreenSharing ? "Stop" : "Start"} screen share`}
             aria-pressed={isScreenSharing}
             className={`${!isScreenSharing ? "bg-red-600" : ""} p-1.5 sm:p-2 rounded-md w-8 h-8 sm:w-9 sm:h-9 border border-[#E4E7EC] flex items-center justify-center cursor-pointer transition-colors flex-shrink-0`}
@@ -239,6 +242,8 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
 
           {/* Smiley Emoji Icon */}
           <button
+            aria-label="Toggle reactions"
+            aria-expanded={showQuickEmojis}
             title={`${showQuickEmojis ? "Hide" : "Add"} reactions`}
             className={`p-1.5 sm:p-2 rounded-md w-8 h-8 sm:w-9 sm:h-9 border border-[#E4E7EC] flex items-center justify-center cursor-pointer transition-colors flex-shrink-0
               ${
@@ -269,6 +274,8 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
               if (buzzView === "full") toggleFullPage();
               onChatToggle();
             }}
+            aria-label="Toggle chat"
+            aria-pressed={isChatOpen}
             title={`${isChatOpen ? "Close" : "Open"} chat`}
             className={`p-1.5 sm:p-2 rounded-md w-8 h-8 sm:w-9 sm:h-9 border border-[#E4E7EC] flex items-center justify-center hover:bg-gray-100 cursor-pointer transition-colors flex-shrink-0 ${
               isChatOpen
@@ -287,6 +294,8 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
           <div className="relative flex-shrink-0">
             <button
               onClick={toggleHandRaise}
+              aria-label="Toggle raise hand"
+              aria-pressed={isHandRaised}
               title={`${isHandRaised ? "Lower" : "Raise"} hand`}
               className={`p-1.5 sm:p-2 rounded-md w-8 h-8 sm:w-9 sm:h-9 border border-[#E4E7EC] flex items-center justify-center hover:bg-gray-100 cursor-pointer transition-colors ${
                 isHandRaised ? "bg-blue-100 border-blue-400" : ""
@@ -319,6 +328,8 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
               dispatch({ type: ACTIONS.BUZZ_SIDEBAR, payload: false });
               buzzParticipants?.length === 1 ? handleEndBuzz() : handleLeave();
             }}
+            aria-label="Leave call"
+            title={buzzParticipants?.length === 1 ? "End call" : "Leave call"}
             className={`p-1.5 sm:p-2 rounded w-auto sm:w-[70px] px-3 sm:px-4 flex items-center justify-center bg-red-500 hover:bg-red-600 cursor-pointer transition-colors flex-shrink-0`}
           >
             <Image
@@ -342,5 +353,4 @@ const BuzzSidePanel: React.FC<buzzSidePanelProps> = ({
     </div>
   );
 };
-{/* prettier-ignore */ }
 export default BuzzSidePanel;

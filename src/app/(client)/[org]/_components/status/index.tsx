@@ -44,7 +44,7 @@ const presets: StatusPreset[] = [
   {
     emoji: "🌴",
     text: "Vacationing",
-    duration: "Don’t clear",
+    duration: "dont-clear",
     section: "For HNG Inc",
   },
   {
@@ -56,7 +56,7 @@ const presets: StatusPreset[] = [
   {
     emoji: "📅",
     text: "In a meeting",
-    duration: "Based on your Google Calendar",
+    duration: "1 hour",
     section: "Automatically updates",
   },
 ];

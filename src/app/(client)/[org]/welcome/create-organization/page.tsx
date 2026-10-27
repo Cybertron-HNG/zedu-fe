@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import Loading from "~/components/ui/loading";
@@ -12,7 +12,14 @@ import CustomSelect from "~/components/ui/custom-select";
 import useFirstChannel from "../../home/channels/hooks/first-channel";
 import StepIndicator from "~/components/ui/step-indicator";
 import { RegisterWebhookRequest } from "~/utils/webhook-request";
-import { DataContext } from "~/store/GlobalState";
+import { provisionTemplateChannels } from "~/data/templates";
+import { showError } from "~/components/toast/sonner";
+import {
+  redirectAfterOrgSwitch,
+  resolveChannelIdForOrgSwitch,
+} from "~/utils/org-switch";
+
+import { isAutoCreatedOrg } from "~/utils/organisation";
 
 // initial states
 const initialState = {
@@ -20,16 +27,22 @@ const initialState = {
   organisationType: "",
 };
 
+/**
+ * Onboarding view allowing newly registered users to create their initial organization.
+ * @returns Organization creation page component.
+ */
 const CreateOrganization: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [buttonloading, setButtonloding] = useState(false);
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(true);
   const [countries, setCountries] = useState<any>([]);
   const [country, setCountry] = useState<any>(null);
   const { firstChannel } = useFirstChannel();
-  const { state } = useContext(DataContext);
-  const { orgSlug } = state;
+  const { org } = useParams<{ org: string }>();
+  const [createdOrg, setCreatedOrg] = useState<any>(null);
+  const hasSentOnboardingWebhook = useRef(false);
 
   // check if a user is onboarded
   useEffect(() => {
@@ -38,15 +51,15 @@ const CreateOrganization: React.FC = () => {
 
       const userstatus = await GetRequest("/auth/onboard-status", token);
 
-      if (userstatus?.data?.data?.status) {
-        router.push(`/${orgSlug}`);
+      if (userstatus?.data?.data?.status && !isAutoCreatedOrg()) {
+        router.push(`/${org}`);
       } else {
         setLoading(false);
       }
 
       setLoading(false);
     })();
-  }, [router]);
+  }, [router, org]);
 
   useEffect(() => {
     const allcountries = Country.getAllCountries();
@@ -58,18 +71,122 @@ const CreateOrganization: React.FC = () => {
     setCountries(response);
   }, []);
 
+  /**
+   * Updates organization form field state on input change.
+   * @param event Input change event.
+   */
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
   };
 
-  //
+  /**
+   * Updates stored organization properties on the local user object.
+   * @param organisation Updated organization data to merge.
+   */
+  const storeCurrentOrganisation = (organisation: any) => {
+    if (!organisation) return;
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      if (!user) return;
+      user.organisation = { ...user.organisation, ...organisation };
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch {
+      // A malformed stored user is replaced on the next login
+    }
+  };
+
+  /**
+   * Switches user context to the newly created organization and handles routing.
+   * @param target Target organization record.
+   * @param token Authorization bearer token.
+   */
+  const switchToOrganisation = async (target: any, token: string) => {
+    const result = await PutRequest(
+      "/users/switch-org",
+      { current_org: target?.id },
+      token
+    );
+
+    const slug = result?.data?.data?.current_organisation_slug;
+    const switched = result?.status === 200 || result?.status === 201;
+
+    // Without the new slug the redirect would land on the previous org.
+    if (!switched || !slug) {
+      if (switched)
+        showError("Couldn't open your new organisation. Try again.");
+      setButtonloding(false);
+      return;
+    }
+
+    const organisation = result?.data?.data?.organisation;
+    localStorage.setItem("token", result?.data?.data?.access_token);
+    localStorage.setItem("orgId", organisation?.id || target?.id);
+    localStorage.setItem("orgSlug", slug);
+    // The switch response can omit fields such as type, so fall back to the created org
+    storeCurrentOrganisation({ ...target, ...organisation });
+
+    const channelId = await resolveChannelIdForOrgSwitch(
+      firstChannel,
+      organisation?.id || target?.id
+    );
+
+    redirectAfterOrgSwitch(slug, channelId);
+  };
+
+  /**
+   * Sends the onboarding completion webhook for the created organization.
+   * Ensures the webhook is dispatched at most once per onboarding session.
+   * @param message Optional message from the organization creation response.
+   */
+  const sendOnboardingWebhook = (message?: string) => {
+    if (hasSentOnboardingWebhook.current) return;
+    hasSentOnboardingWebhook.current = true;
+
+    const webhookData = `
+      Organisation Name: ${values.organisationName} \n
+      Organisation Type: ${values.organisationType} \n
+      Country: ${country?.value || ""}
+      `;
+    RegisterWebhookRequest(
+      webhookData,
+      "User Completed Onboarding",
+      message,
+      "success"
+    ).catch((error) => {
+      hasSentOnboardingWebhook.current = false;
+      console.error("Failed to send onboarding webhook", error);
+    });
+  };
+
+  /**
+   * Handles form submission to create an organization and provision template channels.
+   * @param event Form submission event.
+   */
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const token = localStorage.getItem("token") || "";
 
     setButtonloding(true);
+
+    if (createdOrg?.id) {
+      const provisioned = await provisionTemplateChannels(
+        createdOrg.id,
+        searchParams.get("template"),
+        token
+      );
+
+      if (!provisioned) {
+        showError("Failed to set up template channels. Please try again.");
+        setButtonloding(false);
+        return;
+      }
+
+      sendOnboardingWebhook();
+      await switchToOrganisation(createdOrg, token);
+      return;
+    }
 
     const payload = {
       name: values.organisationName,
@@ -83,23 +200,27 @@ const CreateOrganization: React.FC = () => {
       // onboard the user
       await PutRequest("/auth/onboard-status", {}, token);
 
-      localStorage.setItem("orgId", res?.data?.data?.id);
-      const channelId = await firstChannel(res?.data?.data?.id);
+      const newOrg = res?.data?.data;
+      localStorage.setItem("orgId", newOrg?.id);
+      setCreatedOrg(newOrg);
 
-      window.location.href = `/${orgSlug}/home/channels/${channelId}`;
-
-      // send webhook
-      const webhookData = `
-      Organisation Name: ${values.organisationName} \n
-      Organisation Type: ${values.organisationType} \n
-      Country: ${country.value}
-      `;
-      RegisterWebhookRequest(
-        webhookData,
-        "User Completed Onboarding",
-        res?.data?.message,
-        "success"
+      const provisioned = await provisionTemplateChannels(
+        newOrg?.id,
+        searchParams.get("template"),
+        token
       );
+
+      if (!provisioned) {
+        showError("Failed to set up template channels. Please try again.");
+        setButtonloding(false);
+        return;
+      }
+
+      sendOnboardingWebhook(res?.data?.message);
+
+      // Switch into the new organisation so the user lands there rather than
+      // the auto-created default (pattern from organization/create/page.tsx).
+      await switchToOrganisation(newOrg, token);
     } else {
       setButtonloding(false);
     }

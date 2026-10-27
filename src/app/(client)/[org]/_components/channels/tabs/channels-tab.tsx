@@ -149,7 +149,13 @@ export default function ChannelsTab() {
       dispatch({ type: ACTIONS.CHANNEL_NAME, payload: channel.name });
     }
 
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    let user: { username?: string } = {};
+    try {
+      user = JSON.parse(localStorage.getItem("user") || "{}");
+    } catch {
+      setButtonloading(false);
+      return;
+    }
 
     const res = await PostRequest(`/channels/${id}/join`, {
       username: user?.username,
@@ -329,7 +335,8 @@ export default function ChannelsTab() {
                       </span>
                     )}
                     <span className="text-[13px] text-gray-500 dark:text-zinc-400">
-                      {channel.members_count} members
+                      {channel.members_count}{" "}
+                      {channel.members_count === 1 ? "member" : "members"}
                     </span>
                     {channel.description && (
                       <>

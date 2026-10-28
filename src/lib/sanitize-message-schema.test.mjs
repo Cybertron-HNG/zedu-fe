@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import React from "react";
@@ -9,6 +10,14 @@ import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 
 const { messageSanitizeSchema } = await import("./sanitize-message-schema.ts");
+
+// Attack payloads and sample markup live in a JSON file next to this test.
+const fixtures = JSON.parse(
+  readFileSync(
+    new URL("./sanitize-message-schema.fixtures.json", import.meta.url),
+    "utf8"
+  )
+);
 
 const render = (markdown) =>
   renderToStaticMarkup(
@@ -23,23 +32,14 @@ const render = (markdown) =>
   );
 
 test("drops an iframe with a script srcdoc", () => {
-  const html = render(
-    '<iframe srcdoc="<script>alert(document.domain)</script>"></iframe>'
-  );
+  const html = render(fixtures.iframeSrcdoc);
   assert.doesNotMatch(html, /iframe/i);
   assert.doesNotMatch(html, /srcdoc/i);
   assert.doesNotMatch(html, /<script/i);
 });
 
 test("drops script, style, form, object, embed and meta elements", () => {
-  for (const payload of [
-    "<script>alert(1)</script>",
-    "<style>body{display:none}</style>",
-    '<form action="https://evil.example"><input name="p"></form>',
-    '<object data="https://evil.example/x.swf"></object>',
-    '<embed src="https://evil.example/x.swf">',
-    '<meta http-equiv="refresh" content="0;url=https://evil.example">',
-  ]) {
+  for (const payload of fixtures.dangerousElements) {
     const html = render(`before ${payload} after`);
     assert.doesNotMatch(html, /display:none|alert\(1\)|evil\.example/, payload);
     assert.doesNotMatch(
@@ -51,28 +51,22 @@ test("drops script, style, form, object, embed and meta elements", () => {
 });
 
 test("drops event-handler attributes", () => {
-  const html = render(
-    '<img src="https://cdn.example/a.png" onerror="alert(1)">'
-  );
+  const html = render(fixtures.imgWithHandler);
   assert.doesNotMatch(html, /onerror/i);
-  const span = render(
-    '<span onclick="alert(1)" onmouseover="alert(2)">hi</span>'
-  );
+  const span = render(fixtures.spanWithHandlers);
   assert.doesNotMatch(span, /onclick|onmouseover/i);
   assert.match(span, /hi/);
 });
 
 test("drops javascript: urls from raw anchors and images", () => {
-  const a = render('<a href="javascript:alert(1)">click</a>');
+  const a = render(fixtures.javascriptAnchor);
   assert.doesNotMatch(a, /javascript:/i);
-  const img = render('<img src="javascript:alert(1)">');
+  const img = render(fixtures.javascriptImage);
   assert.doesNotMatch(img, /javascript:/i);
 });
 
 test("drops inline style attributes", () => {
-  const html = render(
-    '<div style="position:fixed;inset:0;background:red">overlay</div>'
-  );
+  const html = render(fixtures.inlineStyleDiv);
   assert.doesNotMatch(html, /style=/i);
 });
 
@@ -90,7 +84,7 @@ test("keeps markdown formatting the composer produces", () => {
       "| - | - |",
       "| 1 | 2 |",
       "",
-      "[docs](https://zedu.chat/docs)",
+      `[docs](${fixtures.docsHref})`,
     ].join("\n")
   );
   for (const tag of [
@@ -106,23 +100,19 @@ test("keeps markdown formatting the composer produces", () => {
   ]) {
     assert.match(html, new RegExp(`<${tag}\\b`), tag);
   }
-  assert.match(html, /href="https:\/\/zedu\.chat\/docs"/);
+  assert.ok(html.includes(`href="${fixtures.docsHref}"`));
 });
 
 test("keeps code classes the renderer styles", () => {
-  const inline = render('<code class="slack-inline-code">npm i</code>');
+  const inline = render(fixtures.inlineCode);
   assert.match(inline, /class="slack-inline-code"/);
-  const block = render(
-    '<pre class="slack-code-block"><code class="language-ts">const a = 1</code></pre>'
-  );
+  const block = render(fixtures.codeBlock);
   assert.match(block, /class="slack-code-block"/);
   assert.match(block, /class="language-ts"/);
 });
 
 test("keeps mention spans with their data attributes", () => {
-  const html = render(
-    '<span class="mention" data-type="mention" data-id="u-1" data-label="dean">@dean</span>'
-  );
+  const html = render(fixtures.mention);
   assert.match(html, /class="mention"/);
   assert.match(html, /data-id="u-1"/);
   assert.match(html, /data-label="dean"/);
@@ -130,11 +120,11 @@ test("keeps mention spans with their data attributes", () => {
 
 test("keeps apple emoji images but not arbitrary classes", () => {
   const emoji = render(
-    '<img class="apple-emoji-img" alt="😀" src="https://cdn.example/1f600.png" draggable="false" />'
+    `<img class="apple-emoji-img" alt="😀" src="${fixtures.emojiSrc}" draggable="false" />`
   );
   assert.match(emoji, /class="apple-emoji-img"/);
-  assert.match(emoji, /src="https:\/\/cdn\.example\/1f600\.png"/);
+  assert.ok(emoji.includes(`src="${fixtures.emojiSrc}"`));
 
-  const other = render('<span class="fixed inset-0 z-50">x</span>');
+  const other = render(fixtures.arbitraryClassSpan);
   assert.doesNotMatch(other, /fixed|inset-0|z-50/);
 });

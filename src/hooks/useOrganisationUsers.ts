@@ -123,6 +123,9 @@ export const useOrganisationUsers = (
   const [searchTotalItems, setSearchTotalItems] = useState(0);
   const searchPageRef = useRef(0);
   const searchInflightRef = useRef<Set<number>>(new Set());
+  // The query the search results on screen belong to. A response for any other
+  // query is stale and must be ignored.
+  const activeSearchQueryRef = useRef("");
 
   const orgMembersRef = useRef(state.orgMembers);
   const prevOrgIdRef = useRef(orgId);
@@ -212,10 +215,18 @@ export const useOrganisationUsers = (
       searchInflightRef.current.add(pageNumber);
       setSearchLoading(true);
 
+      const requestedQuery = query.trim();
+      const isCurrentQuery = () =>
+        activeSearchQueryRef.current === requestedQuery;
+
       try {
         const response = await GetRequest(
           buildUsersUrl(orgId, pageNumber, query)
         );
+
+        // A slower response for an earlier query must not replace the
+        // results of the query that is in the search box now.
+        if (!isCurrentQuery()) return;
 
         if (response?.status === 200 || response?.status === 201) {
           const newUsers = response?.data?.data || [];
@@ -240,8 +251,12 @@ export const useOrganisationUsers = (
           );
         }
       } finally {
-        searchInflightRef.current.delete(pageNumber);
-        setSearchLoading(false);
+        // Only the current query owns the in-flight set and the loader; a stale
+        // request finishing late must not clear the newer request's state.
+        if (isCurrentQuery()) {
+          searchInflightRef.current.delete(pageNumber);
+          setSearchLoading(false);
+        }
       }
     },
     [orgId]
@@ -278,6 +293,8 @@ export const useOrganisationUsers = (
   // Search mode: refetch when debounced query changes
   useEffect(() => {
     if (!enabled || !orgId) return;
+
+    activeSearchQueryRef.current = isSearching ? debouncedSearch.trim() : "";
 
     if (!isSearching) {
       setSearchUsers([]);

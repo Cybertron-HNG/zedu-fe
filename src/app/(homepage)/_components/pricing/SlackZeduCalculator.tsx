@@ -587,7 +587,7 @@ export function SlackZeduCalculator({
                   </svg>
                 </Link>
                 <p className="text-[11px] text-neutral-400">
-                  Instant migration • No credit card required
+                  One flat price for your whole workspace
                 </p>
               </div>
             </div>

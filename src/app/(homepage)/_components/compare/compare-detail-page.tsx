@@ -10,18 +10,13 @@ import {
   Building2,
   Sparkles,
   ShieldCheck,
-  Video,
   DollarSign,
-  Layers,
   ChevronDown,
 } from "lucide-react";
 import { ArrowBtn, OutlineBtn } from "~/app/(homepage)/_components/ui/Button";
 import { DynamicFooter } from "~/app/(homepage)/_components/footer/dynamic-footer";
 import { ogImageUrl, siteUrl } from "~/lib/env-urls";
-import {
-  comparisonPages,
-  allComparisonSlugs,
-} from "../_lib/comparisonData";
+import { comparisonPages, allComparisonSlugs } from "./comparisonData";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -86,7 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ComparisonDetailPage({ params }: Props) {
+export default async function CompareDetailPage({ params }: Props) {
   const { slug } = await params;
   const data = comparisonPages[slug];
 
@@ -163,7 +158,7 @@ export default async function ComparisonDetailPage({ params }: Props) {
                 </p>
 
                 <div className="mt-5 rounded-lg bg-neutral-50 p-3">
-                  <span className="text-xs font-semibold text-neutral-500 uppercase">
+                  <span className="text-xs font-semibold uppercase text-neutral-500">
                     Best For:
                   </span>
                   <p className="text-sm font-medium text-neutral-800">
@@ -177,7 +172,10 @@ export default async function ComparisonDetailPage({ params }: Props) {
                   </h4>
                   <ul className="mt-2.5 space-y-2">
                     {data.competitorSummary.strengths.map((str, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm">
+                      <li
+                        key={i}
+                        className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm"
+                      >
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
                         <span>{str}</span>
                       </li>
@@ -191,7 +189,10 @@ export default async function ComparisonDetailPage({ params }: Props) {
                   </h4>
                   <ul className="mt-2.5 space-y-2">
                     {data.competitorSummary.tradeoffs.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm">
+                      <li
+                        key={i}
+                        className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm"
+                      >
                         <X className="mt-0.5 h-4 w-4 shrink-0 text-rose-500" />
                         <span>{item}</span>
                       </li>
@@ -217,7 +218,7 @@ export default async function ComparisonDetailPage({ params }: Props) {
                 </p>
 
                 <div className="mt-5 rounded-lg bg-primary-50/50 p-3">
-                  <span className="text-xs font-semibold text-primary-600 uppercase">
+                  <span className="text-xs font-semibold uppercase text-primary-600">
                     Best For:
                   </span>
                   <p className="text-sm font-medium text-neutral-900">
@@ -231,7 +232,10 @@ export default async function ComparisonDetailPage({ params }: Props) {
                   </h4>
                   <ul className="mt-2.5 space-y-2">
                     {data.zeduSummary.strengths.map((str, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm">
+                      <li
+                        key={i}
+                        className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm"
+                      >
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary-600" />
                         <span>{str}</span>
                       </li>
@@ -245,7 +249,10 @@ export default async function ComparisonDetailPage({ params }: Props) {
                   </h4>
                   <ul className="mt-2.5 space-y-2">
                     {data.zeduSummary.tradeoffs.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs text-neutral-600 sm:text-sm">
+                      <li
+                        key={i}
+                        className="flex items-start gap-2.5 text-xs text-neutral-600 sm:text-sm"
+                      >
                         <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400" />
                         <span>{item}</span>
                       </li>
@@ -259,7 +266,8 @@ export default async function ComparisonDetailPage({ params }: Props) {
                   href="/solutions/bootcamps"
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 sm:text-sm"
                 >
-                  Explore Bootcamp Solutions <ArrowRight className="h-3.5 w-3.5" />
+                  Explore Bootcamp Solutions{" "}
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </div>
@@ -285,7 +293,7 @@ export default async function ComparisonDetailPage({ params }: Props) {
                 key={section.category}
                 className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
               >
-                <div className="bg-neutral-50/80 px-6 py-4 border-b border-neutral-200">
+                <div className="border-b border-neutral-200 bg-neutral-50/80 px-6 py-4">
                   <h3 className="text-base font-bold text-neutral-800">
                     {section.category}
                   </h3>
@@ -298,18 +306,18 @@ export default async function ComparisonDetailPage({ params }: Props) {
                       className="grid grid-cols-1 p-4 sm:grid-cols-12 sm:gap-4 sm:px-6 sm:py-5"
                     >
                       <div className="sm:col-span-4">
-                        <span className="font-semibold text-neutral-900 text-sm sm:text-base">
+                        <span className="text-sm font-semibold text-neutral-900 sm:text-base">
                           {row.feature}
                         </span>
                       </div>
 
                       {/* Zedu Value */}
-                      <div className="mt-3 sm:mt-0 sm:col-span-4 sm:border-l sm:border-neutral-100 sm:pl-4">
+                      <div className="mt-3 sm:col-span-4 sm:mt-0 sm:border-l sm:border-neutral-100 sm:pl-4">
                         <div className="flex items-center gap-2">
                           <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                             <Check className="h-3.5 w-3.5" />
                           </span>
-                          <span className="font-semibold text-xs sm:text-sm text-neutral-900">
+                          <span className="text-xs font-semibold text-neutral-900 sm:text-sm">
                             Zedu: {row.zedu.label}
                           </span>
                         </div>
@@ -321,14 +329,14 @@ export default async function ComparisonDetailPage({ params }: Props) {
                       </div>
 
                       {/* Competitor Value */}
-                      <div className="mt-3 sm:mt-0 sm:col-span-4 sm:border-l sm:border-neutral-100 sm:pl-4">
+                      <div className="mt-3 sm:col-span-4 sm:mt-0 sm:border-l sm:border-neutral-100 sm:pl-4">
                         <div className="flex items-center gap-2">
                           {row.competitor.status === true ? (
                             <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                               <Check className="h-3.5 w-3.5" />
                             </span>
                           ) : row.competitor.status === "partial" ? (
-                            <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold">
+                            <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100 text-[10px] font-bold text-amber-700">
                               ~
                             </span>
                           ) : (
@@ -336,7 +344,7 @@ export default async function ComparisonDetailPage({ params }: Props) {
                               <X className="h-3.5 w-3.5" />
                             </span>
                           )}
-                          <span className="font-semibold text-xs sm:text-sm text-neutral-800">
+                          <span className="text-xs font-semibold text-neutral-800 sm:text-sm">
                             {data.competitorName}: {row.competitor.label}
                           </span>
                         </div>
@@ -380,12 +388,15 @@ export default async function ComparisonDetailPage({ params }: Props) {
 
                 <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="rounded-xl border border-primary-200 bg-primary-50/30 p-5">
-                    <h4 className="font-semibold text-primary-700 text-sm sm:text-base">
+                    <h4 className="text-sm font-semibold text-primary-700 sm:text-base">
                       {deep.zeduHeading}
                     </h4>
                     <ul className="mt-3 space-y-2.5">
                       {deep.zeduPoints.map((pt, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm">
+                        <li
+                          key={i}
+                          className="flex items-start gap-2.5 text-xs text-neutral-700 sm:text-sm"
+                        >
                           <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary-600" />
                           <span>{pt}</span>
                         </li>
@@ -394,12 +405,15 @@ export default async function ComparisonDetailPage({ params }: Props) {
                   </div>
 
                   <div className="rounded-xl border border-neutral-200 bg-neutral-50/60 p-5">
-                    <h4 className="font-semibold text-neutral-800 text-sm sm:text-base">
+                    <h4 className="text-sm font-semibold text-neutral-800 sm:text-base">
                       {deep.competitorHeading}
                     </h4>
                     <ul className="mt-3 space-y-2.5">
                       {deep.competitorPoints.map((pt, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-xs text-neutral-600 sm:text-sm">
+                        <li
+                          key={i}
+                          className="flex items-start gap-2.5 text-xs text-neutral-600 sm:text-sm"
+                        >
                           <X className="mt-0.5 h-4 w-4 shrink-0 text-neutral-400" />
                           <span>{pt}</span>
                         </li>
@@ -421,7 +435,8 @@ export default async function ComparisonDetailPage({ params }: Props) {
               Explore Zedu for Your Organization
             </h2>
             <p className="mt-2 text-sm text-[#5a6170] sm:text-base">
-              See how our learning infrastructure adapts to your specific educational model
+              See how our learning infrastructure adapts to your specific
+              educational model
             </p>
           </div>
 
@@ -431,18 +446,20 @@ export default async function ComparisonDetailPage({ params }: Props) {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <GraduationCap className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   Bootcamps
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Run structured cohorts with lesson channels, live calls, files, and mentor feedback.
+                  Run structured cohorts with lesson channels, live calls,
+                  files, and mentor feedback.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                Learn more <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                Learn more{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
 
@@ -451,18 +468,20 @@ export default async function ComparisonDetailPage({ params }: Props) {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <School className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   K-12 & Schools
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Safe, organized communication connecting teachers, students, and administration.
+                  Safe, organized communication connecting teachers, students,
+                  and administration.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                Learn more <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                Learn more{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
 
@@ -471,18 +490,20 @@ export default async function ComparisonDetailPage({ params }: Props) {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <Building2 className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   Universities
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Campus-wide collaboration with department channels and secure academic spaces.
+                  Campus-wide collaboration with department channels and secure
+                  academic spaces.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                Learn more <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                Learn more{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
 
@@ -491,18 +512,20 @@ export default async function ComparisonDetailPage({ params }: Props) {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <DollarSign className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   Transparent Pricing
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Predictable cohort plans designed to scale without per-seat penalty fees.
+                  Predictable cohort plans designed to scale without per-seat
+                  penalty fees.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                View Pricing <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                View Pricing{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
           </div>
@@ -517,7 +540,8 @@ export default async function ComparisonDetailPage({ params }: Props) {
               Frequently Asked Questions
             </h2>
             <p className="mt-2 text-sm text-[#5a6170] sm:text-base">
-              Common questions about switching from {data.competitorName} to Zedu
+              Common questions about switching from {data.competitorName} to
+              Zedu
             </p>
           </div>
 
@@ -527,9 +551,9 @@ export default async function ComparisonDetailPage({ params }: Props) {
                 key={index}
                 className="group rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:border-primary-200 open:border-primary-300 open:shadow-md"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between font-semibold text-sm sm:text-base text-neutral-900">
+                <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-neutral-900 sm:text-base">
                   <span>{faq.question}</span>
-                  <span className="ml-4 shrink-0 rounded-full p-1 text-neutral-400 group-open:rotate-180 group-open:text-primary-600 transition-transform">
+                  <span className="ml-4 shrink-0 rounded-full p-1 text-neutral-400 transition-transform group-open:rotate-180 group-open:text-primary-600">
                     <ChevronDown className="h-5 w-5" />
                   </span>
                 </summary>
@@ -546,7 +570,7 @@ export default async function ComparisonDetailPage({ params }: Props) {
               Also considering other platforms?{" "}
               <Link
                 href={`/compare/${otherSlug}`}
-                className="font-semibold text-primary-600 hover:text-primary-700 underline"
+                className="font-semibold text-primary-600 underline hover:text-primary-700"
               >
                 Check out Zedu vs. {otherName}
               </Link>
@@ -556,10 +580,7 @@ export default async function ComparisonDetailPage({ params }: Props) {
       </section>
 
       {/* Dynamic CTA Footer Banner */}
-      <DynamicFooter
-        text={data.ctaHeading}
-        description={data.ctaDescription}
-      />
+      <DynamicFooter text={data.ctaHeading} description={data.ctaDescription} />
     </div>
   );
 }

@@ -10,7 +10,6 @@ import {
   Video,
   DollarSign,
   ShieldCheck,
-  Users,
 } from "lucide-react";
 import { ArrowBtn, OutlineBtn } from "~/app/(homepage)/_components/ui/Button";
 import { DynamicFooter } from "~/app/(homepage)/_components/footer/dynamic-footer";
@@ -68,7 +67,7 @@ export const metadata: Metadata = {
   publisher: "Zedu",
 };
 
-export default function CompareIndexPage() {
+export default function ComparePage() {
   return (
     <div className="relative isolate w-full bg-white text-[#1f2530]">
       {/* Hero Section */}
@@ -83,7 +82,9 @@ export default function CompareIndexPage() {
         </h1>
 
         <p className="mt-5 max-w-3xl text-sm leading-relaxed text-[#5a6170] sm:text-base md:text-lg">
-          General-purpose chat tools were built for gaming servers and corporate offices. See how Zedu provides the purpose-built structure, live classrooms, and scalable economics that bootcamps and academies need.
+          General-purpose chat tools were built for gaming servers and corporate
+          offices. See how Zedu provides the purpose-built structure, live
+          classrooms, and scalable economics that bootcamps and academies need.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
@@ -100,7 +101,8 @@ export default function CompareIndexPage() {
               Select a Comparison
             </h2>
             <p className="mt-2 text-sm text-[#5a6170] sm:text-base">
-              Unbiased, factual breakdowns of features, pricing, and student experience
+              Unbiased, factual breakdowns of features, pricing, and student
+              experience
             </p>
           </div>
 
@@ -112,7 +114,7 @@ export default function CompareIndexPage() {
                   <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
                     Discord Alternative
                   </span>
-                  <span className="text-xs text-neutral-400 font-medium">
+                  <span className="text-xs font-medium text-neutral-400">
                     Community & Voice
                   </span>
                 </div>
@@ -122,18 +124,29 @@ export default function CompareIndexPage() {
                 </h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-                  Discord is great for casual hangout servers and gaming clans, but bootcamps suffer from lost assignments, gaming alerts, and noise. See why structured cohorts thrive on Zedu.
+                  Discord is great for casual hangout servers and gaming clans,
+                  but bootcamps suffer from lost assignments, gaming alerts, and
+                  noise. See why structured cohorts thrive on Zedu.
                 </p>
 
                 <div className="mt-6 space-y-2.5">
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
-                    <span className="font-semibold text-primary-600">Zedu:</span> Dedicated cohort module channels & assignment hubs
+                    <span className="font-semibold text-primary-600">
+                      Zedu:
+                    </span>{" "}
+                    Dedicated cohort module channels & assignment hubs
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
-                    <span className="font-semibold text-primary-600">Zedu:</span> Built-in Buzz video classrooms with lecture recording
+                    <span className="font-semibold text-primary-600">
+                      Zedu:
+                    </span>{" "}
+                    Built-in Buzz video classrooms with lecture recording
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
-                    <span className="font-semibold text-primary-600">Zedu:</span> Distraction-free, safe educational boundary
+                    <span className="font-semibold text-primary-600">
+                      Zedu:
+                    </span>{" "}
+                    Distraction-free, safe educational boundary
                   </div>
                 </div>
               </div>
@@ -156,7 +169,7 @@ export default function CompareIndexPage() {
                   <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
                     Slack Alternative
                   </span>
-                  <span className="text-xs text-neutral-400 font-medium">
+                  <span className="text-xs font-medium text-neutral-400">
                     Enterprise SaaS
                   </span>
                 </div>
@@ -166,18 +179,30 @@ export default function CompareIndexPage() {
                 </h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-                  Slack is the corporate office standard, but charges expensive per-seat subscriptions ($7.25-$12.50+/user/month) and deletes message history after 90 days on free tiers. Discover Zedu's scalable education platform.
+                  Slack is the corporate office standard, but charges expensive
+                  per-seat subscriptions ($7.25-$12.50+/user/month) and deletes
+                  message history after 90 days on free tiers. Discover Zedu's
+                  scalable education platform.
                 </p>
 
                 <div className="mt-6 space-y-2.5">
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
-                    <span className="font-semibold text-primary-600">Zedu:</span> Flat education pricing — no per-student penalty fees
+                    <span className="font-semibold text-primary-600">
+                      Zedu:
+                    </span>{" "}
+                    Flat education pricing — no per-student penalty fees
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
-                    <span className="font-semibold text-primary-600">Zedu:</span> Permanent message & lesson resource retention
+                    <span className="font-semibold text-primary-600">
+                      Zedu:
+                    </span>{" "}
+                    Permanent message & lesson resource retention
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
-                    <span className="font-semibold text-primary-600">Zedu:</span> Integrated video classrooms (no expensive Zoom add-on)
+                    <span className="font-semibold text-primary-600">
+                      Zedu:
+                    </span>{" "}
+                    Integrated video classrooms (no expensive Zoom add-on)
                   </div>
                 </div>
               </div>
@@ -204,7 +229,8 @@ export default function CompareIndexPage() {
               Why Bootcamps Choose Purpose-Built Education Software
             </h2>
             <p className="mt-2 text-sm text-[#5a6170] sm:text-base">
-              The four foundational pillars separating Zedu from general-purpose workplace chat
+              The four foundational pillars separating Zedu from general-purpose
+              workplace chat
             </p>
           </div>
 
@@ -217,7 +243,8 @@ export default function CompareIndexPage() {
                 Cohort Organization
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                Channels automatically map to syllabus milestones, cohorts, and project groups without manual role headaches.
+                Channels automatically map to syllabus milestones, cohorts, and
+                project groups without manual role headaches.
               </p>
             </div>
 
@@ -229,7 +256,8 @@ export default function CompareIndexPage() {
                 Integrated Buzz Classrooms
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                Live interactive audio and video classrooms with lecture recording, removing the cost of third-party Zoom licenses.
+                Live interactive audio and video classrooms with lecture
+                recording, removing the cost of third-party Zoom licenses.
               </p>
             </div>
 
@@ -241,7 +269,8 @@ export default function CompareIndexPage() {
                 Predictable Economics
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                Flat, cohort-based pricing plans designed for education so student growth never spikes your monthly invoice.
+                Flat, cohort-based pricing plans designed for education so
+                student growth never spikes your monthly invoice.
               </p>
             </div>
 
@@ -253,7 +282,8 @@ export default function CompareIndexPage() {
                 Focused & Distraction-Free
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                A professional environment without outside gaming popups, public advertising, or unsolicited direct messages.
+                A professional environment without outside gaming popups, public
+                advertising, or unsolicited direct messages.
               </p>
             </div>
           </div>
@@ -268,7 +298,8 @@ export default function CompareIndexPage() {
               Explore Zedu for Your Organization
             </h2>
             <p className="mt-2 text-sm text-[#5a6170] sm:text-base">
-              Tailored solutions for modern educators, mentors, and administrators
+              Tailored solutions for modern educators, mentors, and
+              administrators
             </p>
           </div>
 
@@ -278,18 +309,20 @@ export default function CompareIndexPage() {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <GraduationCap className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   Bootcamps
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Run structured cohorts with lesson channels, live calls, files, and mentor feedback.
+                  Run structured cohorts with lesson channels, live calls,
+                  files, and mentor feedback.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                Learn more <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                Learn more{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
 
@@ -298,18 +331,20 @@ export default function CompareIndexPage() {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <School className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   K-12 & Schools
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Safe, organized communication connecting teachers, students, and administration.
+                  Safe, organized communication connecting teachers, students,
+                  and administration.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                Learn more <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                Learn more{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
 
@@ -318,18 +353,20 @@ export default function CompareIndexPage() {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <Building2 className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   Universities
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Campus-wide collaboration with department channels and secure academic spaces.
+                  Campus-wide collaboration with department channels and secure
+                  academic spaces.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                Learn more <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                Learn more{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
 
@@ -338,18 +375,20 @@ export default function CompareIndexPage() {
               className="group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-primary-300 hover:shadow-md"
             >
               <div>
-                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition">
+                <div className="inline-flex rounded-xl bg-blue-50 p-3 text-primary-600 transition group-hover:bg-primary-600 group-hover:text-white">
                   <DollarSign className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-bold text-neutral-900 group-hover:text-primary-600 transition">
+                <h3 className="mt-4 font-bold text-neutral-900 transition group-hover:text-primary-600">
                   Pricing Plans
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                  Predictable cohort plans designed to scale without per-seat penalty fees.
+                  Predictable cohort plans designed to scale without per-seat
+                  penalty fees.
                 </p>
               </div>
               <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary-600">
-                View Pricing <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
+                View Pricing{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
               </span>
             </Link>
           </div>

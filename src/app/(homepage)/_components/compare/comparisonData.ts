@@ -106,7 +106,8 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
       title: "Zedu Overview",
       description:
         "Zedu is purpose-built for education, bootcamps, and cohort-based academies, uniting structured curriculum channels, live Buzz classrooms, and resource hubs in one workspace.",
-      bestFor: "Bootcamps, online academies, university cohorts, and educational communities",
+      bestFor:
+        "Bootcamps, online academies, university cohorts, and educational communities",
       strengths: [
         "Cohort channels organized by syllabus modules, lessons, and project teams",
         "Native Buzz live audio/video classrooms with screen share & lecture archiving",
@@ -128,12 +129,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Built-in",
-              description: "Channels map automatically to syllabus milestones and cohorts",
+              description:
+                "Channels map automatically to syllabus milestones and cohorts",
             },
             competitor: {
               status: "partial",
               label: "Manual Setup",
-              description: "Requires tedious manual role gates and channel permission overrides",
+              description:
+                "Requires tedious manual role gates and channel permission overrides",
             },
           },
           {
@@ -141,12 +144,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Native Feature",
-              description: "Pinned lesson materials, assignment guidelines, and project folders",
+              description:
+                "Pinned lesson materials, assignment guidelines, and project folders",
             },
             competitor: {
               status: false,
               label: "Not Available",
-              description: "Files quickly get buried in fast-scrolling chat history",
+              description:
+                "Files quickly get buried in fast-scrolling chat history",
             },
           },
           {
@@ -154,12 +159,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "100% Educational",
-              description: "No game presence status, public discoverability, or off-topic spam",
+              description:
+                "No game presence status, public discoverability, or off-topic spam",
             },
             competitor: {
               status: false,
               label: "High Distraction",
-              description: "Students are surrounded by game notifications, friends list, and outside servers",
+              description:
+                "Students are surrounded by game notifications, friends list, and outside servers",
             },
           },
         ],
@@ -172,12 +179,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Native Buzz Classrooms",
-              description: "HD video, screen sharing, classroom moderation, and session recaps",
+              description:
+                "HD video, screen sharing, classroom moderation, and session recaps",
             },
             competitor: {
               status: true,
               label: "Voice Channels",
-              description: "Low-latency voice channels with screen share (quality capped on free tier)",
+              description:
+                "Low-latency voice channels with screen share (quality capped on free tier)",
             },
           },
           {
@@ -185,12 +194,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Permanent Access",
-              description: "Recorded classroom sessions remain indexed and accessible for review",
+              description:
+                "Recorded classroom sessions remain indexed and accessible for review",
             },
             competitor: {
               status: false,
               label: "Third-Party Tools",
-              description: "Requires external bots or recording software with complex storage setups",
+              description:
+                "Requires external bots or recording software with complex storage setups",
             },
           },
           {
@@ -198,12 +209,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Education-Specific",
-              description: "Dedicated TA/mentor queues, hand-raising, and cohort role hierarchies",
+              description:
+                "Dedicated TA/mentor queues, hand-raising, and cohort role hierarchies",
             },
             competitor: {
               status: "partial",
               label: "Generic Moderation",
-              description: "Basic server kicks, bans, and timeout roles designed for online communities",
+              description:
+                "Basic server kicks, bans, and timeout roles designed for online communities",
             },
           },
         ],
@@ -216,12 +229,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Enterprise-Ready",
-              description: "Private organization boundary without unsolicited direct messages from strangers",
+              description:
+                "Private organization boundary without unsolicited direct messages from strangers",
             },
             competitor: {
               status: false,
               label: "Public Platform",
-              description: "Open DM model opens students up to external phishing, spam, and unmonitored DMs",
+              description:
+                "Open DM model opens students up to external phishing, spam, and unmonitored DMs",
             },
           },
           {
@@ -229,12 +244,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Predictable Education Pricing",
-              description: "Flat, cohort-friendly plans without per-seat penalty for growing student counts",
+              description:
+                "Flat, cohort-friendly plans without per-seat penalty for growing student counts",
             },
             competitor: {
               status: "partial",
               label: "Freemium + Server Boosts",
-              description: "Free core tier, but high video quality and storage require expensive recurring server boosts",
+              description:
+                "Free core tier, but high video quality and storage require expensive recurring server boosts",
             },
           },
         ],
@@ -293,7 +310,8 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
           "Absolutely. Discord operates on an open server model where students frequently receive spam and unsolicited direct messages. Zedu provides a closed, institutionally governed workspace where only enrolled students, mentors, and administrators can communicate.",
       },
       {
-        question: "How difficult is it to migrate our bootcamp from Discord to Zedu?",
+        question:
+          "How difficult is it to migrate our bootcamp from Discord to Zedu?",
         answer:
           "Migration is straightforward. You can configure your cohort tracks, invite instructors, mentors, and students with one-click links or bulk email invites, and start hosting classes on day one without needing complex bot setups.",
       },
@@ -328,7 +346,8 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
       title: "Slack Overview",
       description:
         "Slack is the industry leader for enterprise workplace collaboration, featuring rich third-party app integrations and polished conversational threading.",
-      bestFor: "Enterprise corporate teams and established B2B knowledge-work companies",
+      bestFor:
+        "Enterprise corporate teams and established B2B knowledge-work companies",
       strengths: [
         "Unrivaled ecosystem of 2,600+ third-party SaaS integrations",
         "Polished threading model and fine-grained notification settings",
@@ -346,7 +365,8 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
       title: "Zedu Overview",
       description:
         "Zedu is engineered from the ground up for cohort learning and educational academies, offering flat, predictable pricing, permanent message archiving, and built-in live video classrooms.",
-      bestFor: "Bootcamps, online academies, coding schools, and cohort learning programs",
+      bestFor:
+        "Bootcamps, online academies, coding schools, and cohort learning programs",
       strengths: [
         "Flat, education-friendly pricing that does not penalize growing student cohorts",
         "Permanent message, lecture, and file history retention across all cohorts",
@@ -368,12 +388,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Flat / Cohort-Friendly",
-              description: "Designed for education; student volume does not skyrocket your monthly bill",
+              description:
+                "Designed for education; student volume does not skyrocket your monthly bill",
             },
             competitor: {
               status: false,
               label: "$7.25–$12.50+ /user/month",
-              description: "Paying per seat for hundreds of transient students creates unsustainable overhead",
+              description:
+                "Paying per seat for hundreds of transient students creates unsustainable overhead",
             },
           },
           {
@@ -381,12 +403,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Permanent History",
-              description: "All cohort resources, discussions, and code snippets remain permanently accessible",
+              description:
+                "All cohort resources, discussions, and code snippets remain permanently accessible",
             },
             competitor: {
               status: false,
               label: "90-Day Auto-Deletion",
-              description: "Free tier wipes student questions and lesson materials after 90 days",
+              description:
+                "Free tier wipes student questions and lesson materials after 90 days",
             },
           },
           {
@@ -394,12 +418,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Included with Buzz",
-              description: "Full live classes, screen sharing, and recordings included without extra licenses",
+              description:
+                "Full live classes, screen sharing, and recordings included without extra licenses",
             },
             competitor: {
               status: "partial",
               label: "Huddles Only / External Zoom",
-              description: "Slack Huddles lack classroom moderation, forcing bootcamps to buy costly Zoom licenses",
+              description:
+                "Slack Huddles lack classroom moderation, forcing bootcamps to buy costly Zoom licenses",
             },
           },
         ],
@@ -412,12 +438,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Native Structure",
-              description: "Channels logically organized by cohort intake, module, and study group",
+              description:
+                "Channels logically organized by cohort intake, module, and study group",
             },
             competitor: {
               status: "partial",
               label: "Generic Channels",
-              description: "Flat channel lists easily become cluttered with hundreds of stale channels",
+              description:
+                "Flat channel lists easily become cluttered with hundreds of stale channels",
             },
           },
           {
@@ -425,12 +453,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Built-in Hubs",
-              description: "Dedicated spaces for assignment prompts, deliverables, and mentor code review",
+              description:
+                "Dedicated spaces for assignment prompts, deliverables, and mentor code review",
             },
             competitor: {
               status: false,
               label: "Requires Integrations",
-              description: "Must stitch together third-party bots and external tools",
+              description:
+                "Must stitch together third-party bots and external tools",
             },
           },
           {
@@ -438,12 +468,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "Education-Centric",
-              description: "Streamlined assistance requests so mentors can easily support struggling students",
+              description:
+                "Streamlined assistance requests so mentors can easily support struggling students",
             },
             competitor: {
               status: false,
               label: "Unstructured DMs",
-              description: "Mentors get inundated with chaotic private messages without queue tracking",
+              description:
+                "Mentors get inundated with chaotic private messages without queue tracking",
             },
           },
         ],
@@ -456,12 +488,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: true,
               label: "One-Click Archiving",
-              description: "Transition completed cohorts to alumni groups without breaking links or permissions",
+              description:
+                "Transition completed cohorts to alumni groups without breaking links or permissions",
             },
             competitor: {
               status: "partial",
               label: "Manual Management",
-              description: "Admins must manually archive channels and deactivate student guest accounts",
+              description:
+                "Admins must manually archive channels and deactivate student guest accounts",
             },
           },
           {
@@ -469,12 +503,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             zedu: {
               status: "partial",
               label: "Education-Focused",
-              description: "Integrates with modern learning and development workflows",
+              description:
+                "Integrates with modern learning and development workflows",
             },
             competitor: {
               status: true,
               label: "2,600+ Integrations",
-              description: "Unmatched library of corporate enterprise productivity software",
+              description:
+                "Unmatched library of corporate enterprise productivity software",
             },
           },
         ],
@@ -499,7 +535,8 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
         ],
       },
       {
-        title: "Learning Experience: Built for Students, Not Corporate Executives",
+        title:
+          "Learning Experience: Built for Students, Not Corporate Executives",
         subtitle:
           "Corporate knowledge-work software does not address the pedagogical needs of instructors and learners.",
         zeduHeading: "A Purpose-Built Learning Platform",
@@ -523,7 +560,8 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
           "Slack is built for corporate teams and charges per active user ($7.25–$12.50+/mo), which becomes prohibitively expensive when managing cohorts of 50 to 500+ students. Furthermore, Slack's free plan deletes message history after 90 days. Zedu offers predictable education pricing, permanent lesson archives, and integrated Buzz video classrooms so you don't have to purchase Zoom licenses.",
       },
       {
-        question: "Does Zedu have a 90-day message history limit like Slack's free plan?",
+        question:
+          "Does Zedu have a 90-day message history limit like Slack's free plan?",
         answer:
           "No! Zedu retains your cohort messages, shared links, code snippets, and learning resources permanently, ensuring students can always review past lesson materials throughout their learning journey and beyond.",
       },

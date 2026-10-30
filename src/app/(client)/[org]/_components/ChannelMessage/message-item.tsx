@@ -594,23 +594,38 @@ const useMediaActions = (mediaItem: MediaItem, item: any) => {
   };
 };
 
-// Shows the media actions while keyboard focus is inside the block, not only
-// on mouse hover. Focus moving into the "more" menu (rendered in a portal)
-// keeps them shown.
-const revealOnFocus = (setIsHovered: (shown: boolean) => void) => ({
-  onFocus: () => setIsHovered(true),
-  onBlur: (e: React.FocusEvent<HTMLElement>) => {
-    const next = e.relatedTarget as HTMLElement | null;
-    if (
-      next &&
-      (e.currentTarget.contains(next) ||
-        next.closest("[data-radix-popper-content-wrapper]"))
-    ) {
-      return;
-    }
-    setIsHovered(false);
-  },
-});
+// Shows the media actions on pointer hover or while keyboard focus is inside the
+// block. The two are tracked separately, so moving the pointer away cannot hide
+// an action that has keyboard focus. Focus moving into the "more" menu
+// (rendered in a portal) keeps them shown.
+const useRevealActions = () => {
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  return {
+    isHovered: hovered || focused,
+    revealProps: {
+      onMouseEnter: () => setHovered(true),
+      onMouseLeave: () => setHovered(false),
+      onFocus: () => setFocused(true),
+      onBlur: (e: React.FocusEvent<HTMLElement>) => {
+        const next = e.relatedTarget as HTMLElement | null;
+        if (
+          next &&
+          (e.currentTarget.contains(next) ||
+            next.closest("[data-radix-popper-content-wrapper]"))
+        ) {
+          return;
+        }
+        setFocused(false);
+      },
+    },
+  };
+};
+
+// A media block with nothing focusable inside (an image, or a video that
+// failed to load) is focusable itself, so keyboard users can reach its actions.
+const FOCUSABLE_MEDIA =
+  "rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
 
 const MediaActionMenu: React.FC<{
   onDownload: (e: React.MouseEvent) => void;
@@ -687,7 +702,7 @@ const ImageWithDownload: React.FC<{
   setImage: any;
   item: any;
 }> = ({ mediaItem, setIsOpen, setImage, item }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const { isHovered, revealProps } = useRevealActions();
   const [imageError, setImageError] = useState(false);
   const {
     deleteMessage,
@@ -705,10 +720,11 @@ const ImageWithDownload: React.FC<{
 
   return (
     <div
-      className="relative min-w-0 w-fit max-w-full"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      {...revealOnFocus(setIsHovered)}
+      className={`relative min-w-0 w-fit max-w-full ${FOCUSABLE_MEDIA}`}
+      tabIndex={0}
+      role="group"
+      aria-label={`${mediaItem.file_name}: use Tab for media actions`}
+      {...revealProps}
     >
       <img
         src={mediaItem.file_link}
@@ -755,7 +771,7 @@ const FileWithDownload: React.FC<{
   mediaItem: MediaItem;
   item: any;
 }> = ({ mediaItem, item }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const { isHovered, revealProps } = useRevealActions();
   const {
     deleteMessage,
     setDeleteMessage,
@@ -772,9 +788,7 @@ const FileWithDownload: React.FC<{
   return (
     <div
       className="relative border rounded-lg shadow-sm bg-white min-h-[200px] w-[200px] overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      {...revealOnFocus(setIsHovered)}
+      {...revealProps}
     >
       <a
         href={mediaItem.file_link}
@@ -851,7 +865,7 @@ const VideoWithDownload: React.FC<{
   mediaItem: MediaItem;
   item: any;
 }> = ({ mediaItem, item }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const { isHovered, revealProps } = useRevealActions();
   const [nativeFullscreen, setNativeFullscreen] = useState(false);
   const [frame, setFrame] = useState<{ width: number; height: number } | null>(
     null
@@ -907,10 +921,14 @@ const VideoWithDownload: React.FC<{
 
   return (
     <div
-      className="relative min-w-0 w-fit max-w-full"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      {...revealOnFocus(setIsHovered)}
+      className={`relative min-w-0 w-fit max-w-full ${failed ? FOCUSABLE_MEDIA : ""}`}
+      // A failed video has no play button, so the block itself takes focus.
+      tabIndex={failed ? 0 : undefined}
+      role={failed ? "group" : undefined}
+      aria-label={
+        failed ? `${mediaItem.file_name}: use Tab for media actions` : undefined
+      }
+      {...revealProps}
     >
       <div
         className={

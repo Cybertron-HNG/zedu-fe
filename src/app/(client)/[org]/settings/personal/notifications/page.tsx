@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import SettingsLabel from "../../components/settings-label";
 import { GetRequest, PostRequest } from "~/utils/new-request";
 import Loading from "~/components/ui/loading";
-import { buildTimeRange } from "./time-range";
 import { NotificationPermissionHelp } from "~/app/(client)/[org]/_components/notification-permission-guidance";
+import { buildTimeRange } from "./time-range";
 
 type Preferences = {
   notificationType: "all" | "mentions" | "nothing";
@@ -114,6 +114,7 @@ const NotificationPage = () => {
 
   const handleRevert = () => {
     setPrefs(initialPrefs);
+    setTimeError(null);
   };
 
   if (loading) {

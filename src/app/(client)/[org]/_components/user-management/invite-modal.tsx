@@ -215,12 +215,9 @@ const InviteModal: React.FC<StorageOffloadModalProps> = ({
     const roleuser = orgRoles?.find((item: Role) => item?.name === "User");
     setRoleId(roleuser?.id);
     if (!isOpen) return;
-    if (orgData?.invite_link_status) {
-      setIsLinkEnabled(orgData.invite_link_status === "enabled");
-      return;
-    }
-
-    setIsLinkEnabled(false);
+    // Show the cached status straight away so the toggle does not flash off,
+    // then confirm it with the server, since another admin may have changed it.
+    setIsLinkEnabled(orgData?.invite_link_status === "enabled");
     if (!orgId) return;
     let active = true;
     GetRequest(`/invite/general/status/${orgId}`)

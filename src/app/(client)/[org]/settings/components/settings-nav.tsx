@@ -30,6 +30,7 @@ import {
   type PermissionRequirement,
 } from "~/config/access-control";
 import { evaluatePermissionRequirement } from "~/components/rbac/RequirePermission";
+import { parseStoredAccordions } from "~/utils/stored-accordions";
 
 const ORG_NAV_ICONS: Record<string, React.ReactNode> = {
   general: <SettingsIcon className="w-5" />,
@@ -49,15 +50,7 @@ export default function SettingsNav() {
         ? localStorage.getItem("Accordions2")
         : null;
 
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return Array.isArray(parsed) ? parsed : defaults;
-      } catch {
-        return defaults;
-      }
-    }
-    return defaults;
+    return parseStoredAccordions(saved, defaults);
   });
 
   const pathname = usePathname();

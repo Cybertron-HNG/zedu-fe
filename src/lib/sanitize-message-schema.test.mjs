@@ -8,8 +8,29 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
+import ts from "typescript";
 
-const { messageSanitizeSchema } = await import("./sanitize-message-schema.ts");
+// Node 20 cannot import a .ts file directly, so compile the schema first.
+// A module loaded from a data: URL cannot import a package by name, so the
+// import of rehype-sanitize is pointed at its full path.
+const source = readFileSync(
+  new URL("./sanitize-message-schema.ts", import.meta.url),
+  "utf8"
+);
+const { outputText } = ts.transpileModule(source, {
+  compilerOptions: {
+    module: ts.ModuleKind.ESNext,
+    target: ts.ScriptTarget.ES2020,
+  },
+});
+const compiled = outputText.replace(
+  /from\s+["']rehype-sanitize["']/,
+  `from ${JSON.stringify(import.meta.resolve("rehype-sanitize"))}`
+);
+const encoded = Buffer.from(compiled).toString("base64");
+const { messageSanitizeSchema } = await import(
+  `data:text/javascript;base64,${encoded}`
+);
 
 // Attack payloads and sample markup live in a JSON file next to this test.
 const fixtures = JSON.parse(

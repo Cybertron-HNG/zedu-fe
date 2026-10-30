@@ -211,14 +211,31 @@ const MessageBox = ({
     content = content.replace(plainTextContent, fullyConvertedText);
 
     if (subscription) {
-      editor.commands.clearContent();
-      // clearContent() does not fire the editor's update event, so the saved
-      // draft would still hold the sent text and come back after a reload.
-      clearMessageDraft(storageKey);
-      clear();
+      // Keep what was typed so it can be put back if the send fails.
+      const sentHtml = editor.getHTML();
 
-      sendMessage(id, uuid, content, uploaded);
+      editor.commands.clearContent();
+      clear();
       dispatch({ type: ACTIONS.CLEAR_MENTIONS });
+
+      // clearContent() does not fire the editor's update event, so the saved
+      // draft still holds the sent text. It is removed only once the send has
+      // succeeded, so a failed send does not lose the message.
+      let sent = true;
+      try {
+        // Callers that report a result return false when the send failed.
+        sent = (await sendMessage(id, uuid, content, uploaded)) !== false;
+      } catch {
+        sent = false;
+      }
+
+      if (sent) {
+        // Leave the draft alone if the user has already started a new message.
+        if (editor.isEmpty) clearMessageDraft(storageKey);
+      } else if (editor.isEmpty) {
+        editor.commands.setContent(sentHtml);
+        editor.commands.focus("end");
+      }
     }
   };
 

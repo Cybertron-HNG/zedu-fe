@@ -61,36 +61,11 @@ import { useAttachments } from "./use-attachments";
 import { useParams } from "next/navigation";
 import { uuidv7 } from "uuidv7";
 import { CHAT_FILE_ACCEPT } from "~/utils/document-files";
-
-const MESSAGE_DRAFTS_KEY = "zedu:message-drafts";
-
-function readMessageDrafts(): Record<string, string> {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(MESSAGE_DRAFTS_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-function saveMessageDraft(key: string, html: string, empty: boolean) {
-  if (!key || typeof window === "undefined") return;
-  const drafts = readMessageDrafts();
-  if (empty) {
-    if (!(key in drafts)) return;
-    delete drafts[key];
-  } else {
-    drafts[key] = html;
-  }
-  localStorage.setItem(MESSAGE_DRAFTS_KEY, JSON.stringify(drafts));
-}
-
-function loadMessageDraft(key: string) {
-  return readMessageDrafts()[key] || "";
-}
+import {
+  clearMessageDraft,
+  loadMessageDraft,
+  saveMessageDraft,
+} from "./message-drafts";
 
 const MessageBox = ({
   subscription,
@@ -237,6 +212,9 @@ const MessageBox = ({
 
     if (subscription) {
       editor.commands.clearContent();
+      // clearContent() does not fire the editor's update event, so the saved
+      // draft would still hold the sent text and come back after a reload.
+      clearMessageDraft(storageKey);
       clear();
 
       sendMessage(id, uuid, content, uploaded);

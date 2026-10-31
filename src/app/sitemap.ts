@@ -20,7 +20,7 @@ const PAGES: { path: string; priority: number }[] = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = siteUrl() || "https://zedu.chat";
+  const base = siteUrl();
   return PAGES.map(({ path, priority }) => ({
     url: path === "/" ? base : `${base}${path}`,
     changeFrequency: "weekly",

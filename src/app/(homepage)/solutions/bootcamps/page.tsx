@@ -78,7 +78,6 @@ const breadcrumbStructuredData = {
   ],
 };
 
-
 const higherEducationCards = [
   {
     title: "Cohort-Based Learning",

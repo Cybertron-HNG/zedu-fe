@@ -1,5 +1,5 @@
 import { useParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ACTIONS } from "~/store/Actions";
 import { DataContext } from "~/store/GlobalState";
 import { GetRequest } from "~/utils/new-request";
@@ -10,15 +10,25 @@ const UseChannel = () => {
   const id = params.id as string;
   const { state, dispatch } = useContext(DataContext);
   const token = localStorage.getItem("token") || "";
-  const [page, setPage] = useState<number>(1);
+  const pageRef = useRef(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState(true);
 
-  const fetchThreads = async (newPage: number = 1) => {
+  const requestIdRef = useRef(0);
+  const inFlightRef = useRef(false);
+
+  const fetchThreads = async (newPage: number = 1, isInitialLoad = false) => {
+    const requestId = ++requestIdRef.current;
+    inFlightRef.current = true;
+
     try {
       const res = await GetRequest(
         `/threads/channels/${id}?page=${newPage}&limit=40`
       );
+
+      if (requestId !== requestIdRef.current) {
+        return;
+      }
 
       if (res?.status === 200 || res?.status === 201) {
         const newThreads = Array.isArray(res.data?.data) ? res.data?.data : [];
@@ -36,13 +46,22 @@ const UseChannel = () => {
         } else {
           setHasMore(newThreads.length >= 40);
         }
+        // Keep pagination current even before React commits state updates.
+        pageRef.current = newPage;
       }
       setLoading(false);
     } catch (error) {
+      if (requestId !== requestIdRef.current) {
+        return;
+      }
       console.error("Error fetching threads:", error);
-      setHasMore(false);
     } finally {
-      setPage(newPage);
+      if (requestId === requestIdRef.current) {
+        inFlightRef.current = false;
+        if (isInitialLoad) {
+          dispatch({ type: ACTIONS.MESSAGE_LOADING, payload: false });
+        }
+      }
     }
   };
 
@@ -54,16 +73,14 @@ const UseChannel = () => {
         setLoading(true);
       }
       setHasMore(true);
-      setPage(1);
-      fetchThreads(1).finally(() =>
-        dispatch({ type: ACTIONS.MESSAGE_LOADING, payload: false })
-      );
+      pageRef.current = 1;
+      fetchThreads(1, true);
     }
   }, [id, token, state?.countCallback]);
 
   const fetchMoreData = () => {
-    if (hasMore) {
-      const nextPage = page + 1;
+    if (hasMore && !inFlightRef.current) {
+      const nextPage = pageRef.current + 1;
       fetchThreads(nextPage);
     }
   };

@@ -59,6 +59,7 @@
   "hardcodedUrls": {
     "allowPatterns": [
       "^https?://(www\\.)?w3\\.org(/|$)",
+      "^https?://schema\\.org(/|$)",
       "^https?://avatars\\.githubusercontent\\.com/"
     ],
     "excludePathPrefixes": ["cypress/", ".github/"],

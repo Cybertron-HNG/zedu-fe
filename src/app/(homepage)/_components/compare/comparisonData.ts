@@ -67,7 +67,7 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
     competitorName: "Discord",
     metaTitle: "Zedu vs Discord: Best Platform for Bootcamps & Cohorts",
     metaDescription:
-      "Comparing Zedu and Discord for bootcamps, schools, and cohort learning. See how structured channels, built-in Buzz classrooms, and distraction-free spaces compare.",
+      "Comparing Zedu and Discord for bootcamps, schools, and cohort learning. See how structured channels, built-in Buzz audio/video calling, and distraction-free spaces compare.",
     keywords: [
       "Discord alternative for bootcamps",
       "Discord vs Zedu",
@@ -83,7 +83,7 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
       "Discord revolutionized voice hangouts and gaming communities. But when running rigorous educational cohorts, bootcamps and schools need structured classrooms, noise-free learning, and dedicated cohort tooling.",
     verdictTitle: "The Quick Verdict",
     verdictDescription:
-      "Choose Discord if you are hosting a casual gaming group or an open-ended hobbyist server where voice channels and bots take priority over structured lessons. Choose Zedu if you run a bootcamp, academy, or school that requires organized cohort channels, live Buzz audio/video classrooms, assignment tracking, and a professional distraction-free environment.",
+      "Choose Discord if you are hosting a casual gaming group or an open-ended hobbyist server where drop-in voice channels and bots take priority over organized cohorts. Choose Zedu if you run a bootcamp, academy, or school that requires organized cohort channels, built-in Buzz voice and video calls with screen sharing, centralized file management, and a professional distraction-free environment.",
     competitorSummary: {
       title: "Discord Overview",
       description:
@@ -96,24 +96,24 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
         "Widespread familiarity among younger digital natives",
       ],
       tradeoffs: [
-        "Unstructured chat streams lead to lost assignments and missed announcements",
-        "High distraction environment with gaming status alerts and server noise",
-        "No native LMS, lecture scheduling, or assignment file hubs",
-        "Lacks institutional privacy controls, attendance tracking, and FERPA alignment",
+        "Unstructured chat streams lead to lost lesson resources and missed announcements",
+        "High-distraction environment with gaming status alerts, server noise, and side activities",
+        "Lacks native cohort module organization and centralized file repositories",
+        "Operates on an open community model with default direct messaging across servers",
       ],
     },
     zeduSummary: {
       title: "Zedu Overview",
       description:
-        "Zedu is purpose-built for education, bootcamps, and cohort-based academies, uniting structured curriculum channels, live Buzz classrooms, and resource hubs in one workspace.",
+        "Zedu is purpose-built for education, bootcamps, and cohort-based academies, uniting structured curriculum channels, built-in Buzz audio and video calls, and centralized file management in one workspace.",
       bestFor:
         "Bootcamps, online academies, university cohorts, and educational communities",
       strengths: [
         "Cohort channels organized by syllabus modules, lessons, and project teams",
-        "Native Buzz live audio/video classrooms with screen share & lecture archiving",
-        "Noise-free, professional environment without gaming distractions or public ads",
-        "Role-based permission architecture designed for instructors, mentors, and students",
-        "Dedicated resource hubs and assignment collaboration spaces",
+        "Built-in Buzz live audio and video calling with screen sharing and in-call chat",
+        "Noise-free, professional environment without gaming distractions or outside server alerts",
+        "Role-based permissions designed for instructors, mentors, and students",
+        "Centralized File Explorer for course documents, slides, and shared resources",
       ],
       tradeoffs: [
         "Focused exclusively on education and learning communities, not gaming servers",
@@ -140,18 +140,18 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             },
           },
           {
-            feature: "Structured Homework & Resource Hubs",
+            feature: "Centralized File Management",
             zedu: {
               status: true,
-              label: "Native Feature",
+              label: "Built-in File Explorer",
               description:
-                "Pinned lesson materials, assignment guidelines, and project folders",
+                "Centralized workspace repository to upload, organize, and share course documents and guides",
             },
             competitor: {
               status: false,
               label: "Not Available",
               description:
-                "Files quickly get buried in fast-scrolling chat history",
+                "Files are shared only as inline chat attachments that get buried in fast-scrolling channels",
             },
           },
           {
@@ -160,63 +160,63 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
               status: true,
               label: "100% Educational",
               description:
-                "No game presence status, public discoverability, or off-topic spam",
+                "No game presence indicators, public server browsing, or off-topic social noise",
             },
             competitor: {
               status: false,
               label: "High Distraction",
               description:
-                "Students are surrounded by game notifications, friends list, and outside servers",
+                "Students are surrounded by game activity alerts, external server notifications, and friend lists",
             },
           },
         ],
       },
       {
-        category: "Live Classes & Collaboration",
+        category: "Live Collaboration & Communication",
         items: [
           {
-            feature: "Integrated Live Classrooms (Buzz)",
+            feature: "Built-in Voice & Video Calls (Buzz)",
             zedu: {
               status: true,
-              label: "Native Buzz Classrooms",
+              label: "Native Buzz Calls",
               description:
-                "HD video, screen sharing, classroom moderation, and session recaps",
+                "Real-time voice and video calls with screen sharing, call timers, and participant management in channels",
             },
             competitor: {
               status: true,
               label: "Voice Channels",
               description:
-                "Low-latency voice channels with screen share (quality capped on free tier)",
+                "Always-on voice and video channels with screen sharing, subject to Nitro stream quality caps",
             },
           },
           {
-            feature: "Curriculum Lecture Recordings & Archives",
+            feature: "In-Call Screen Sharing & Chat",
             zedu: {
               status: true,
-              label: "Permanent Access",
+              label: "Included",
               description:
-                "Recorded classroom sessions remain indexed and accessible for review",
+                "Share code, presentations, and browser tabs with integrated live text chat during calls",
             },
             competitor: {
-              status: false,
-              label: "Third-Party Tools",
+              status: true,
+              label: "Included",
               description:
-                "Requires external bots or recording software with complex storage setups",
+                "Screen sharing and in-channel text chat available during voice channel sessions",
             },
           },
           {
-            feature: "Instructor & Mentor Moderation Tools",
+            feature: "Moderation & Participant Controls",
             zedu: {
               status: true,
-              label: "Education-Specific",
+              label: "Education Roles",
               description:
-                "Dedicated TA/mentor queues, hand-raising, and cohort role hierarchies",
+                "Hand-raising indicator, channel moderation, and role-based permissions for instructors and learners",
             },
             competitor: {
               status: "partial",
-              label: "Generic Moderation",
+              label: "Community Roles",
               description:
-                "Basic server kicks, bans, and timeout roles designed for online communities",
+                "Server roles, mute/deafen permissions, and channel timeouts designed for online communities",
             },
           },
         ],
@@ -228,15 +228,15 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             feature: "Institutional Privacy & Safety",
             zedu: {
               status: true,
-              label: "Enterprise-Ready",
+              label: "Closed Workspace",
               description:
-                "Private organization boundary without unsolicited direct messages from strangers",
+                "Private organization boundary where direct messaging is restricted to enrolled cohort members",
             },
             competitor: {
-              status: false,
-              label: "Public Platform",
+              status: "partial",
+              label: "Open Server Model",
               description:
-                "Open DM model opens students up to external phishing, spam, and unmonitored DMs",
+                "Direct messaging from server members is enabled by default unless individual privacy settings are configured",
             },
           },
           {
@@ -265,14 +265,14 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
         zeduHeading: "Zedu's Cohort Architecture",
         zeduPoints: [
           "Cohorts are organized by modules and tracks, preventing lesson links from getting buried in conversation.",
-          "Important announcements and assignments stay prominently anchored to their respective classes.",
-          "Mentors and TAs can easily locate student questions and follow up without searching through thousands of chat messages.",
+          "Important announcements and course materials stay organized within their respective channels.",
+          "Mentors and instructors can follow up on student discussions without searching through unstructured chat rooms.",
         ],
         competitorHeading: "Discord's General Chat Model",
         competitorPoints: [
-          "Linear chat channels scroll rapidly; students miss critical assignment updates amidst casual chatter.",
-          "Thread creation is clunky and threads automatically archive after periods of inactivity.",
-          "Organizers spend hours crafting complex permission matrices for roles that break across cohort transitions.",
+          "Linear chat channels scroll rapidly; students can miss critical announcements and lesson links amidst general banter.",
+          "Thread creation can be difficult to track and threads automatically archive after periods of inactivity.",
+          "Organizers spend substantial effort configuring complex bot roles and permission overwrites across cohort cycles.",
         ],
       },
       {
@@ -288,8 +288,8 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
         competitorHeading: "Discord's Entertainment Ecosystem",
         competitorPoints: [
           "Students receive notifications from dozens of gaming, meme, and hobbyist servers alongside school channels.",
-          "Friends list shows who is playing games in real time, pulling focus away from cohort assignments.",
-          "Unsolicited DMs from random server members create privacy, safety, and harassment vulnerabilities.",
+          "Friend activity shows live gaming presence, drawing focus away from study sessions and group projects.",
+          "Default open direct messaging on shared servers can expose learners to unsolicited messages unless manually restricted.",
         ],
       },
     ],
@@ -297,17 +297,19 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
       {
         question: "Why are bootcamps moving away from Discord to Zedu?",
         answer:
-          "While Discord is cost-effective for informal groups, bootcamps struggle with student retention and disorganization. Important announcements get buried, students are easily distracted by gaming alerts, and instructors lack native tools for lecture recordings and cohort tracking. Zedu solves this with purpose-built cohort channels, integrated Buzz classrooms, and a professional learning atmosphere.",
+          "While Discord is cost-effective for informal groups, bootcamps struggle with distraction and disorganization. Important announcements get buried in high-speed chat, students are surrounded by gaming alerts, and instructors lack structured cohort hierarchies. Zedu solves this with purpose-built module channels, integrated Buzz audio/video calling with screen sharing, and a professional learning environment.",
       },
       {
-        question: "Can Zedu replace Discord voice channels for live lectures?",
+        question:
+          "How does Zedu compare to Discord voice channels for cohort calls?",
         answer:
-          "Yes. Zedu includes Buzz, an integrated live classroom and audio/video collaboration space. Buzz offers high-definition video, screen sharing, mentor breakouts, and session recording specifically optimized for lectures and team programming.",
+          "Zedu includes Buzz, a built-in live audio and video calling feature directly in your channels. Buzz supports video feeds, screen sharing, hand-raising, in-call chat, and participant management without requiring external bots or Nitro upgrades.",
       },
       {
-        question: "Is Zedu more private and secure than Discord for schools?",
+        question:
+          "How do privacy and student safety compare between Zedu and Discord?",
         answer:
-          "Absolutely. Discord operates on an open server model where students frequently receive spam and unsolicited direct messages. Zedu provides a closed, institutionally governed workspace where only enrolled students, mentors, and administrators can communicate.",
+          "Discord uses an open community model where member lists and direct messaging are enabled across servers by default unless individual privacy settings are locked down. Zedu provides a closed, institutionally governed workspace where communication is strictly scoped to enrolled learners, mentors, and administrators.",
       },
       {
         question:
@@ -338,10 +340,10 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
     heroBadge: "Platform Comparison",
     heroTitle: "Zedu vs Slack: Why Bootcamps & Academies Choose Zedu",
     heroSubtitle:
-      "Slack is the gold standard for corporate enterprise teams. But for cohort-based bootcamps and learning communities, prohibitive per-seat pricing and 90-day message limits make Slack financially unsustainable.",
+      "Slack is the gold standard for corporate enterprise teams. But for cohort-based bootcamps and learning communities, per-seat pricing and the 90-day history visibility limit on free plans create significant hurdles for ongoing cohorts.",
     verdictTitle: "The Quick Verdict",
     verdictDescription:
-      "Choose Slack if you are an enterprise software company coordinating cross-functional corporate departments with hundreds of enterprise SaaS integrations. Choose Zedu if you run a bootcamp, school, or learning community that needs affordable cohort-based pricing, permanent message history, integrated live video classrooms, and student collaboration hubs.",
+      "Choose Slack if you are an enterprise software company coordinating cross-functional corporate departments with extensive third-party SaaS integrations. Choose Zedu if you run a bootcamp, school, or learning community that benefits from predictable cohort-friendly pricing, full message and file history retention, and built-in Buzz audio/video calling.",
     competitorSummary: {
       title: "Slack Overview",
       description:
@@ -355,22 +357,22 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
         "Widely adopted standard across professional corporate workplaces",
       ],
       tradeoffs: [
-        "Prohibitive per-user/month billing that severely penalizes large student cohorts",
-        "Free tier aggressively deletes message history and files after only 90 days",
-        "Lacks native full-classroom video software (Huddles are limited, requiring paid Zoom)",
-        "No education-specific tooling for syllabi, homework submissions, or student progress",
+        "Per-seat licensing models (Pro and Business+) scale steeply as student enrollment expands",
+        "Free tier limits access to 90 days of message and file history, hiding older discussions unless upgraded",
+        "Slack Huddles are designed for informal drop-in chats rather than structured cohort sessions",
+        "No native educational channel hierarchies or centralized curriculum file management",
       ],
     },
     zeduSummary: {
       title: "Zedu Overview",
       description:
-        "Zedu is engineered from the ground up for cohort learning and educational academies, offering flat, predictable pricing, permanent message archiving, and built-in live video classrooms.",
+        "Zedu is engineered from the ground up for cohort learning and educational academies, offering predictable cohort-based pricing, full message history retention, and built-in Buzz audio and video calls.",
       bestFor:
         "Bootcamps, online academies, coding schools, and cohort learning programs",
       strengths: [
-        "Flat, education-friendly pricing that does not penalize growing student cohorts",
-        "Permanent message, lecture, and file history retention across all cohorts",
-        "Built-in Buzz live audio/video classrooms eliminating the need for expensive Zoom licenses",
+        "Predictable cohort-friendly pricing that avoids per-student seat penalties",
+        "Full message and file history retention across all cohort channels",
+        "Built-in Buzz live audio and video calls with screen sharing directly in channels",
         "Structured cohort channels mapped to curriculum modules and project sprints",
         "Designed specifically for the mentor-instructor-student dynamic",
       ],
@@ -393,9 +395,9 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             },
             competitor: {
               status: false,
-              label: "$7.25–$12.50+ /user/month",
+              label: "$7.25–$15.00 /user/month",
               description:
-                "Paying per seat for hundreds of transient students creates unsustainable overhead",
+                "Published list prices for Slack Pro ($7.25–$8.75) and Business+ ($12.50–$15.00) scale per seat, increasing overhead for large cohorts",
             },
           },
           {
@@ -408,24 +410,24 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             },
             competitor: {
               status: false,
-              label: "90-Day Auto-Deletion",
+              label: "90-Day Access Window",
               description:
-                "Free tier wipes student questions and lesson materials after 90 days",
+                "Free tier limits access to 90 days of message and file history; older content is hidden unless upgraded",
             },
           },
           {
-            feature: "Bundled Live Video Classrooms",
+            feature: "Integrated Voice & Video Calling",
             zedu: {
               status: true,
               label: "Included with Buzz",
               description:
-                "Full live classes, screen sharing, and recordings included without extra licenses",
+                "Live voice and video calls with screen sharing, call timers, and participant management included directly in channels",
             },
             competitor: {
               status: "partial",
-              label: "Huddles Only / External Zoom",
+              label: "Slack Huddles",
               description:
-                "Slack Huddles lack classroom moderation, forcing bootcamps to buy costly Zoom licenses",
+                "Slack Huddles offer informal audio/video chats, while formal meetings often rely on external conferencing tools",
             },
           },
         ],
@@ -449,33 +451,33 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             },
           },
           {
-            feature: "Assignment & Project Collaboration",
+            feature: "Cohort File Sharing & Resource Management",
             zedu: {
               status: true,
-              label: "Built-in Hubs",
+              label: "Built-in File Explorer",
               description:
-                "Dedicated spaces for assignment prompts, deliverables, and mentor code review",
+                "Centralized file repository to organize, preview, and share syllabi, guides, and learning resources across channels",
             },
             competitor: {
-              status: false,
-              label: "Requires Integrations",
+              status: "partial",
+              label: "Channel Attachments",
               description:
-                "Must stitch together third-party bots and external tools",
+                "Files are shared as inline chat attachments that can get lost in active conversation threads",
             },
           },
           {
-            feature: "Mentor & TA Office Hour Queues",
+            feature: "Structured Channel Communication",
             zedu: {
               status: true,
-              label: "Education-Centric",
+              label: "Cohort Channels",
               description:
-                "Streamlined assistance requests so mentors can easily support struggling students",
+                "Module channels allow mentors and learners to collaborate openly and keep discussions focused by topic",
             },
             competitor: {
-              status: false,
-              label: "Unstructured DMs",
+              status: "partial",
+              label: "General Channels",
               description:
-                "Mentors get inundated with chaotic private messages without queue tracking",
+                "Channels often mix general company discussions with team chats without educational structure",
             },
           },
         ],
@@ -487,15 +489,15 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
             feature: "Automated Cohort Onboarding & Archiving",
             zedu: {
               status: true,
-              label: "One-Click Archiving",
+              label: "Channel Archiving",
               description:
-                "Transition completed cohorts to alumni groups without breaking links or permissions",
+                "Archive completed cohort channels while preserving access to past discussions and materials",
             },
             competitor: {
               status: "partial",
               label: "Manual Management",
               description:
-                "Admins must manually archive channels and deactivate student guest accounts",
+                "Admins must manually archive channels and manage member licenses to avoid per-seat fees",
             },
           },
           {
@@ -529,9 +531,9 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
         ],
         competitorHeading: "Slack's Per-Seat Billing Penalty",
         competitorPoints: [
-          "A bootcamp with 200 active students pays $1,450 to $2,500 every single month just for Slack Pro/Business.",
-          "Admins waste hours deactivating graduated students to avoid surprise invoice spikes.",
-          "The alternative free tier wipes message history and file uploads after 90 days, ruining the learning archive.",
+          "Published list pricing for Slack Pro ($7.25–$8.75/seat/month) and Business+ ($12.50–$15.00/seat/month) means 200 active students can cost $1,450 to $3,000 every month in recurring seat licenses.",
+          "Admins frequently manage member access for graduating cohorts to prevent ongoing per-seat charges.",
+          "The free tier restricts access to 90 days of message and file history, hiding earlier module discussions and files unless upgraded.",
         ],
       },
       {
@@ -541,9 +543,9 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
           "Corporate knowledge-work software does not address the pedagogical needs of instructors and learners.",
         zeduHeading: "A Purpose-Built Learning Platform",
         zeduPoints: [
-          "Built-in Buzz video classrooms remove the need to manage separate Zoom room links and credentials.",
-          "Cohort channels keep lesson discussions, assignments, and study groups cleanly compartmentalized.",
-          "Mentors can triage student help requests effectively rather than getting overwhelmed in private DMs.",
+          "Built-in Buzz video calls allow students and mentors to jump directly into screen sharing and group discussions within channels.",
+          "Cohort channels keep lesson discussions, resources, and study groups cleanly compartmentalized.",
+          "Instructors and mentors can maintain clear, focused group discussions rather than juggling fragmented threads.",
         ],
         competitorHeading: "Slack's Corporate Focus",
         competitorPoints: [
@@ -557,18 +559,19 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
       {
         question: "Why should our bootcamp choose Zedu over Slack?",
         answer:
-          "Slack is built for corporate teams and charges per active user ($7.25–$12.50+/mo), which becomes prohibitively expensive when managing cohorts of 50 to 500+ students. Furthermore, Slack's free plan deletes message history after 90 days. Zedu offers predictable education pricing, permanent lesson archives, and integrated Buzz video classrooms so you don't have to purchase Zoom licenses.",
+          "Slack is built for corporate teams and charges per active user ($7.25–$15.00/user/month on standard Pro and Business+ list pricing), which can scale up quickly when managing cohorts of 50 to 500+ students. Furthermore, Slack's free plan restricts access to the most recent 90 days of message and file history. Zedu offers predictable cohort-friendly pricing, full history retention, and built-in Buzz voice and video calling directly in channels.",
       },
       {
         question:
           "Does Zedu have a 90-day message history limit like Slack's free plan?",
         answer:
-          "No! Zedu retains your cohort messages, shared links, code snippets, and learning resources permanently, ensuring students can always review past lesson materials throughout their learning journey and beyond.",
+          "No. While Slack's free plan restricts access to the past 90 days of message and file history, Zedu retains your cohort discussions, shared links, and learning resources without hiding older materials as cohorts progress.",
       },
       {
-        question: "Can Zedu replace both Slack and Zoom for our bootcamp?",
+        question:
+          "Does Zedu support live voice and video calling like Slack Huddles?",
         answer:
-          "Yes. Zedu combines organized cohort messaging channels with Buzz, an integrated live audio and video classroom system. You can conduct live lectures, screen shares, and mentor breakouts directly inside Zedu without paying for a separate Zoom or Google Meet workspace.",
+          "Yes. Zedu includes Buzz, a built-in live audio and video calling feature with screen sharing, call timers, in-call chat, and participant controls. Learners and mentors can launch live calls directly from their channels without coordinating external meeting links.",
       },
       {
         question: "Can we migrate our existing Slack channels to Zedu?",
@@ -578,7 +581,7 @@ export const comparisonPages: Record<string, ComparisonPageContent> = {
     ],
     ctaHeading: "Stop Paying Corporate Per-Seat Tax on Students",
     ctaDescription:
-      "Switch to Zedu and give your bootcamp an organized, affordable platform with permanent history and built-in live classrooms.",
+      "Switch to Zedu and give your bootcamp an organized, affordable platform with full history retention and built-in Buzz calling.",
   },
 };
 

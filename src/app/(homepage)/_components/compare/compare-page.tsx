@@ -18,7 +18,7 @@ import { ogImageUrl, siteUrl } from "~/lib/env-urls";
 export const metadata: Metadata = {
   title: "Platform Comparisons: Zedu vs. Discord & Slack | Zedu",
   description:
-    "Compare Zedu with Discord and Slack for bootcamps, schools, and cohort learning. See how structured channels, built-in Buzz classrooms, and flat education pricing compare.",
+    "Compare Zedu with Discord and Slack for bootcamps, schools, and cohort learning. See how structured channels, built-in Buzz calling, and cohort-friendly pricing compare.",
   keywords: [
     "Discord alternative for bootcamps",
     "Slack alternative for learning communities",
@@ -83,8 +83,9 @@ export default function ComparePage() {
 
         <p className="mt-5 max-w-3xl text-sm leading-relaxed text-[#5a6170] sm:text-base md:text-lg">
           General-purpose chat tools were built for gaming servers and corporate
-          offices. See how Zedu provides the purpose-built structure, live
-          classrooms, and scalable economics that bootcamps and academies need.
+          offices. See how Zedu provides the purpose-built structure, built-in
+          calling, and cohort-friendly economics that bootcamps and academies
+          need.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
@@ -125,8 +126,8 @@ export default function ComparePage() {
 
                 <p className="mt-3 text-sm leading-relaxed text-neutral-600">
                   Discord is great for casual hangout servers and gaming clans,
-                  but bootcamps suffer from lost assignments, gaming alerts, and
-                  noise. See why structured cohorts thrive on Zedu.
+                  but bootcamps struggle with scattered resources, gaming
+                  alerts, and noise. See why structured cohorts thrive on Zedu.
                 </p>
 
                 <div className="mt-6 space-y-2.5">
@@ -134,13 +135,13 @@ export default function ComparePage() {
                     <span className="font-semibold text-primary-600">
                       Zedu:
                     </span>{" "}
-                    Dedicated cohort module channels & assignment hubs
+                    Dedicated cohort module channels & File Explorer
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
                     <span className="font-semibold text-primary-600">
                       Zedu:
                     </span>{" "}
-                    Built-in Buzz video classrooms with lecture recording
+                    Built-in Buzz audio/video calls with screen sharing
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
                     <span className="font-semibold text-primary-600">
@@ -179,10 +180,10 @@ export default function ComparePage() {
                 </h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-                  Slack is the corporate office standard, but charges expensive
-                  per-seat subscriptions ($7.25-$12.50+/user/month) and deletes
-                  message history after 90 days on free tiers. Discover Zedu's
-                  scalable education platform.
+                  Slack is the corporate office standard, but per-seat
+                  subscriptions ($7.25–$15.00/user/month list pricing) and the
+                  90-day history limit on free plans create challenges for
+                  cohorts. Discover Zedu's cohort-friendly platform.
                 </p>
 
                 <div className="mt-6 space-y-2.5">
@@ -190,19 +191,19 @@ export default function ComparePage() {
                     <span className="font-semibold text-primary-600">
                       Zedu:
                     </span>{" "}
-                    Flat education pricing — no per-student penalty fees
+                    Predictable cohort pricing — no per-student seat penalties
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
                     <span className="font-semibold text-primary-600">
                       Zedu:
                     </span>{" "}
-                    Permanent message & lesson resource retention
+                    Full message & shared resource retention
                   </div>
                   <div className="flex items-start gap-2 text-xs text-neutral-700 sm:text-sm">
                     <span className="font-semibold text-primary-600">
                       Zedu:
                     </span>{" "}
-                    Integrated video classrooms (no expensive Zoom add-on)
+                    Built-in Buzz voice and video calls with screen sharing
                   </div>
                 </div>
               </div>
@@ -253,11 +254,11 @@ export default function ComparePage() {
                 <Video className="h-6 w-6" />
               </div>
               <h3 className="mt-4 font-bold text-neutral-900">
-                Integrated Buzz Classrooms
+                Built-in Buzz Calling
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                Live interactive audio and video classrooms with lecture
-                recording, removing the cost of third-party Zoom licenses.
+                Real-time audio and video calls with screen sharing, call
+                timers, and participant controls directly inside your channels.
               </p>
             </div>
 
@@ -269,8 +270,8 @@ export default function ComparePage() {
                 Predictable Economics
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                Flat, cohort-based pricing plans designed for education so
-                student growth never spikes your monthly invoice.
+                Predictable cohort-based pricing designed for education so
+                expanding enrollment doesn&apos;t penalize your budget.
               </p>
             </div>
 
@@ -283,7 +284,7 @@ export default function ComparePage() {
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-600 sm:text-sm">
                 A professional environment without outside gaming popups, public
-                advertising, or unsolicited direct messages.
+                advertising, or default open server direct messages.
               </p>
             </div>
           </div>

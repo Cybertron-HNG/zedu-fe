@@ -188,11 +188,9 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
   const [selectedFile, setSelectedFile] = React.useState<FileDetails | null>(
     null
   );
-  // Loading states
   const [isLoadingFiles, setIsLoadingFiles] = React.useState(false);
   const [isLoadingFolders, setIsLoadingFolders] = React.useState(false);
 
-  // Folder navigation state
   const [currentFolderId, setCurrentFolderId] = React.useState<
     string | undefined
   >(folderId);
@@ -200,7 +198,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     Array<{ id: string | undefined; name: string }>
   >([{ id: undefined, name: "All files" }]);
 
-  // Filter state
   const [fileType, setFileType] = React.useState<string[]>([]);
   const [uploader, setUploader] = React.useState<string[]>([]);
   const [dateRange, setDateRange] = React.useState<string[]>([]);
@@ -217,16 +214,13 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
   const [totalFilePages, setTotalFilePages] = useState(1);
   const [currentFolderPage, setCurrentFolderPage] = useState(1);
 
-  // Bulk selection state
   const [selectedFileIds, setSelectedFileIds] = useState<Set<string>>(
     new Set()
   );
   const [isBulkMode, setIsBulkMode] = useState(false);
 
-  // Tab state for folders/files separation
   const [activeTab, setActiveTab] = useState<"folders" | "files">("files");
 
-  // State for the raw member data and the formatted options
   const [uploaderOptions, setUploaderOptions] = useState<FilterOption[]>([]);
 
   useEffect(() => {
@@ -286,7 +280,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return map;
   }, [state.channels, state.dms]);
 
-  // Memoize the transformation of members to filter options
   useEffect(() => {
     if (state.orgMembers && state.orgMembers.length > 0) {
       const options = state.orgMembers.map((member: OrgMember) => ({
@@ -396,6 +389,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
         folderId: currentFolderId,
         page: currentPage,
         limit: 10,
+        sortOrder,
       });
 
       const response = await GetRequest(`/files?${queryString}`);
@@ -428,6 +422,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     currentFolderId,
     currentPage,
     channelLabelMap,
+    sortOrder,
   ]);
 
   useEffect(() => {
@@ -447,8 +442,8 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       const [sortValue] = sortOrder;
 
       processedFiles.sort((a, b) => {
-        const dateA = new Date(a.updated_at).getTime();
-        const dateB = new Date(b.updated_at).getTime();
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
 
         return sortValue === "newest-to-oldest" ? dateB - dateA : dateA - dateB;
       });
@@ -496,7 +491,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     fetchFolders();
   }, [fetchFolders]);
 
-  // Handle folder navigation
   const handleFolderClick = (folderId: string) => {
     const folder = folders?.find((f) => f.id === folderId);
     if (folder) {
@@ -516,7 +510,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     }
   };
 
-  // Bulk selection handlers
   const handleSelectFile = (fileId: string) => {
     setSelectedFileIds((prev) => {
       const newSet = new Set(prev);
@@ -542,12 +535,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       selectedFileIds.has(f.id)
     );
     if (allPinnedSelected && pinnedFiles.length > 0) {
-      // Deselect all pinned files only
       const newSet = new Set(selectedFileIds);
       pinnedFiles.forEach((f) => newSet.delete(f.id));
       setSelectedFileIds(newSet);
     } else {
-      // Select all pinned files
       const newSet = new Set(selectedFileIds);
       pinnedFiles.forEach((f) => newSet.add(f.id));
       setSelectedFileIds(newSet);
@@ -559,12 +550,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       selectedFileIds.has(f.id)
     );
     if (allRegularSelected && regularFiles.length > 0) {
-      // Deselect all regular files only
       const newSet = new Set(selectedFileIds);
       regularFiles.forEach((f) => newSet.delete(f.id));
       setSelectedFileIds(newSet);
     } else {
-      // Select all regular files
       const newSet = new Set(selectedFileIds);
       regularFiles.forEach((f) => newSet.add(f.id));
       setSelectedFileIds(newSet);
@@ -599,10 +588,8 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     setModalState({ type: null });
   };
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ctrl+A or Cmd+A to select all
       if ((e.ctrlKey || e.metaKey) && e.key === "a" && isBulkMode) {
         e.preventDefault();
         setSelectedFileIds((prevSet) => {
@@ -616,7 +603,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
           }
         });
       }
-      // Delete key to trigger bulk delete
       if (e.key === "Delete" && selectedFileIds.size > 0 && isBulkMode) {
         e.preventDefault();
         handleBulkDeleteClick();
@@ -627,13 +613,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isBulkMode, selectedFileIds, clientSortedFiles, handleBulkDeleteClick]);
 
-  // Clear selections when view type changes
   useEffect(() => {
     setSelectedFileIds(new Set());
     setIsBulkMode(false);
   }, [viewType]);
 
-  // Clear selections when tab changes
   useEffect(() => {
     setSelectedFileIds(new Set());
     setIsBulkMode(false);
@@ -715,7 +699,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     }
   };
   const handlePinClick = (fileId: string) => {
-    // TODO: API call to pin/unpin file
     setFiles((prevFiles) =>
       prevFiles.map((file) =>
         file.id === fileId ? { ...file, pinned: !file.pinned } : file
@@ -993,7 +976,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
             onBulkDelete={handleBulkDeleteClick}
             onClearSelection={handleClearSelection}
           />
-          {/* Breadcrumb Navigation */}
           {folderPath.length > 1 && (
             <div className="px-6 py-3 border-b border-gray-100">
               <div className="flex items-center gap-2 text-sm">
@@ -1036,7 +1018,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
             />
           </div>
 
-          {/* Tab Navigation */}
           {viewType !== "Shared with me" &&
             viewType !== "Deleted Files" &&
             !currentFolderId && (
@@ -1065,7 +1046,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
             )}
 
           <section className=" w-full px-6 pb-6 flex flex-col">
-            {/* Folders Tab Content - Only show when NOT inside a folder */}
             {activeTab === "folders" &&
               viewType !== "Shared with me" &&
               viewType !== "Deleted Files" &&
@@ -1177,7 +1157,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
                 </>
               )}
 
-            {/* Files Tab Content */}
             {(viewType === "Shared with me" ||
               viewType === "Deleted Files" ||
               activeTab === "files") && (
@@ -1356,7 +1335,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
                     ))}
                   </div>
 
-                  {/* Pagination */}
                   {totalPages > 1 && (
                     <div className="mt-8 flex justify-center mb-10">
                       <Pagination>

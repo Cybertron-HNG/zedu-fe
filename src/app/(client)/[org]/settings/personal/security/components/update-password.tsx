@@ -1,5 +1,6 @@
 "use client";
 import React, { FormEvent, useState } from "react";
+import { isAxiosError } from "axios";
 import { X, Eye, EyeOff } from "lucide-react";
 import {
   Dialog,
@@ -46,6 +47,8 @@ const UpdatePassword = () => {
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
+    } else if (!isAxiosError(res)) {
+      showError("Could not update your password. Please try again.");
     }
     setButtonLoading(false);
   };
@@ -103,7 +106,7 @@ const UpdatePassword = () => {
             <div className="mb-4">
               <label
                 className="block text-sm font-medium mb-1"
-                htmlFor="password"
+                htmlFor="new-password"
               >
                 New Password
               </label>
@@ -129,7 +132,7 @@ const UpdatePassword = () => {
             <div className="mb-4">
               <label
                 className="block text-sm font-medium mb-1"
-                htmlFor="password"
+                htmlFor="confirm-password"
               >
                 Confirm Password
               </label>

@@ -33,6 +33,8 @@ export default function NotificationNav() {
     orgId ||
     (typeof window !== "undefined" ? localStorage.getItem("orgId") || "" : "");
 
+  const requestIdRef = useRef(0);
+
   const fetchNotifications = useCallback(
     async (pageNumber: number) => {
       if (!resolvedOrgId) {
@@ -40,11 +42,13 @@ export default function NotificationNav() {
         return;
       }
 
+      const requestId = ++requestIdRef.current;
       setLoading(true);
       const res = await GetRequest(
         `/organisations/${resolvedOrgId}/users/onesignal?page=${pageNumber}&limit=${LIMIT}`
       );
 
+      if (requestId !== requestIdRef.current) return;
       if (res?.status === 200 || res?.status === 201) {
         const items = res?.data?.data?.notifications || [];
         const pagination = res?.data?.data?.pagination;

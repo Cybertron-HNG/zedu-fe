@@ -14,7 +14,6 @@ import { Button } from "~/components/ui/button";
 interface BillingCancellationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  // eslint-disable-next-line
   onCancel: (password: string, isAdminConfirmed: boolean) => void;
   isUnSubscribing: boolean;
 }

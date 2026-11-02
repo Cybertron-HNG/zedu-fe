@@ -61,6 +61,7 @@ const ClientLayout = ({
       prevPathnameRef.current !== pathname
     ) {
       dispatch({ type: ACTIONS.REPLY, payload: false });
+      dispatch({ type: ACTIONS.IS_EDIT, payload: false });
       dispatch({ type: ACTIONS.IS_EDIT_REPLY, payload: false });
       dispatch({ type: ACTIONS.HOVER_PROFILE, payload: false });
       dispatch({ type: ACTIONS.SHOW_USER_PROFILE, payload: false });

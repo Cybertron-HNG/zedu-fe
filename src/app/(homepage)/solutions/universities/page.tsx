@@ -22,9 +22,6 @@ export const metadata: Metadata = {
     "department communication software",
     "Zedu universities",
   ],
-  icons: {
-    icon: "/TelexIcon.svg",
-  },
   openGraph: {
     title: "Zedu for Universities - Structured Communication at Scale",
     description:
@@ -72,7 +69,7 @@ const higherEducationCards = [
     desc: "Create dedicated channels so conversations, announcements, and resources stay structured and accessible.",
   },
   {
-    title: "AI Assisted Learning",
+    title: "AI-Assisted Learning",
     desc: "Built-in AI tools help summarize discussions, answer common questions, and support both educators and students.",
   },
 ];
@@ -117,7 +114,7 @@ const institutionSecurityCards = [
 const comparisonData = {
   withoutTitle: "Without Zedu",
   withoutItems: [
-    "Universities only get email, messaging apps, and LMS tools, making communication scattered",
+    "Universities juggle email, messaging apps, and LMS tools, making communication scattered",
     "Important updates from professors or departments are often lost in crowded inboxes or long discussion threads",
     "Students often don't know where to ask questions about lectures, and finding resources becomes difficult",
     "Professors and teaching assistants juggle multiple tools just to manage communication and collaboration",
@@ -297,9 +294,9 @@ const UniversitiesSolutionsPage = () => {
             Run Leaner. Move Faster. Teach Better.
           </h1>
           <p className="max-w-[95%] text-xs text-neutral-600 sm:max-w-[90%] sm:text-base md:max-w-[65%] lg:max-w-[45%] lg:text-lg">
-            Zedu bring  communication, collaboration, and course
-            management. into one structured workspace reducing complexity,
-            improving communication, and helping institutions move faster.
+            Zedu brings communication, collaboration, and course management into
+            one structured workspace, reducing complexity, improving
+            communication, and helping institutions move faster.
           </p>
         </div>
 

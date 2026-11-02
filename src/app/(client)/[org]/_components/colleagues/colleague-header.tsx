@@ -67,6 +67,7 @@ const ColleagueHeader = ({ user }: any) => {
             isOpen={isMenuDropdownOpen}
             onClose={() => setIsMenuDropdownOpen(false)}
             deleteModal={() => setDeleteColleague(true)}
+            user={user}
           />
         </div>
       </div>

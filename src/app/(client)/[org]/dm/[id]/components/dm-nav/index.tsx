@@ -52,6 +52,7 @@ const DmHeader = ({ user }: { user: User }) => {
           <MenuDropdown
             isOpen={isMenuDropdownOpen}
             onClose={() => setIsMenuDropdownOpen(false)}
+            user={user}
           />
         </div>
       </div>

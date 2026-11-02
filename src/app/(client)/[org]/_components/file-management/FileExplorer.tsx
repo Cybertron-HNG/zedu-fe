@@ -20,9 +20,15 @@ import MoveFileModal, { FolderInfo } from "./MoveFile";
 import { FilterOption } from "../sorting/sorting";
 import FilterSection from "../../filter/filterSection";
 import { useParams } from "next/navigation";
-import { GetRequest, PostRequest, PutRequest } from "~/utils/new-request";
+import {
+  DeleteRequest,
+  GetRequest,
+  PostRequest,
+  PutRequest,
+} from "~/utils/new-request";
 import FilePreview from "./FilePreview";
 import Loading from "~/components/ui/loading";
+import { Button } from "~/components/ui/button";
 import DeleteFolderModal from "./DeleteFolderModal";
 import RenameFolderModal from "./RenameFolderModal";
 import { Pin } from "lucide-react";
@@ -188,11 +194,9 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
   const [selectedFile, setSelectedFile] = React.useState<FileDetails | null>(
     null
   );
-  // Loading states
   const [isLoadingFiles, setIsLoadingFiles] = React.useState(false);
   const [isLoadingFolders, setIsLoadingFolders] = React.useState(false);
 
-  // Folder navigation state
   const [currentFolderId, setCurrentFolderId] = React.useState<
     string | undefined
   >(folderId);
@@ -200,7 +204,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     Array<{ id: string | undefined; name: string }>
   >([{ id: undefined, name: "All files" }]);
 
-  // Filter state
   const [fileType, setFileType] = React.useState<string[]>([]);
   const [uploader, setUploader] = React.useState<string[]>([]);
   const [dateRange, setDateRange] = React.useState<string[]>([]);
@@ -216,17 +219,18 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalFilePages, setTotalFilePages] = useState(1);
   const [currentFolderPage, setCurrentFolderPage] = useState(1);
+  const [totalFolderPages, setTotalFolderPages] = useState(1);
+  const [folderLoadError, setFolderLoadError] = useState(false);
+  const [loadedFolderQueryKey, setLoadedFolderQueryKey] = useState("");
+  const folderRequestId = useRef(0);
 
-  // Bulk selection state
   const [selectedFileIds, setSelectedFileIds] = useState<Set<string>>(
     new Set()
   );
   const [isBulkMode, setIsBulkMode] = useState(false);
 
-  // Tab state for folders/files separation
   const [activeTab, setActiveTab] = useState<"folders" | "files">("files");
 
-  // State for the raw member data and the formatted options
   const [uploaderOptions, setUploaderOptions] = useState<FilterOption[]>([]);
 
   useEffect(() => {
@@ -286,7 +290,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return map;
   }, [state.channels, state.dms]);
 
-  // Memoize the transformation of members to filter options
   useEffect(() => {
     if (state.orgMembers && state.orgMembers.length > 0) {
       const options = state.orgMembers.map((member: OrgMember) => ({
@@ -396,16 +399,29 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
         folderId: currentFolderId,
         page: currentPage,
         limit: 10,
+        sortOrder,
       });
 
-      const response = await GetRequest(`/files?${queryString}`);
+      const [response, favoritesResponse] = await Promise.all([
+        GetRequest(`/files?${queryString}`),
+        GetRequest("/files/favorites"),
+      ]);
       if (response?.status === 200) {
         const fetchedFiles = response.data?.data?.files || [];
+        const pinnedIds = new Set<string>(
+          favoritesResponse?.status === 200 &&
+            Array.isArray(favoritesResponse.data?.data)
+            ? favoritesResponse.data.data.map(
+                (pinned: { file?: { id?: string } }) => String(pinned.file?.id)
+              )
+            : []
+        );
         fileDetailsCache.current.clear();
         setFiles(
-          fetchedFiles.map((file: Record<string, unknown>) =>
-            mapApiFileToFileDetails(file, channelLabelMap)
-          )
+          fetchedFiles.map((file: Record<string, unknown>) => ({
+            ...mapApiFileToFileDetails(file, channelLabelMap),
+            pinned: pinnedIds.has(String(file.id)),
+          }))
         );
 
         const pagination = parseFilesListPagination(
@@ -428,6 +444,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     currentFolderId,
     currentPage,
     channelLabelMap,
+    sortOrder,
   ]);
 
   useEffect(() => {
@@ -447,8 +464,8 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       const [sortValue] = sortOrder;
 
       processedFiles.sort((a, b) => {
-        const dateA = new Date(a.updated_at).getTime();
-        const dateB = new Date(b.updated_at).getTime();
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
 
         return sortValue === "newest-to-oldest" ? dateB - dateA : dateA - dateB;
       });
@@ -457,9 +474,17 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return processedFiles;
   }, [displayFiles, access, sortOrder]);
 
+  const folderQueryKey = JSON.stringify([
+    viewType,
+    currentFolderId,
+    currentFolderPage,
+  ]);
+
   const fetchFolders = useCallback(async () => {
+    const requestId = ++folderRequestId.current;
     try {
       setIsLoadingFolders(true);
+      setFolderLoadError(false);
       const queryParams = new URLSearchParams();
 
       const modeMapping = {
@@ -469,6 +494,8 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
         "Deleted Files": "trash",
       };
       queryParams.append("mode", modeMapping[viewType] || "all");
+      queryParams.append("page", String(currentFolderPage));
+      queryParams.append("limit", "10");
 
       if (currentFolderId) {
         queryParams.append("parent_id", currentFolderId);
@@ -477,26 +504,44 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       const endpoint = `/files/folders${queryString ? `?${queryString}` : ""}`;
 
       const response = await GetRequest(endpoint);
+      if (requestId !== folderRequestId.current) return;
       if (response?.status === 200) {
+        const pagination = parseFilesListPagination(
+          response.data?.data?.pagination
+        );
+        const pageCount = Math.max(1, pagination?.totalPages ?? 1);
+        setTotalFolderPages(pageCount);
+        if (currentFolderPage > pageCount) {
+          setCurrentFolderPage(pageCount);
+          return;
+        }
         setFolders(
-          Array.isArray(response.data.data.folders)
+          Array.isArray(response.data?.data?.folders)
             ? response.data.data.folders
             : []
         );
+        setLoadedFolderQueryKey(folderQueryKey);
+      } else {
+        setFolderLoadError(true);
+        showError("Failed to load folders");
       }
     } catch (error) {
+      if (requestId !== folderRequestId.current) return;
+      setFolderLoadError(true);
       console.error("Failed to fetch folders:", error);
       showError("Failed to load folders");
     } finally {
-      setIsLoadingFolders(false);
+      if (requestId === folderRequestId.current) setIsLoadingFolders(false);
     }
-  }, [currentFolderId, viewType]);
+  }, [currentFolderId, currentFolderPage, folderQueryKey, viewType]);
 
   useEffect(() => {
     fetchFolders();
+    return () => {
+      folderRequestId.current += 1;
+    };
   }, [fetchFolders]);
 
-  // Handle folder navigation
   const handleFolderClick = (folderId: string) => {
     const folder = folders?.find((f) => f.id === folderId);
     if (folder) {
@@ -516,7 +561,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     }
   };
 
-  // Bulk selection handlers
   const handleSelectFile = (fileId: string) => {
     setSelectedFileIds((prev) => {
       const newSet = new Set(prev);
@@ -542,12 +586,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       selectedFileIds.has(f.id)
     );
     if (allPinnedSelected && pinnedFiles.length > 0) {
-      // Deselect all pinned files only
       const newSet = new Set(selectedFileIds);
       pinnedFiles.forEach((f) => newSet.delete(f.id));
       setSelectedFileIds(newSet);
     } else {
-      // Select all pinned files
       const newSet = new Set(selectedFileIds);
       pinnedFiles.forEach((f) => newSet.add(f.id));
       setSelectedFileIds(newSet);
@@ -559,12 +601,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       selectedFileIds.has(f.id)
     );
     if (allRegularSelected && regularFiles.length > 0) {
-      // Deselect all regular files only
       const newSet = new Set(selectedFileIds);
       regularFiles.forEach((f) => newSet.delete(f.id));
       setSelectedFileIds(newSet);
     } else {
-      // Select all regular files
       const newSet = new Set(selectedFileIds);
       regularFiles.forEach((f) => newSet.add(f.id));
       setSelectedFileIds(newSet);
@@ -599,10 +639,8 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     setModalState({ type: null });
   };
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ctrl+A or Cmd+A to select all
       if ((e.ctrlKey || e.metaKey) && e.key === "a" && isBulkMode) {
         e.preventDefault();
         setSelectedFileIds((prevSet) => {
@@ -616,7 +654,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
           }
         });
       }
-      // Delete key to trigger bulk delete
       if (e.key === "Delete" && selectedFileIds.size > 0 && isBulkMode) {
         e.preventDefault();
         handleBulkDeleteClick();
@@ -627,13 +664,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isBulkMode, selectedFileIds, clientSortedFiles, handleBulkDeleteClick]);
 
-  // Clear selections when view type changes
   useEffect(() => {
     setSelectedFileIds(new Set());
     setIsBulkMode(false);
   }, [viewType]);
 
-  // Clear selections when tab changes
   useEffect(() => {
     setSelectedFileIds(new Set());
     setIsBulkMode(false);
@@ -714,13 +749,37 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
       setModalState({ type: "rename-folder", data: folderToEdit });
     }
   };
-  const handlePinClick = (fileId: string) => {
-    // TODO: API call to pin/unpin file
-    setFiles((prevFiles) =>
-      prevFiles.map((file) =>
-        file.id === fileId ? { ...file, pinned: !file.pinned } : file
-      )
-    );
+  const pendingPinIds = useRef(new Set<string>());
+
+  const handlePinClick = async (fileId: string) => {
+    const fileInfo = files.find((file) => file.id === fileId);
+    if (!fileInfo || pendingPinIds.current.has(fileId)) return;
+
+    const wasPinned = Boolean(fileInfo.pinned);
+    const setPinned = (pinned: boolean) =>
+      setFiles((prevFiles) =>
+        prevFiles.map((file) =>
+          file.id === fileId ? { ...file, pinned } : file
+        )
+      );
+
+    pendingPinIds.current.add(fileId);
+    setPinned(!wasPinned);
+    try {
+      const response = wasPinned
+        ? await DeleteRequest(`/files/file/${fileId}/pin`)
+        : await PostRequest(`/files/file/${fileId}/pin`);
+
+      if (response?.status !== 200 && response?.status !== 201) {
+        setPinned(wasPinned);
+        // The request helpers already toast the backend message when present
+        if (!response?.response?.data?.message) {
+          showError(wasPinned ? "Failed to unpin file" : "Failed to pin file");
+        }
+      }
+    } finally {
+      pendingPinIds.current.delete(fileId);
+    }
   };
   const handleShareClick = (fileId: string) => {
     const fileInfo = displayFiles.find((file) => file.id === fileId);
@@ -918,15 +977,9 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return pages;
   };
 
-  const foldersPerPage = 10;
-  const lastFolderIndex = currentFolderPage * foldersPerPage;
-  const firstFolderIndex = lastFolderIndex - foldersPerPage;
-  const currentFolders = Array.isArray(folders)
-    ? folders.slice(firstFolderIndex, lastFolderIndex)
-    : [];
-  const totalFolderPages = Math.ceil(
-    (Array.isArray(folders) ? folders.length : 0) / foldersPerPage
-  );
+  const hasCurrentFolders =
+    loadedFolderQueryKey === folderQueryKey && folders.length > 0;
+  const currentFolders = hasCurrentFolders ? folders : [];
 
   const getFolderPageNumbers = () => {
     const pages: (number | string)[] = [];
@@ -962,6 +1015,57 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
     return pages;
   };
 
+  const renderFolderPagination = () =>
+    totalFolderPages > 1 && (
+      <div className="flex justify-center mt-4">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <FolderPaginationPrevious
+                onClick={() =>
+                  setCurrentFolderPage((prev) => Math.max(prev - 1, 1))
+                }
+                disabled={currentFolderPage === 1}
+              />
+            </PaginationItem>
+            {getFolderPageNumbers().map((page, index) => (
+              <PaginationItem key={index}>
+                {page === "ellipsis" ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <FolderPaginationLink
+                    onClick={() => setCurrentFolderPage(page as number)}
+                    isActive={currentFolderPage === page}
+                  >
+                    {page}
+                  </FolderPaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <FolderPaginationNext
+                onClick={() =>
+                  setCurrentFolderPage((prev) =>
+                    Math.min(prev + 1, totalFolderPages)
+                  )
+                }
+                disabled={currentFolderPage === totalFolderPages}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    );
+
+  const folderLoadErrorNotice = (
+    <div className="flex flex-col items-center gap-3 py-6 text-[#344054]">
+      <p>Failed to load folders</p>
+      <Button variant="outline" onClick={fetchFolders}>
+        Retry
+      </Button>
+    </div>
+  );
+
   useEffect(() => {
     setCurrentPage(1);
     setCurrentFolderPage(1);
@@ -993,7 +1097,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
             onBulkDelete={handleBulkDeleteClick}
             onClearSelection={handleClearSelection}
           />
-          {/* Breadcrumb Navigation */}
           {folderPath.length > 1 && (
             <div className="px-6 py-3 border-b border-gray-100">
               <div className="flex items-center gap-2 text-sm">
@@ -1036,7 +1139,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
             />
           </div>
 
-          {/* Tab Navigation */}
           {viewType !== "Shared with me" &&
             viewType !== "Deleted Files" &&
             !currentFolderId && (
@@ -1065,7 +1167,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
             )}
 
           <section className=" w-full px-6 pb-6 flex flex-col">
-            {/* Folders Tab Content - Only show when NOT inside a folder */}
             {activeTab === "folders" &&
               viewType !== "Shared with me" &&
               viewType !== "Deleted Files" &&
@@ -1083,8 +1184,14 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
                         ))}
                       </div>
                     </div>
-                  ) : Array.isArray(folders) && folders.length > 0 ? (
+                  ) : folderLoadError && !hasCurrentFolders ? (
+                    <div className="py-10">
+                      {folderLoadErrorNotice}
+                      {renderFolderPagination()}
+                    </div>
+                  ) : hasCurrentFolders ? (
                     <div className="mb-6">
+                      {folderLoadError && folderLoadErrorNotice}
                       <div className="mb-3">
                         <h2 className="font-semibold mt-5 text-[16px] text-[#344054]">
                           Folders
@@ -1121,52 +1228,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
                           />
                         ))}
                       </div>
-                      {totalFolderPages > 1 && (
-                        <div className="flex justify-center mt-4">
-                          <Pagination>
-                            <PaginationContent>
-                              <PaginationItem>
-                                <FolderPaginationPrevious
-                                  onClick={() =>
-                                    setCurrentFolderPage((prev) =>
-                                      Math.max(prev - 1, 1)
-                                    )
-                                  }
-                                  disabled={currentFolderPage === 1}
-                                />
-                              </PaginationItem>
-                              {getFolderPageNumbers().map((page, index) => (
-                                <PaginationItem key={index}>
-                                  {page === "ellipsis" ? (
-                                    <PaginationEllipsis />
-                                  ) : (
-                                    <FolderPaginationLink
-                                      onClick={() =>
-                                        setCurrentFolderPage(page as number)
-                                      }
-                                      isActive={currentFolderPage === page}
-                                    >
-                                      {page}
-                                    </FolderPaginationLink>
-                                  )}
-                                </PaginationItem>
-                              ))}
-                              <PaginationItem>
-                                <FolderPaginationNext
-                                  onClick={() =>
-                                    setCurrentFolderPage((prev) =>
-                                      Math.min(prev + 1, totalFolderPages)
-                                    )
-                                  }
-                                  disabled={
-                                    currentFolderPage === totalFolderPages
-                                  }
-                                />
-                              </PaginationItem>
-                            </PaginationContent>
-                          </Pagination>
-                        </div>
-                      )}
+                      {renderFolderPagination()}
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2 text-[#344054] justify-center items-center mt-40">
@@ -1177,7 +1239,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
                 </>
               )}
 
-            {/* Files Tab Content */}
             {(viewType === "Shared with me" ||
               viewType === "Deleted Files" ||
               activeTab === "files") && (
@@ -1356,7 +1417,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
                     ))}
                   </div>
 
-                  {/* Pagination */}
                   {totalPages > 1 && (
                     <div className="mt-8 flex justify-center mb-10">
                       <Pagination>
@@ -1453,7 +1513,13 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
           onClose={() => setModalState({ type: null })}
           fileToMove={modalState.data}
           onMove={(folderId) => handleMoveFile(modalState.data.id, folderId)}
-          folders={folders}
+          folders={currentFolders}
+          currentFolderPage={currentFolderPage}
+          totalFolderPages={totalFolderPages}
+          isLoadingFolders={isLoadingFolders}
+          folderLoadError={folderLoadError}
+          onRetryFolders={fetchFolders}
+          onFolderPageChange={setCurrentFolderPage}
           onFoldersChange={setFolders}
         />
       )}
@@ -1481,9 +1547,12 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ viewType, folderId }) => {
           folderName={modalState.data.name}
           folderId={modalState.data.id}
           onDeleteSuccess={() => {
+            const deletedFolderId = modalState.data.id;
+            // Drop the folder first, so it is gone even if the refetch fails.
             setFolders((prevFolders) =>
-              prevFolders.filter((folder) => folder.id !== modalState.data.id)
+              prevFolders.filter((folder) => folder.id !== deletedFolderId)
             );
+            fetchFolders();
             setModalState({ type: null });
           }}
         />

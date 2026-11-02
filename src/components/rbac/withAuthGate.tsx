@@ -43,8 +43,19 @@ export function withAuthGate<P extends object>(
       return hasPermission(requiredPermission);
     }, [hasPermission, status]);
 
+    const hasReportedRef = React.useRef(false);
+
     React.useEffect(() => {
-      if (status === "authorized" && !isAuthorized) {
+      const isUnauthorized = status === "authorized" && !isAuthorized;
+
+      if (!isUnauthorized) {
+        hasReportedRef.current = false;
+        return;
+      }
+
+      if (!hasReportedRef.current) {
+        hasReportedRef.current = true;
+
         if (onUnauthorized) {
           onUnauthorized();
         }
@@ -52,12 +63,14 @@ export function withAuthGate<P extends object>(
         if (showErrorToast) {
           showError(unauthorizedMessage);
         }
-
-        const redirectPath = redirectTo || `/${orgSlug || "dashboard"}`;
-        setTimeout(() => {
-          router.push(redirectPath);
-        }, 1000);
       }
+
+      const redirectPath = redirectTo || `/${orgSlug || "dashboard"}`;
+      const timeoutId = setTimeout(() => {
+        router.push(redirectPath);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
     }, [status, isAuthorized, router, orgSlug]);
 
     if (status === "loading") {
@@ -104,8 +117,19 @@ export function withAllPermissions<P extends object>(
       options?.unauthorizedMessage ||
       `You need all of these permissions: ${requiredPermissions.join(", ")}`;
 
+    const hasReportedRef = React.useRef(false);
+
     React.useEffect(() => {
-      if (status === "authorized" && !hasAllPerms) {
+      const isUnauthorized = status === "authorized" && !hasAllPerms;
+
+      if (!isUnauthorized) {
+        hasReportedRef.current = false;
+        return;
+      }
+
+      if (!hasReportedRef.current) {
+        hasReportedRef.current = true;
+
         if (options?.onUnauthorized) {
           options.onUnauthorized();
         }
@@ -113,13 +137,14 @@ export function withAllPermissions<P extends object>(
         if (options?.showErrorToast !== false) {
           showError(unauthorizedMessage);
         }
-
-        const redirectPath =
-          options?.redirectTo || `/${orgSlug || "dashboard"}`;
-        setTimeout(() => {
-          router.push(redirectPath);
-        }, 1000);
       }
+
+      const redirectPath = options?.redirectTo || `/${orgSlug || "dashboard"}`;
+      const timeoutId = setTimeout(() => {
+        router.push(redirectPath);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
     }, [status, hasAllPerms, router, orgSlug]);
 
     if (status === "loading") {
@@ -166,8 +191,19 @@ export function withAnyPermission<P extends object>(
       options?.unauthorizedMessage ||
       `You need at least one of these permissions: ${requiredPermissions.join(", ")}`;
 
+    const hasReportedRef = React.useRef(false);
+
     React.useEffect(() => {
-      if (status === "authorized" && !hasAnyPerm) {
+      const isUnauthorized = status === "authorized" && !hasAnyPerm;
+
+      if (!isUnauthorized) {
+        hasReportedRef.current = false;
+        return;
+      }
+
+      if (!hasReportedRef.current) {
+        hasReportedRef.current = true;
+
         if (options?.onUnauthorized) {
           options.onUnauthorized();
         }
@@ -175,13 +211,14 @@ export function withAnyPermission<P extends object>(
         if (options?.showErrorToast !== false) {
           showError(unauthorizedMessage);
         }
-
-        const redirectPath =
-          options?.redirectTo || `/${orgSlug || "dashboard"}`;
-        setTimeout(() => {
-          router.push(redirectPath);
-        }, 1000);
       }
+
+      const redirectPath = options?.redirectTo || `/${orgSlug || "dashboard"}`;
+      const timeoutId = setTimeout(() => {
+        router.push(redirectPath);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
     }, [status, hasAnyPerm, router, orgSlug]);
 
     if (status === "loading") {

@@ -22,9 +22,6 @@ export const metadata: Metadata = {
     "university class discussions",
     "interactive communication for students",
   ],
-  icons: {
-    icon: "/TelexIcon.svg",
-  },
   openGraph: {
     title: "Zedu Buzz - Instant Voice Conversations for Learning Teams",
     description:
@@ -128,7 +125,7 @@ const BuzzProductsPage = () => {
               conversations directly inside learning channels.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
-              <ArrowBtn text="Start a buzz" linkToHome />
+              <ArrowBtn text="Start a Buzz" linkToHome />
               {/* <OutlineBtn text="Watch a Demo" /> */}
             </div>
           </div>

@@ -108,6 +108,7 @@
     "emoji-picker-react": "^4.11.1",
     "emojione": "^4.5.0",
     "framer-motion": "^11.3.25",
+    "heic2any": "0.0.4",
     "input-otp": "^1.2.4",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.417.0",

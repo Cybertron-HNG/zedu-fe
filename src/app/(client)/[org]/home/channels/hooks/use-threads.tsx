@@ -1,10 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ACTIONS } from "~/store/Actions";
 import { DataContext } from "~/store/GlobalState";
-import {
-  ORGANISATION_THREADS_PAGE_LIMIT,
-  loadOrganisationThreadsPage,
-} from "~/utils/org-threads";
+import { loadOrganisationThreadsPage } from "~/utils/org-threads";
 import type { ThreadGroup } from "~/types/threads";
 
 function threadGroupId(group: ThreadGroup) {
@@ -58,10 +55,7 @@ const UseThreads = () => {
 
   useEffect(() => {
     if (!Array.isArray(threadMentions)) return;
-    if (
-      threadMentions.length === 0 ||
-      threadMentions.length % ORGANISATION_THREADS_PAGE_LIMIT !== 0
-    ) {
+    if (threadMentions.length === 0) {
       setHasMore(false);
     }
   }, [threadMentions]);

@@ -33,6 +33,8 @@ const ProfileSidebar = ({ user }: any) => {
         {/* <h2 className="text-[#1D2939] text-lg font-bold">Profile</h2> */}
 
         <button
+          aria-label="Close profile"
+          title="Close profile"
           onClick={onClose}
           className="text-[#344054] p-1 border border-input rounded-[0.3125rem]"
         >
@@ -41,7 +43,7 @@ const ProfileSidebar = ({ user }: any) => {
       </nav>
 
       {/* Profile body */}
-      <div className="py-3 flex flex-col gap-3 flex-1 overflow-hidden">
+      <div className="py-3 flex flex-col gap-3 flex-1 min-h-0 overflow-y-auto">
         <div className="flex flex-col gap-5 px-5">
           <div className="">
             <UserAvatar

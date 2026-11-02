@@ -8,6 +8,7 @@ import {
   otherFeatures,
 } from "../../_lib/featureSectionData";
 import { useRouter } from "next/navigation";
+import { cn } from "~/lib/utils";
 
 export const FeatureSection = () => {
   const router = useRouter();
@@ -125,16 +126,22 @@ export const FeatureSection = () => {
             {otherFeatures.map((feature) => (
               <div
                 key={feature.title}
-                className="flex h-full flex-col justify-center gap-3 rounded-2xl bg-white p-4 sm:gap-4 sm:rounded-3xl sm:p-6"
+                className="flex h-full flex-col justify-start gap-3 rounded-2xl bg-white p-4 sm:gap-4 sm:rounded-3xl sm:p-6"
               >
-                <Image
-                  src={feature.icon}
-                  alt={`${feature.title} icon`}
-                  height={40}
-                  width={40}
-                  preload
-                  className="h-8 w-8 sm:h-10 sm:w-10"
-                />
+                <span
+                  className={cn(
+                    "flex h-12 w-12 items-center justify-center rounded-xl sm:h-14 sm:w-14 sm:rounded-2xl",
+                    feature.chipClassName
+                  )}
+                >
+                  <Image
+                    src={feature.icon}
+                    alt=""
+                    height={40}
+                    width={40}
+                    className="h-7 w-7 object-contain sm:h-8 sm:w-8"
+                  />
+                </span>
                 <h3 className="text-base font-semibold text-neutral-900 sm:text-lg">
                   {feature.title}
                 </h3>
